@@ -4,33 +4,29 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{ config('app.name', 'Laravel') }}</title>
-
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    </head>
+
+    <body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
+        @include('include.header')
+
+        <main>
+            <div class="flex flex-col md:flex-row">
+                @include('include.navigation')
+                <div id="main" class="main-content min-h-screen flex-1 bg-gray-100 mt-12 md:mt-2 pb-24 md:pb-5">
+                    @include('include.title')
+                    <div class="p-6">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        </main>
 
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
+        <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>
