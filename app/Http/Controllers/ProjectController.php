@@ -3,20 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Project;
+use App\Services\ProjectService;
 
 class ProjectController extends Controller
 {
+    protected $projectService;
+
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
-        $title = 'Список проектов';
-//        $projects = Project::where('is_active', 1)->get();
-        $projects = Project::all();
+        $title = __('titles.projects_index');
+        $projects = $this->projectService->getList();
 
         return view('projects', compact('title', 'projects'));
     }
@@ -24,11 +30,13 @@ class ProjectController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
-        //
+        $title = __('titles.projects_create');
+
+        return view('projects.create', compact('title'));
     }
 
     /**
