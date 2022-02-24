@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Interfaces\ProjectRepositoryInterface;
+use App\Repositories\EloquentProjectRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->bind(ProjectRepositoryInterface::class, EloquentProjectRepository::class);
     }
 }
