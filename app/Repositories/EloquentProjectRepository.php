@@ -9,14 +9,19 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
 {
     public function find(int $id)
     {
-        $project = Project::find($id);
-
-        return $project;
+        return Project::find($id);
     }
 
     public function search(array $filter = [])
     {
-        return Project::paginate();
+        return Project::where($filter)->paginate();
+    }
+
+    public function searchByMember(int $id, array $filter = [])
+    {
+        return Project::whereHas('members', function($query) use ($id) {
+            $query->where('member_id', $id);
+        })->where($filter)->paginate();
     }
 
     public function createFromArray(array $data)
