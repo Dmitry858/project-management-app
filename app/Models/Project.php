@@ -14,4 +14,9 @@ class Project extends Model
         'description',
         'is_active',
     ];
+
+    public function members()
+    {
+        return $this->belongsToMany(Member::class);
+    }
 }
