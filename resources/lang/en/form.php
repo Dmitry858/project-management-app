@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'label_title' => 'Name',
+    'label_description' => 'Description',
+    'label_activity' => 'Activity',
+    'label_members' => 'Members',
     'label_name' => 'Name',
     'label_email' => 'Email',
     'label_new_password' => 'New password',
