@@ -27,19 +27,24 @@
                                             {{ $project->id }}
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            {{ $project->name }}
+                                            <a href="{{ route('projects.show', ['project' => $project->id]) }}">{{ $project->name }}</a>
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             {{ $project->description }}
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                            {{ $project->members->count() }}
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             {{ $project->is_active ? 'Активный' : 'В архиве' }}
                                         </td>
                                         <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            @include('include.buttons.edit', ['link' => route('projects.edit', ['project' => $project->id])])
-                                            @include('include.buttons.delete', ['link' => route('projects.destroy', ['project' => $project->id])])
+                                            @permission('edit-projects')
+                                                @include('include.buttons.edit', ['link' => route('projects.edit', ['project' => $project->id])])
+                                            @endpermission
+                                            @permission('delete-projects')
+                                                @include('include.buttons.delete', ['link' => route('projects.destroy', ['project' => $project->id])])
+                                            @endpermission
                                         </td>
                                     </tr>
                                 @endforeach
@@ -49,11 +54,14 @@
                 </div>
             </div>
         </div>
+        {{ $projects->links() }}
     @else
         <p>@lang('empty.projects')</p>
     @endif
 
-    <div class="py-4 mt-4">
-        @include('include.buttons.create', ['link' => route('projects.create')])
-    </div>
+    @permission('create-projects')
+        <div class="py-4 mt-4">
+            @include('include.buttons.create', ['link' => route('projects.create')])
+        </div>
+    @endpermission
 @endsection
