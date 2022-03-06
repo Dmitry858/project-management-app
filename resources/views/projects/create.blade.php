@@ -25,8 +25,8 @@
                     @lang('form.label_activity')
                 </label>
                 <select class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="is_active" name="is_active">
-                    <option>Активный</option>
-                    <option>В архиве</option>
+                    <option value="1">Активный</option>
+                    <option value="0">В архиве</option>
                 </select>
             </div>
 

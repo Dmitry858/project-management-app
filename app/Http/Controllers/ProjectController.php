@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ProjectService;
+use App\Services\UserService;
+use App\Http\Requests\StoreProjectRequest;
 
 class ProjectController extends Controller
 {
     protected $projectService;
+    protected $userService;
 
-    public function __construct(ProjectService $projectService)
+    public function __construct(ProjectService $projectService, UserService $userService)
     {
         $this->projectService = $projectService;
+        $this->userService = $userService;
     }
 
     /**
@@ -24,7 +28,7 @@ class ProjectController extends Controller
         $title = __('titles.projects_index');
         $projects = $this->projectService->getList();
 
-        return view('projects', compact('title', 'projects'));
+        return view('projects.index', compact('title', 'projects'));
     }
 
     /**
@@ -35,19 +39,24 @@ class ProjectController extends Controller
     public function create()
     {
         $title = __('titles.projects_create');
+        $users = $this->userService->getList(['is_active' => 1], false);
 
-        return view('projects.create', compact('title'));
+        return view('projects.create', compact('title', 'users'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreProjectRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
-        //
+        $success = $this->projectService->create($request->all());
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.project_created') : __('flash.general_error');
+
+        return redirect()->route('projects.index')->with($flashKey, $flashValue);
     }
 
     /**
