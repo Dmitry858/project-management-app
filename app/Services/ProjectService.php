@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
 class ProjectService
 {
     protected $projectRepository;
+    protected $userRepository;
 
-    public function __construct(ProjectRepositoryInterface $projectRepository)
+    public function __construct(ProjectRepositoryInterface $projectRepository, UserRepositoryInterface $userRepository)
     {
         $this->projectRepository = $projectRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function get(int $id)
@@ -56,5 +59,31 @@ class ProjectService
                 return [];
             }
         }
+    }
+
+    public function create($data)
+    {
+        unset($data['_token']);
+        if ($data['members'])
+        {
+            $userIds = $data['members'];
+            unset($data['members']);
+        }
+
+        $project = $this->projectRepository->createFromArray($data);
+
+        if ($project && $userIds)
+        {
+            foreach ($userIds as $id)
+            {
+                $user = $this->userRepository->find($id);
+                $member = $this->userRepository->findOrCreateMember($user);
+                $memberIds[] = $member->id;
+            }
+
+            $this->projectRepository->attachMembers($project, $memberIds);
+        }
+
+        return $project;
     }
 }
