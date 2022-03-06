@@ -12,6 +12,13 @@ class EloquentUserRepository implements UserRepositoryInterface
         return User::find($id);
     }
 
+    public function findOrCreateMember(object $user)
+    {
+        return $user->member()->firstOrCreate([
+            'user_id' => $user->id
+        ]);
+    }
+
     public function search(array $filter = [], bool $withPaginate = true)
     {
         if ($withPaginate)
