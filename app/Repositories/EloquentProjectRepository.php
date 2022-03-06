@@ -44,4 +44,9 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
 
         return $project ? $project->delete() : false;
     }
+
+    public function attachMembers(object $project, array $memberIds = [])
+    {
+        return $memberIds ? $project->members()->attach($memberIds) : false;
+    }
 }
