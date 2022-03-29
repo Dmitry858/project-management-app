@@ -26,7 +26,7 @@ class ProfileController extends Controller
 
     public function update(UpdateProfileRequest $request)
     {
-        $data = $this->profileService->handleData($request->all());
+        $data = $this->profileService->handleData($request);
         $success = User::where('id', Auth::id())->update($data);
         $flashKey = $success ? 'success' : 'error';
         $flashValue = $success ? __('flash.changes_saved') : __('flash.general_error');
