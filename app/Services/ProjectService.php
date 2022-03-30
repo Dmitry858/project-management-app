@@ -64,7 +64,8 @@ class ProjectService
     public function create($data)
     {
         unset($data['_token']);
-        if ($data['members'])
+
+        if (array_key_exists('members', $data) && is_array($data['members']))
         {
             $userIds = $data['members'];
             unset($data['members']);
@@ -72,7 +73,7 @@ class ProjectService
 
         $project = $this->projectRepository->createFromArray($data);
 
-        if ($project && $userIds)
+        if ($project && isset($userIds) && is_array($userIds))
         {
             foreach ($userIds as $id)
             {
