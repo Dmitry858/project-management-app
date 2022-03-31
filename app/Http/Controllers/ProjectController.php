@@ -74,11 +74,15 @@ class ProjectController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit($id)
     {
-        //
+        $project = $this->projectService->get($id);
+        $title = __('titles.projects_edit', ['name' => $project->name]);
+        $users = $this->userService->getList(['is_active' => 1], false);
+
+        return view('projects.edit', compact('title', 'project', 'users'));
     }
 
     /**
