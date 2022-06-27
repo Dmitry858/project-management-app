@@ -63,11 +63,15 @@ class ProjectController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function show($id)
     {
-        //
+        $project = $this->projectService->get($id);
+        $title = __('titles.projects_single', ['name' => $project->name]);
+        $members = $this->projectService->getProjectMembers($project);
+
+        return view('projects.single', compact('title', 'project', 'members'));
     }
 
     /**
