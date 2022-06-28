@@ -87,4 +87,21 @@ class ProjectService
 
         return $project;
     }
+
+    public function getProjectMembers(object $project)
+    {
+        $memberIds = [];
+        $members = [];
+        foreach ($project->members as $member)
+        {
+            $memberIds[] = $member->user_id;
+        }
+
+        if (count($memberIds) > 0)
+        {
+            $members = $this->userRepository->search(['is_active' => 1, 'id' => $memberIds], false);
+        }
+
+        return $members;
+    }
 }
