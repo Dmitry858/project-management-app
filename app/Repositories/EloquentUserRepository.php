@@ -21,13 +21,29 @@ class EloquentUserRepository implements UserRepositoryInterface
 
     public function search(array $filter = [], bool $withPaginate = true)
     {
+        $query = User::query();
+        if (count($filter) > 0)
+        {
+            foreach ($filter as $key => $value)
+            {
+                if (is_array($value))
+                {
+                    $query = $query->whereIn($key, $value);
+                }
+                else
+                {
+                    $query = $query->where($key, $value);
+                }
+            }
+        }
+
         if ($withPaginate)
         {
-            return User::where($filter)->paginate();
+            return $query->paginate();
         }
         else
         {
-            return User::where($filter)->get();
+            return $query->get();
         }
     }
 
