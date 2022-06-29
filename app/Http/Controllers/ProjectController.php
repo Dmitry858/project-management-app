@@ -105,10 +105,14 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $success = $this->projectService->delete($id);
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.project_deleted') : __('flash.general_error');
+
+        return redirect()->route('projects.index')->with($flashKey, $flashValue);
     }
 }
