@@ -104,4 +104,9 @@ class ProjectService
 
         return $members;
     }
+
+    public function delete(int $id): bool
+    {
+        return $this->projectRepository->delete($id);
+    }
 }
