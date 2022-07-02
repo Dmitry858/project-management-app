@@ -34,8 +34,9 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
     public function updateFromArray(int $id, array $data): bool
     {
         $project = $this->find($id);
-
-        return $project ? $project->update($data) : false;
+        $result = $project ? $project->update($data) : false;
+        $result = $result ? $project->members()->sync($data['memberIds']) : false;
+        return is_array($result) ? true : $result;
     }
 
     public function delete(int $id): bool
