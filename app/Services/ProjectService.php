@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Member; //временно
 
 class ProjectService
 {
@@ -103,6 +104,26 @@ class ProjectService
         }
 
         return $members;
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        $memberIds = [];
+        if (array_key_exists('members', $data) && is_array($data['members']))
+        {
+            $members = Member::whereIn('user_id', $data['members'])->get(); //временно
+            if (count($members) > 0)
+            {
+                foreach ($members as $member)
+                {
+                    $memberIds[] = $member->id;
+                }
+            }
+            unset($data['members']);
+        }
+        $data['memberIds'] = $memberIds;
+
+        return $this->projectRepository->updateFromArray($id, $data);
     }
 
     public function delete(int $id): bool
