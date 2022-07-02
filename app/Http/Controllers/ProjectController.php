@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\ProjectService;
 use App\Services\UserService;
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -92,13 +93,17 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  UpdateProjectRequest $request
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProjectRequest $request, int $id)
     {
-        //
+        $success = $this->projectService->update($id, $request->all());
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.project_updated') : __('flash.general_error');
+
+        return redirect()->route('projects.index')->with($flashKey, $flashValue);
     }
 
     /**
