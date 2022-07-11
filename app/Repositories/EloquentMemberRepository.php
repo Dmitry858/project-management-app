@@ -49,7 +49,7 @@ class EloquentMemberRepository implements MemberRepositoryInterface
         }
 
         $member = Member::create($data);
-        if ($member && $projectIds)
+        if ($member && isset($projectIds))
         {
             $member->projects()->attach($projectIds);
         }
