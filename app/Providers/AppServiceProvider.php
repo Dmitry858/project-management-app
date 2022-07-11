@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\MemberRepositoryInterface;
 use App\Repositories\EloquentProjectRepository;
 use App\Repositories\EloquentUserRepository;
+use App\Repositories\EloquentMemberRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
