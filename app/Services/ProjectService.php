@@ -4,18 +4,24 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Repositories\Interfaces\MemberRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Member; //временно
 
 class ProjectService
 {
     protected $projectRepository;
     protected $userRepository;
+    protected $memberRepository;
 
-    public function __construct(ProjectRepositoryInterface $projectRepository, UserRepositoryInterface $userRepository)
+    public function __construct(
+        ProjectRepositoryInterface $projectRepository,
+        UserRepositoryInterface $userRepository,
+        MemberRepositoryInterface $memberRepository
+    )
     {
         $this->projectRepository = $projectRepository;
         $this->userRepository = $userRepository;
+        $this->memberRepository = $memberRepository;
     }
 
     public function get(int $id)
@@ -111,17 +117,35 @@ class ProjectService
         $memberIds = [];
         if (array_key_exists('members', $data) && is_array($data['members']))
         {
-            $members = Member::whereIn('user_id', $data['members'])->get(); //временно
+            $members = $this->memberRepository->search(['user_id' => $data['members']], false);
             if (count($members) > 0)
             {
+                $notFoundMembers = $data['members'];
                 foreach ($members as $member)
                 {
                     $memberIds[] = $member->id;
+                    $key = array_search($member->user_id, $notFoundMembers);
+                    if ($key !== false)
+                    {
+                        unset($notFoundMembers[$key]);
+                    }
                 }
             }
             unset($data['members']);
         }
         $data['memberIds'] = $memberIds;
+
+        if (count($notFoundMembers) > 0)
+        {
+            foreach ($notFoundMembers as $id)
+            {
+                $newMember = $this->memberRepository->createFromArray(['user_id' => $id]);
+                if ($newMember)
+                {
+                    $data['memberIds'][] = $newMember->id;
+                }
+            }
+        }
 
         return $this->projectRepository->updateFromArray($id, $data);
     }
