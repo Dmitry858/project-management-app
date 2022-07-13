@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Member;
+use App\Services\MemberService;
 
 class MemberController extends Controller
 {
+    protected $memberService;
+
+    public function __construct(MemberService $memberService)
+    {
+        $this->memberService = $memberService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +22,7 @@ class MemberController extends Controller
     public function index(): object
     {
         $title = 'Список участников';
-        $members = Member::all();
+        $members = $this->memberService->getList();
 
         return view('members.index', compact('title', 'members'));
     }
@@ -79,10 +86,14 @@ class MemberController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $success = $this->memberService->delete($id);
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.member_deleted') : __('flash.general_error');
+
+        return redirect()->route('members.index')->with($flashKey, $flashValue);
     }
 }
