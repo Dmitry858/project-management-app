@@ -12,8 +12,8 @@
                         <table class="min-w-full">
                             <thead class="bg-blue-300 border-b">
                                 <tr>
-                                    @include('include.table-th', ['text' => 'ID'])
                                     @include('include.table-th', ['text' => 'Имя'])
+                                    @include('include.table-th', ['text' => 'Фамилия'])
                                     @include('include.table-th', ['text' => 'Проекты'])
                                     @include('include.table-th', ['text' => ''])
                                 </tr>
@@ -22,13 +22,13 @@
                                 @foreach ($members as $member)
                                     <tr class="bg-white border-b">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {{ $member->id }}
-                                        </td>
-                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             {{ $member->user->name }}
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            0
+                                            {{ $member->user->last_name }}
+                                        </td>
+                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                            {{ count($member->projects) }}
                                         </td>
                                         <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             @include('include.buttons.edit', ['link' => route('members.edit', ['member' => $member->id])])
