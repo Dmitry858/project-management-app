@@ -31,8 +31,12 @@
                                             {{ count($member->projects) }}
                                         </td>
                                         <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            @include('include.buttons.edit', ['link' => route('members.edit', ['member' => $member->id])])
-                                            @include('include.buttons.delete', ['link' => route('members.destroy', ['member' => $member->id])])
+                                            @permission('edit-members')
+                                                @include('include.buttons.edit', ['link' => route('members.edit', ['member' => $member->id])])
+                                            @endpermission
+                                            @permission('delete-members')
+                                                @include('include.buttons.delete', ['link' => route('members.destroy', ['member' => $member->id])])
+                                            @endpermission
                                         </td>
                                     </tr>
                                 @endforeach
@@ -42,12 +46,15 @@
                 </div>
             </div>
         </div>
+        {{ $members->links() }}
     @else
         <p>@lang('empty.members')</p>
     @endif
 
-    <div class="py-4 mt-4">
-        @include('include.buttons.create', ['link' => route('members.create'), 'label' => 'add'])
-    </div>
+    @permission('create-members')
+        <div class="py-4 mt-4">
+            @include('include.buttons.create', ['link' => route('members.create'), 'label' => 'add'])
+        </div>
+    @endpermission
 @endsection
 
