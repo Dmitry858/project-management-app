@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\MemberService;
+use App\Services\UserService;
+use App\Services\ProjectService;
 
 class MemberController extends Controller
 {
     protected $memberService;
+    protected $userService;
+    protected $projectService;
 
-    public function __construct(MemberService $memberService)
+    public function __construct(MemberService $memberService, UserService $userService, ProjectService $projectService)
     {
         $this->memberService = $memberService;
+        $this->userService = $userService;
+        $this->projectService = $projectService;
     }
 
     /**
@@ -21,7 +27,7 @@ class MemberController extends Controller
      */
     public function index(): object
     {
-        $title = 'Список участников';
+        $title = __('titles.members_index');
         $members = $this->memberService->getList();
 
         return view('members.index', compact('title', 'members'));
@@ -30,11 +36,15 @@ class MemberController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
-        //
+        $title = __('titles.members_create');
+        $users = $this->userService->getList(['is_active' => 1, 'member' => false], false);
+        $projects = $this->projectService->getList(['is_active' => 1]);
+
+        return view('members.create', compact('title', 'users', 'projects'));
     }
 
     /**
