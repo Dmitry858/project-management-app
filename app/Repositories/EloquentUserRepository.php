@@ -30,6 +30,10 @@ class EloquentUserRepository implements UserRepositoryInterface
                 {
                     $query = $query->whereIn($key, $value);
                 }
+                elseif ($key === 'member' && $value === false)
+                {
+                    $query = $query->doesntHave($key);
+                }
                 else
                 {
                     $query = $query->where($key, $value);
