@@ -5,6 +5,8 @@ return [
     'label_description' => 'Описание',
     'label_activity' => 'Активность',
     'label_members' => 'Участники',
+    'label_user' => 'Пользователь',
+    'label_projects' => 'Проекты',
     'label_name' => 'Имя',
     'label_last_name' => 'Фамилия',
     'label_email' => 'Email',
@@ -13,4 +15,5 @@ return [
     'label_confirm_new_password' => 'Подтверждение нового пароля',
     'change_link' => 'Изменить',
     'save_button' => 'Сохранить',
+    'empty_select_value' => 'Не выбран',
 ];

@@ -5,6 +5,8 @@ return [
     'label_description' => 'Description',
     'label_activity' => 'Activity',
     'label_members' => 'Members',
+    'label_user' => 'User',
+    'label_projects' => 'Projects',
     'label_name' => 'Name',
     'label_last_name' => 'Last name',
     'label_email' => 'Email',
@@ -13,4 +15,5 @@ return [
     'label_confirm_new_password' => 'Confirm new password',
     'change_link' => 'Change',
     'save_button' => 'Save',
+    'empty_select_value' => 'Not selected',
 ];
