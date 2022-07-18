@@ -8,4 +8,9 @@ return [
     'projects_single_subtitle' => 'Tasks of the project',
     'members_index' => 'List of members',
     'members_create' => 'Creating a new member',
+    'members_edit' => 'Editing of the member',
+    'tasks_index' => 'List of tasks',
+    'tasks_create' => 'Creating a new task',
+    'tasks_edit' => 'Editing of the task «:name»',
+    'tasks_single' => 'The task «:name»',
 ];
