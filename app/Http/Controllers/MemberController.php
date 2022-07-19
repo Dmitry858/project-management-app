@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\MemberService;
 use App\Services\UserService;
 use App\Services\ProjectService;
+use App\Http\Requests\StoreMemberRequest;
 
 class MemberController extends Controller
 {
@@ -50,12 +51,16 @@ class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreMemberRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreMemberRequest $request)
     {
-        //
+        $success = $this->memberService->create($request->all());
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.member_created') : __('flash.general_error');
+
+        return redirect()->route('members.index')->with($flashKey, $flashValue);
     }
 
     /**

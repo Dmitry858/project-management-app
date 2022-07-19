@@ -25,7 +25,7 @@ class StoreMemberRequest extends FormRequest
     {
         return [
             'user_id' => ['required'],
-            'projects' => ['required'],
+            'project_ids' => ['required'],
         ];
     }
 }
