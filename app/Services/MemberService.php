@@ -26,6 +26,13 @@ class MemberService
         }
     }
 
+    public function create($data)
+    {
+        unset($data['_token']);
+
+        return $this->memberRepository->createFromArray($data);
+    }
+
     public function delete(int $id): bool
     {
         return $this->memberRepository->delete($id);
