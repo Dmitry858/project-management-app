@@ -14,6 +14,11 @@ class MemberService
         $this->memberRepository = $memberRepository;
     }
 
+    public function get(int $id)
+    {
+        return $this->memberRepository->find($id);
+    }
+
     public function getList(array $filter = [])
     {
         if (Auth::user()->hasRole('admin'))
