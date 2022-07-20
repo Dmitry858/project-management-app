@@ -77,12 +77,18 @@ class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit($id)
     {
-        //
+        $member = $this->memberService->get($id);
+        $memberName = $member->user->name;
+        if ($member->user->last_name) $memberName .= ' '.$member->user->last_name;
+        $title = __('titles.members_edit', ['name' => $memberName]);
+        $projects = $this->projectService->getList();
+
+        return view('members.edit', compact('title', 'member', 'projects'));
     }
 
     /**
