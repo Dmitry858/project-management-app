@@ -3,7 +3,7 @@
 return [
     'label_title' => 'Name',
     'label_description' => 'Description',
-    'label_activity' => 'Activity',
+    'label_activity' => 'Status',
     'label_members' => 'Members',
     'label_user' => 'User',
     'label_projects' => 'Projects',

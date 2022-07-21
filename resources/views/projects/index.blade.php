@@ -16,7 +16,7 @@
                                     @include('include.table-th', ['text' => 'Название'])
                                     @include('include.table-th', ['text' => 'Описание'])
                                     @include('include.table-th', ['text' => 'Участники'])
-                                    @include('include.table-th', ['text' => 'Активность'])
+                                    @include('include.table-th', ['text' => __('form.label_activity')])
                                     @include('include.table-th', ['text' => ''])
                                 </tr>
                             </thead>

@@ -3,7 +3,7 @@
 return [
     'label_title' => 'Название',
     'label_description' => 'Описание',
-    'label_activity' => 'Активность',
+    'label_activity' => 'Статус',
     'label_members' => 'Участники',
     'label_user' => 'Пользователь',
     'label_projects' => 'Проекты',
