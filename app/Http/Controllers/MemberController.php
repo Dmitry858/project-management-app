@@ -96,11 +96,15 @@ class MemberController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $success = $this->memberService->update($id, $request->all());
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.member_updated') : __('flash.general_error');
+
+        return redirect()->route('members.index')->with($flashKey, $flashValue);
     }
 
     /**

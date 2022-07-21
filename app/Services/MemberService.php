@@ -38,6 +38,11 @@ class MemberService
         return $this->memberRepository->createFromArray($data);
     }
 
+    public function update(int $id, array $data): bool
+    {
+        return $this->memberRepository->updateFromArray($id, $data);
+    }
+
     public function delete(int $id): bool
     {
         return $this->memberRepository->delete($id);

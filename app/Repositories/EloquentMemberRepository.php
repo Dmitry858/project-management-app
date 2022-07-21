@@ -70,9 +70,13 @@ class EloquentMemberRepository implements MemberRepositoryInterface
         }
         $result = $member->update($data);
 
-        if ($result && $projectIds)
+        if ($result && isset($projectIds))
         {
             $member->projects()->sync($projectIds);
+        }
+        elseif ($result && !isset($projectIds))
+        {
+            $member->projects()->detach();
         }
 
         return $result;
