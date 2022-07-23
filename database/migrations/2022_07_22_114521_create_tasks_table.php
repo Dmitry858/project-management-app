@@ -20,6 +20,7 @@ class CreateTasksTable extends Migration
             $table->integer('owner_id');
             $table->integer('responsible_id');
             $table->integer('stage_id');
+            $table->integer('project_id');
             $table->timestamp('deadline')->nullable();
             $table->tinyInteger('is_active')->default(1);
             $table->timestamps();
