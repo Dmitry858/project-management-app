@@ -30,7 +30,7 @@ class EloquentTaskRepository implements TaskRepositoryInterface
 
         $query = $query->whereHas('owner', function($query) use ($id) {
             $query->where('owner_id', $id);
-        })->orWhereHas('responsible', function($query) use ($id) {
+        })->where($filter)->orWhereHas('responsible', function($query) use ($id) {
             $query->where('responsible_id', $id);
         })->where($filter);
 
