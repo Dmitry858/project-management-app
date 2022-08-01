@@ -34,4 +34,11 @@ class TaskService
             }
         }
     }
+
+    public function create($data)
+    {
+        unset($data['_token']);
+
+        return $this->taskRepository->createFromArray($data);
+    }
 }
