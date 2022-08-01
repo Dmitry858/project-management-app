@@ -7,6 +7,7 @@ use App\Services\TaskService;
 use App\Services\ProjectService;
 use App\Services\MemberService;
 use App\Services\StageService;
+use App\Http\Requests\StoreTaskRequest;
 
 class TaskController extends Controller
 {
@@ -59,12 +60,16 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreTaskRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        //
+        $success = $this->taskService->create($request->all());
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.task_created') : __('flash.general_error');
+
+        return redirect()->route('tasks.index')->with($flashKey, $flashValue);
     }
 
     /**

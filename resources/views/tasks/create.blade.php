@@ -37,7 +37,7 @@
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="owner_id">
                     @lang('form.label_owner')
                 </label>
-                <select class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="owner_id" name="owner_id" disabled>
+                <select class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="owner_id" name="owner_id">
                     <option value="{{ Auth::user()->id }}">{{ Auth::user()->name }} {{ Auth::user()->last_name }}</option>
                 </select>
             </div>
