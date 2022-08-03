@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\ProjectService;
 use App\Services\UserService;
+use App\Services\TaskService;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 
@@ -12,11 +12,13 @@ class ProjectController extends Controller
 {
     protected $projectService;
     protected $userService;
+    protected $taskService;
 
-    public function __construct(ProjectService $projectService, UserService $userService)
+    public function __construct(ProjectService $projectService, UserService $userService, TaskService $taskService)
     {
         $this->projectService = $projectService;
         $this->userService = $userService;
+        $this->taskService = $taskService;
     }
 
     /**
@@ -71,8 +73,9 @@ class ProjectController extends Controller
         $project = $this->projectService->get($id);
         $title = __('titles.projects_single', ['name' => $project->name]);
         $members = $this->projectService->getProjectMembers($project);
+        $tasks = $this->taskService->getList(['project_id' => $id]);
 
-        return view('projects.single', compact('title', 'project', 'members'));
+        return view('projects.single', compact('title', 'project', 'members', 'tasks'));
     }
 
     /**

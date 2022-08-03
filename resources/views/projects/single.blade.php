@@ -6,11 +6,8 @@
             <h4 class="font-medium leading-tight text-3xl mt-0 mb-2">
                 @lang('titles.projects_single_subtitle')
             </h4>
-            <div class="py-4 mt-4">
-                <a class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="">
-                    @lang('buttons.create')
-                </a>
-            </div>
+
+            @include('include.tasks-list')
         </div>
 
         <div class="w-full sm:w-1/3">
