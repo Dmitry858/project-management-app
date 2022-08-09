@@ -76,11 +76,21 @@ class TaskController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function show($id)
     {
-        //
+        $task = $this->taskService->get($id);
+        if ($task)
+        {
+            $title = __('titles.tasks_single', ['name' => $task->name]);
+
+            return view('tasks.single', compact('title', 'task'));
+        }
+        else
+        {
+            abort(404);
+        }
     }
 
     /**
