@@ -13,4 +13,5 @@ return [
     'tasks_create' => 'Creating a new task',
     'tasks_edit' => 'Editing of the task «:name»',
     'tasks_single' => 'The task «:name»',
+    'comments' => 'Comments',
 ];
