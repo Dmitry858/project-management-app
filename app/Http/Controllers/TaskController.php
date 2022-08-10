@@ -27,6 +27,8 @@ class TaskController extends Controller
         $this->projectService = $projectService;
         $this->memberService = $memberService;
         $this->stageService = $stageService;
+        $this->middleware('permission:create-tasks')->only(['create', 'store']);
+        $this->middleware('permission:edit-tasks')->only(['edit', 'update']);
     }
 
     /**
@@ -97,11 +99,23 @@ class TaskController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit($id)
     {
-        //
+        $task = $this->taskService->get($id);
+        if ($task)
+        {
+            $title = __('titles.tasks_edit', ['name' => $task->name]);
+            $projects = $this->projectService->getList(['is_active' => 1]);
+            $members = $this->memberService->getList();
+            $stages = $this->stageService->getList();
+            return view('tasks.edit', compact('title', 'task', 'projects', 'members', 'stages'));
+        }
+        else
+        {
+            abort(404);
+        }
     }
 
     /**
