@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\TaskService;
 use App\Services\ProjectService;
 use App\Services\MemberService;
 use App\Services\StageService;
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
@@ -121,13 +121,17 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  UpdateTaskRequest $request
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTaskRequest $request, $id)
     {
-        //
+        $success = $this->taskService->update($id, $request->all());
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.task_updated') : __('flash.general_error');
+
+        return redirect()->route('tasks.index')->with($flashKey, $flashValue);
     }
 
     /**
