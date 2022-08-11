@@ -61,4 +61,14 @@ class TaskService
 
         return $this->taskRepository->createFromArray($data);
     }
+
+    public function update(int $id, array $data): bool
+    {
+        return $this->taskRepository->updateFromArray($id, $data);
+    }
+
+    public function delete(int $id): bool
+    {
+        return $this->taskRepository->delete($id);
+    }
 }
