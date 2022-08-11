@@ -29,6 +29,7 @@ class TaskController extends Controller
         $this->stageService = $stageService;
         $this->middleware('permission:create-tasks')->only(['create', 'store']);
         $this->middleware('permission:edit-tasks')->only(['edit', 'update']);
+        $this->middleware('permission:delete-tasks')->only('destroy');
     }
 
     /**
@@ -138,10 +139,14 @@ class TaskController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $success = $this->taskService->delete($id);
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.task_deleted') : __('flash.general_error');
+
+        return redirect()->route('tasks.index')->with($flashKey, $flashValue);
     }
 }
