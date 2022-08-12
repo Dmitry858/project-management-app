@@ -21,4 +21,5 @@ return [
     'change_link' => 'Изменить',
     'save_button' => 'Сохранить',
     'empty_select_value' => 'Не выбран',
+    'clear_cache_button' => 'Очистить кэш',
 ];

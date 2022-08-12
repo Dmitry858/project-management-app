@@ -21,4 +21,5 @@ return [
     'change_link' => 'Change',
     'save_button' => 'Save',
     'empty_select_value' => 'Not selected',
+    'clear_cache_button' => 'Clear cache',
 ];
