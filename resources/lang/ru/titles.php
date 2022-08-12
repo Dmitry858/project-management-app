@@ -14,4 +14,5 @@ return [
     'tasks_edit' => 'Редактирование задачи «:name»',
     'tasks_single' => 'Задача «:name»',
     'comments' => 'Комментарии',
+    'settings' => 'Настройки',
 ];

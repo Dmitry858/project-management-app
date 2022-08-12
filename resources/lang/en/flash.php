@@ -12,4 +12,5 @@ return [
     'task_updated' => 'Task updated',
     'task_deleted' => 'Task deleted',
     'general_error' => 'Something went wrong',
+    'clear_cache_completed' => 'Clear cache completed',
 ];
