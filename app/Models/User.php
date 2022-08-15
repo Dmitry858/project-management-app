@@ -90,11 +90,14 @@ class User extends Authenticatable
 
     public function photoSrc(): string
     {
-        $src = '';
         if ($this->photo && Storage::exists($this->photo))
         {
             $ext = File::extension($this->photo);
             $src = 'data:image/'.$ext.';base64,'.base64_encode(Storage::get($this->photo));
+        }
+        else
+        {
+            $src = 'data:image/jpeg;base64,'.base64_encode(Storage::get('no_photo.jpg'));
         }
 
         return $src;
