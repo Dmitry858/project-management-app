@@ -3,17 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
-        //
+        $title = __('titles.users_index');
+        $users = $this->userService->getList();
+
+        return view('users.index', compact('title', 'users'));
     }
 
     /**
