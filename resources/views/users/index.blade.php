@@ -12,10 +12,11 @@
                         <table class="min-w-full">
                             <thead class="bg-blue-300 border-b">
                                 <tr>
-                                    @include('include.table-th', ['text' => 'Фото'])
-                                    @include('include.table-th', ['text' => 'Имя'])
-                                    @include('include.table-th', ['text' => 'Фамилия'])
-                                    @include('include.table-th', ['text' => 'Email'])
+                                    @include('include.table-th', ['text' => __('table.col_photo')])
+                                    @include('include.table-th', ['text' => __('table.col_name')])
+                                    @include('include.table-th', ['text' => __('table.col_last_name')])
+                                    @include('include.table-th', ['text' => __('table.col_email')])
+                                    @include('include.table-th', ['text' => __('table.col_roles')])
                                     @include('include.table-th', ['text' => __('form.label_activity')])
                                     @include('include.table-th', ['text' => ''])
                                 </tr>
@@ -35,16 +36,23 @@
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             {{ $user->email }}
                                         </td>
-                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            {{ $user->is_active ? 'Активный' : 'В архиве' }}
+                                        <td class="text-sm text-gray-900 font-light px-6 py-4">
+                                            @foreach($user->roles as $role)
+                                                <p>{{ $role->name }}</p>
+                                            @endforeach
                                         </td>
-                                        <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            @permission('edit-users')
-                                                @include('include.buttons.edit', ['link' => route('users.edit', ['user' => $user->id])])
-                                            @endpermission
-                                            @permission('delete-users')
-                                                @include('include.buttons.delete', ['link' => route('users.destroy', ['user' => $user->id])])
-                                            @endpermission
+                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                            {{ $user->is_active ? __('form.status_active') : __('form.status_archived') }}
+                                        </td>
+                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                            <div class="flex">
+                                                @permission('edit-users')
+                                                    @include('include.buttons.edit', ['link' => route('users.edit', ['user' => $user->id])])
+                                                @endpermission
+                                                @permission('delete-users')
+                                                    @include('include.buttons.delete', ['link' => route('users.destroy', ['user' => $user->id])])
+                                                @endpermission
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -22,4 +22,6 @@ return [
     'save_button' => 'Сохранить',
     'empty_select_value' => 'Не выбран',
     'clear_cache_button' => 'Очистить кэш',
+    'status_active' => 'Активный',
+    'status_archived' => 'В архиве',
 ];

@@ -22,4 +22,6 @@ return [
     'save_button' => 'Save',
     'empty_select_value' => 'Not selected',
     'clear_cache_button' => 'Clear cache',
+    'status_active' => 'Active',
+    'status_archived' => 'Archived',
 ];
