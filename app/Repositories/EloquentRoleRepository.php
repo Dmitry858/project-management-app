@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
+use App\Models\Role;
 
 class EloquentRoleRepository implements RoleRepositoryInterface
 {
@@ -22,5 +23,10 @@ class EloquentRoleRepository implements RoleRepositoryInterface
         }
 
         return $roles;
+    }
+
+    public function search(array $filter = [])
+    {
+        return Role::where($filter)->get();
     }
 }
