@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Services\RoleService;
 
 class UserController extends Controller
 {
     protected $userService;
+    protected $roleService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, RoleService $roleService)
     {
         $this->userService = $userService;
+        $this->roleService = $roleService;
+        $this->middleware('permission:view-users')->only(['index']);
+        $this->middleware('permission:edit-users')->only(['edit', 'update']);
     }
     /**
      * Display a listing of the resource.
@@ -62,11 +67,23 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit($id)
     {
-        //
+        $user = $this->userService->get($id);
+        if ($user)
+        {
+            $name = $user->name;
+            if ($user->last_name) $name .= ' '.$user->last_name;
+            $title = __('titles.users_edit', ['name' => $name]);
+            $roles = $this->roleService->getList();
+            return view('users.edit', compact('title', 'user', 'roles'));
+        }
+        else
+        {
+            abort(404);
+        }
     }
 
     /**
