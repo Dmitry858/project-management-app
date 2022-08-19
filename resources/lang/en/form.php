@@ -12,6 +12,7 @@ return [
     'label_responsible' => 'Responsible',
     'label_project' => 'Project',
     'label_projects' => 'Projects',
+    'label_roles' => 'Roles',
     'label_name' => 'Name',
     'label_last_name' => 'Last name',
     'label_email' => 'Email',
