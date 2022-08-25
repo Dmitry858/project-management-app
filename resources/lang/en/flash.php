@@ -8,6 +8,7 @@ return [
     'member_created' => 'Member created',
     'member_updated' => 'Member updated',
     'member_deleted' => 'Member deleted',
+    'user_updated' => 'User updated',
     'task_created' => 'Task created',
     'task_updated' => 'Task updated',
     'task_deleted' => 'Task deleted',

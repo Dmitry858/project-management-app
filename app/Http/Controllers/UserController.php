@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Services\RoleService;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -89,13 +90,17 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  UpdateUserRequest $request
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $success = $this->userService->update($id, $request);
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.user_updated') : __('flash.general_error');
+
+        return redirect()->route('users.index')->with($flashKey, $flashValue);
     }
 
     /**

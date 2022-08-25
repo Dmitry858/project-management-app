@@ -62,7 +62,25 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         $user = $this->find($id);
 
-        return $user ? $user->update($data) : false;
+        if (!$user) return false;
+
+        if (array_key_exists('roles', $data))
+        {
+            $roleIds = $data['roles'];
+            unset($data['roles']);
+        }
+        $result = $user->update($data);
+
+        if ($result && isset($roleIds))
+        {
+            $user->roles()->sync($roleIds);
+        }
+        elseif ($result && !isset($roleIds))
+        {
+            $user->roles()->detach();
+        }
+
+        return $result;
     }
 
     public function delete(int $id): bool
