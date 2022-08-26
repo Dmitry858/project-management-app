@@ -17,6 +17,8 @@ return [
     'label_last_name' => 'Фамилия',
     'label_email' => 'Email',
     'label_photo' => 'Фото',
+    'label_password' => 'Пароль',
+    'label_confirm_password' => 'Подтверждение пароля',
     'label_new_password' => 'Новый пароль',
     'label_confirm_new_password' => 'Подтверждение нового пароля',
     'change_link' => 'Изменить',

@@ -17,6 +17,8 @@ return [
     'label_last_name' => 'Last name',
     'label_email' => 'Email',
     'label_photo' => 'Photo',
+    'label_password' => 'Password',
+    'label_confirm_password' => 'Confirm password',
     'label_new_password' => 'New password',
     'label_confirm_new_password' => 'Confirm new password',
     'change_link' => 'Change',
