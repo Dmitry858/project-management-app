@@ -17,8 +17,10 @@ class UserController extends Controller
         $this->userService = $userService;
         $this->roleService = $roleService;
         $this->middleware('permission:view-users')->only(['index']);
+        $this->middleware('permission:create-users')->only(['create', 'store']);
         $this->middleware('permission:edit-users')->only(['edit', 'update']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,11 +37,14 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
-        //
+        $title = __('titles.users_create');
+        $roles = $this->roleService->getList();
+
+        return view('users.create', compact('title', 'roles'));
     }
 
     /**
