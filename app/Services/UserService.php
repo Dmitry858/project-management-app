@@ -46,4 +46,18 @@ class UserService
 
         return $this->userRepository->updateFromArray($id, $data);
     }
+
+    public function create($request)
+    {
+        $data = $request->all();
+        unset($data['_token']);
+        $data['password'] = Hash::make($data['password']);
+
+        if ($request->hasFile('photo'))
+        {
+            $data['photo'] = $request->file('photo')->store('users-photo');
+        }
+
+        return $this->userRepository->createFromArray($data);
+    }
 }

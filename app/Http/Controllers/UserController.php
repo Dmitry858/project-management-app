@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Services\RoleService;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
@@ -50,12 +51,16 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreUserRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $success = $this->userService->create($request);
+        $flashKey = $success ? 'success' : 'error';
+        $flashValue = $success ? __('flash.user_created') : __('flash.general_error');
+
+        return redirect()->route('users.index')->with($flashKey, $flashValue);
     }
 
     /**

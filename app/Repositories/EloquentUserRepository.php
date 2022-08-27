@@ -53,7 +53,17 @@ class EloquentUserRepository implements UserRepositoryInterface
 
     public function createFromArray(array $data)
     {
+        if (array_key_exists('roles', $data))
+        {
+            $roleIds = $data['roles'];
+            unset($data['roles']);
+        }
         $user = User::create($data);
+
+        if ($user && isset($roleIds))
+        {
+            $user->roles()->attach($roleIds);
+        }
 
         return $user;
     }
