@@ -19,6 +19,13 @@ class EloquentUserRepository implements UserRepositoryInterface
         ]);
     }
 
+    public function hasMember(int $userId): bool
+    {
+        $user = $this->find($userId);
+
+        return $user->member()->first() ? true : false;
+    }
+
     public function search(array $filter = [], bool $withPaginate = true)
     {
         $query = User::query();
@@ -97,6 +104,19 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         $user = $this->find($id);
 
-        return $user ? $user->delete() : false;
+        if ($user)
+        {
+            if (count($user->roles) > 0)
+            {
+                $user->roles()->detach();
+            }
+            $result = $user->delete();
+        }
+        else
+        {
+            $result = false;
+        }
+
+        return $result;
     }
 }

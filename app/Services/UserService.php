@@ -60,4 +60,22 @@ class UserService
 
         return $this->userRepository->createFromArray($data);
     }
+
+    public function delete(int $id): array
+    {
+        if ($this->userRepository->hasMember($id))
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.user_is_member')
+            ];
+        }
+
+        $success = $this->userRepository->delete($id);
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? __('flash.user_deleted') : __('flash.general_error')
+        ];
+    }
 }

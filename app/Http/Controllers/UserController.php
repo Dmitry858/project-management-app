@@ -20,6 +20,7 @@ class UserController extends Controller
         $this->middleware('permission:view-users')->only(['index']);
         $this->middleware('permission:create-users')->only(['create', 'store']);
         $this->middleware('permission:edit-users')->only(['edit', 'update']);
+        $this->middleware('permission:delete-users')->only('destroy');
     }
 
     /**
@@ -117,10 +118,12 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $result = $this->userService->delete($id);
+
+        return redirect()->route('users.index')->with($result['status'], $result['text']);
     }
 }
