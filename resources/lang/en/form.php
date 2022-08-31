@@ -27,4 +27,5 @@ return [
     'clear_cache_button' => 'Clear cache',
     'status_active' => 'Active',
     'status_archived' => 'Archived',
+    'placeholder_add_comment' => 'Add comment',
 ];

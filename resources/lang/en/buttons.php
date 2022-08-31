@@ -7,4 +7,5 @@ return [
     'delete' => 'Delete',
     'save' => 'Save',
     'cancel' => 'Cancel',
+    'send' => 'Send',
 ];

@@ -27,4 +27,5 @@ return [
     'clear_cache_button' => 'Очистить кэш',
     'status_active' => 'Активный',
     'status_archived' => 'В архиве',
+    'placeholder_add_comment' => 'Добавить комментарий',
 ];

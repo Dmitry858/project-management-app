@@ -7,7 +7,25 @@
             <h4 class="font-medium leading-tight text-3xl mt-6 mb-2">
                 @lang('titles.comments')
             </h4>
-            Здесь комментарии
+            @if(count($task->comments) > 0)
+                @foreach($task->comments as $comment)
+                    <div class="bg-white p-4 mb-3 border border-gray-300 rounded">
+                        <p class="text-sm text-blue-600">
+                            {{ $comment->member->user->name }} {{ $comment->member->user->last_name }}
+                            <span class="text-xs text-gray-400 ml-1">{{ $comment->created_at }}</span>
+                        </p>
+                        <p>{{ $comment->comment_text }}</p>
+                    </div>
+                @endforeach
+            @endif
+
+            @if(Auth::user()->id == $task->owner->user->id || Auth::user()->id == $task->responsible->user->id)
+                @include('include.add-comment')
+            @else
+                @permission('add-comments')
+                    @include('include.add-comment')
+                @endpermission
+            @endif
         </div>
 
         <div class="w-full sm:w-1/3">
@@ -21,7 +39,7 @@
 
                 <div class="w-full px-3 mb-6">
                     <p class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                        Стадия
+                        @lang('form.label_stage')
                     </p>
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
                         {{ $task->stage->name }}
@@ -30,7 +48,7 @@
 
                 <div class="w-full px-3 mb-6">
                     <p class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                        Крайний срок
+                        @lang('form.label_deadline')
                     </p>
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
                         @if($task->deadline)
@@ -47,9 +65,9 @@
                     </p>
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
                         @if($task->is_active)
-                            Активный
+                            @lang('form.status_active')
                         @else
-                            В архиве
+                            @lang('form.status_archived')
                         @endif
                     </p>
                 </div>
@@ -59,7 +77,7 @@
                         @lang('form.label_owner')
                     </p>
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
-                        {{ $task->owner->user->name }}
+                        {{ $task->owner->user->name }} {{ $task->owner->user->last_name }}
                     </p>
                 </div>
 
@@ -68,7 +86,7 @@
                         @lang('form.label_responsible')
                     </p>
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
-                        {{ $task->responsible->user->name }}
+                        {{ $task->responsible->user->name }} {{ $task->responsible->user->last_name }}
                     </p>
                 </div>
             </div>
