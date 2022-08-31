@@ -1,4 +1,5 @@
 <div class="flex flex-1 md:w-1/3 justify-center md:justify-start text-white px-2">
+    {{--
     <span class="relative w-full">
         <input aria-label="search" type="search" id="search" placeholder="Search" class="w-full bg-gray-900 text-white transition border border-transparent focus:outline-none focus:border-gray-400 rounded py-3 px-2 pl-10 appearance-none leading-normal">
         <div class="absolute search-icon" style="top: 1rem; left: .8rem;">
@@ -7,4 +8,5 @@
             </svg>
         </div>
     </span>
+    --}}
 </div>
