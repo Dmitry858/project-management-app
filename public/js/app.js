@@ -5480,15 +5480,21 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
-/*Toggle dropdown list*/
-
 window.addEventListener('load', function (e) {
+  // Toggle dropdown list
   var dropdownTrigger = document.getElementById('user-dropdown-trigger');
 
   if (dropdownTrigger) {
     dropdownTrigger.addEventListener('click', function (e) {
       document.getElementById('user-dropdown').classList.toggle('invisible');
     });
+  } // Add new comment
+
+
+  var addCommentBtn = document.getElementById('add-comment-btn');
+
+  if (addCommentBtn) {
+    addCommentBtn.addEventListener('click', addNewComment);
   }
 }); // Close the dropdown menu if the user clicks outside of it
 
@@ -5504,7 +5510,68 @@ window.onclick = function (event) {
       }
     }
   }
-};
+}; // Add new comment
+
+
+function addNewComment(event) {
+  event.preventDefault();
+  var commentsWrap = document.getElementById('comments-wrap'),
+      comment = document.getElementById('comment'),
+      error = document.getElementById('add-comment-error'),
+      csrf = document.querySelector('input[name="_token"]');
+  if (!commentsWrap || !comment || !error || !csrf) return;
+  error.innerText = '';
+  var value = comment.value.trim();
+
+  if (!value) {
+    error.innerText = 'Пожалуйста, добавьте комментарий';
+    return;
+  }
+
+  var data = {
+    'id': comment.dataset.taskId,
+    'comment': value
+  };
+  fetch('/comments/create', {
+    method: 'POST',
+    headers: {
+      'X-CSRF-TOKEN': csrf.value,
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(data)
+  }).then(function (response) {
+    return response.json();
+  }).then(function (result) {
+    if (result.status && result.status === 'error') {
+      error.innerText = result.text;
+    }
+
+    if (result.status && result.status === 'success') {
+      var commentNode = getCommentNode(result.result);
+      commentsWrap.appendChild(commentNode);
+      comment.value = '';
+    }
+
+    console.log(result);
+  });
+}
+
+function getCommentNode(commentObj) {
+  var node = document.createElement('div');
+  node.className = 'bg-white p-4 mb-3 border border-gray-300 rounded';
+  var header = document.createElement('p');
+  header.className = 'text-sm text-blue-600';
+  header.innerText = commentObj.full_name + ' ';
+  var date = document.createElement('span');
+  date.className = 'text-xs text-gray-400 ml-1';
+  date.innerText = commentObj.datetime;
+  header.appendChild(date);
+  node.appendChild(header);
+  var comment = document.createElement('p');
+  comment.innerText = commentObj.comment_text;
+  node.appendChild(comment);
+  return node;
+}
 
 /***/ }),
 
