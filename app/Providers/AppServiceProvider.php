@@ -9,12 +9,14 @@ use App\Repositories\Interfaces\MemberRepositoryInterface;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Repositories\Interfaces\StageRepositoryInterface;
 use App\Repositories\Interfaces\RoleRepositoryInterface;
+use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\EloquentProjectRepository;
 use App\Repositories\EloquentUserRepository;
 use App\Repositories\EloquentMemberRepository;
 use App\Repositories\EloquentTaskRepository;
 use App\Repositories\EloquentStageRepository;
 use App\Repositories\EloquentRoleRepository;
+use App\Repositories\EloquentCommentRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,5 +48,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StageRepositoryInterface::class, EloquentStageRepository::class);
 
         $this->app->bind(RoleRepositoryInterface::class, EloquentRoleRepository::class);
+
+        $this->app->bind(CommentRepositoryInterface::class, EloquentCommentRepository::class);
     }
 }
