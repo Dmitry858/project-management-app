@@ -7,17 +7,19 @@
             <h4 class="font-medium leading-tight text-3xl mt-6 mb-2">
                 @lang('titles.comments')
             </h4>
-            @if(count($task->comments) > 0)
-                @foreach($task->comments as $comment)
-                    <div class="bg-white p-4 mb-3 border border-gray-300 rounded">
-                        <p class="text-sm text-blue-600">
-                            {{ $comment->member->user->name }} {{ $comment->member->user->last_name }}
-                            <span class="text-xs text-gray-400 ml-1">{{ $comment->created_at }}</span>
-                        </p>
-                        <p>{{ $comment->comment_text }}</p>
-                    </div>
-                @endforeach
-            @endif
+            <div id="comments-wrap">
+                @if(count($task->comments) > 0)
+                    @foreach($task->comments as $comment)
+                        <div class="bg-white p-4 mb-3 border border-gray-300 rounded">
+                            <p class="text-sm text-blue-600">
+                                {{ $comment->member->user->name }} {{ $comment->member->user->last_name }}
+                                <span class="text-xs text-gray-400 ml-1">{{ $comment->created_at->format('d.m.Y H:i:s') }}</span>
+                            </p>
+                            <p>{{ $comment->comment_text }}</p>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
 
             @if(Auth::user()->id == $task->owner->user->id || Auth::user()->id == $task->responsible->user->id)
                 @include('include.add-comment')
