@@ -8,6 +8,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,5 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings')->middleware('permission:edit-settings');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update')->middleware('permission:edit-settings');
+    Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');
 });
