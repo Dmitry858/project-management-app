@@ -12,4 +12,10 @@
             @endforeach
         </ul>
     </div>
+@elseif (session()->has('error'))
+    <div {{ $attributes }}>
+        <div class="font-medium text-red-600">
+            {{ session('error') }}
+        </div>
+    </div>
 @endif
