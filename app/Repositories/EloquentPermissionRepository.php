@@ -31,7 +31,7 @@ class EloquentPermissionRepository implements PermissionRepositoryInterface
                     }
                 }
             }
-            Cache::put('user_'.$userId.'_permissions', $permissions, 30);
+            Cache::put('user_'.$userId.'_permissions', $permissions, 180);
         }
 
         return $permissions;

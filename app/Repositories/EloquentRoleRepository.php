@@ -19,7 +19,7 @@ class EloquentRoleRepository implements RoleRepositoryInterface
         {
             $user = User::find($userId);
             $roles = $user ? $user->roles()->get()->toArray() : [];
-            Cache::put('user_'.$userId.'_roles', $roles, 30);
+            Cache::put('user_'.$userId.'_roles', $roles, 180);
         }
 
         return $roles;
