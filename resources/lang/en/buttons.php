@@ -8,4 +8,5 @@ return [
     'save' => 'Save',
     'cancel' => 'Cancel',
     'send' => 'Send',
+    'login' => 'Log in',
 ];

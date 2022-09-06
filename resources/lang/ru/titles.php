@@ -18,4 +18,5 @@ return [
     'tasks_single' => 'Задача «:name»',
     'comments' => 'Комментарии',
     'settings' => 'Настройки',
+    'app_name' => 'Менеджер проектов',
 ];

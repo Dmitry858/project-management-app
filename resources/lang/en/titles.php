@@ -18,4 +18,5 @@ return [
     'tasks_single' => 'The task «:name»',
     'comments' => 'Comments',
     'settings' => 'Settings',
+    'app_name' => 'Project Management App',
 ];

@@ -21,6 +21,7 @@ return [
     'label_confirm_password' => 'Подтверждение пароля',
     'label_new_password' => 'Новый пароль',
     'label_confirm_new_password' => 'Подтверждение нового пароля',
+    'label_remember_me' => 'Запомнить меня',
     'change_link' => 'Изменить',
     'save_button' => 'Сохранить',
     'empty_select_value' => 'Не выбран',
@@ -28,4 +29,5 @@ return [
     'status_active' => 'Активный',
     'status_archived' => 'В архиве',
     'placeholder_add_comment' => 'Добавить комментарий',
+    'forgot_password' => 'Забыли пароль?',
 ];
