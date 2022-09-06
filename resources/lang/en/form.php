@@ -30,4 +30,5 @@ return [
     'status_archived' => 'Archived',
     'placeholder_add_comment' => 'Add comment',
     'forgot_password' => 'Forgot your password?',
+    'already_registered' => 'Already registered?',
 ];

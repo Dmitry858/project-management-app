@@ -30,4 +30,5 @@ return [
     'status_archived' => 'В архиве',
     'placeholder_add_comment' => 'Добавить комментарий',
     'forgot_password' => 'Забыли пароль?',
+    'already_registered' => 'Уже зарегистрированы?',
 ];

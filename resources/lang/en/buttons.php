@@ -9,4 +9,5 @@ return [
     'cancel' => 'Cancel',
     'send' => 'Send',
     'login' => 'Log in',
+    'register' => 'Register',
 ];
