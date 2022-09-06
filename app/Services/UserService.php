@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UpdateUserRequest;
 
@@ -42,6 +43,16 @@ class UserService
         if ($request->hasFile('photo'))
         {
             $data['photo'] = $request->file('photo')->store('users-photo');
+        }
+
+        if (Cache::has('user_'.$id.'_roles'))
+        {
+            Cache::forget('user_'.$id.'_roles');
+        }
+
+        if (Cache::has('user_'.$id.'_permissions'))
+        {
+            Cache::forget('user_'.$id.'_permissions');
         }
 
         return $this->userRepository->updateFromArray($id, $data);
