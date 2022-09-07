@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\StageRepositoryInterface;
 use App\Models\Stage;
+use Illuminate\Support\Facades\Cache;
 
 class EloquentStageRepository implements StageRepositoryInterface
 {
@@ -14,7 +15,20 @@ class EloquentStageRepository implements StageRepositoryInterface
 
     public function search(array $filter = [])
     {
-        return Stage::where($filter)->get();
+        if (empty($filter) && Cache::has('all_stages'))
+        {
+            $stages = Cache::get('all_stages');
+        }
+        else
+        {
+            $stages = Stage::where($filter)->get();
+            if (empty($filter))
+            {
+                Cache::put('all_stages', $stages, 14400);
+            }
+        }
+
+        return $stages;
     }
 
     public function createFromArray(array $data)
