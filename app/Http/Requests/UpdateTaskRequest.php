@@ -25,6 +25,7 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:200'],
+            'description' => ['max:255'],
             'owner_id' => ['required'],
             'responsible_id' => ['required'],
             'stage_id' => ['required'],
