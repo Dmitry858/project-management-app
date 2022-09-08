@@ -40,7 +40,11 @@ class TaskController extends Controller
     public function index()
     {
         $title = __('titles.tasks_index');
-        $tasks = $this->taskService->getList();
+        $tasks = $this->taskService->getList(
+            [],
+            true,
+            ['project', 'stage', 'owner', 'responsible']
+        );
 
         return view('tasks.index', compact('title', 'tasks'));
     }

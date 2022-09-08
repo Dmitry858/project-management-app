@@ -12,21 +12,25 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         return Task::find($id);
     }
 
-    public function search(array $filter = [], bool $withPaginate = true)
+    public function search(array $filter = [], bool $withPaginate = true, array $with = [])
     {
+        $query = Task::where($filter);
+        if (!empty($with)) $query = $query->with($with);
+
         if ($withPaginate)
         {
-            return Task::where($filter)->paginate();
+            return $query->paginate();
         }
         else
         {
-            return Task::where($filter)->get();
+            return $query->get();
         }
     }
 
-    public function searchByMember(int $id, array $filter = [], bool $withPaginate = true)
+    public function searchByMember(int $id, array $filter = [], bool $withPaginate = true, array $with = [])
     {
         $query = Task::query();
+        if (!empty($with)) $query = $query->with($with);
 
         $query = $query->whereHas('owner', function($query) use ($id) {
             $query->where('owner_id', $id);

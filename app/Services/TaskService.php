@@ -34,11 +34,16 @@ class TaskService
         }
     }
 
-    public function getList(array $filter = [])
+    /**
+     * @param array $filter
+     * @param bool $withPaginate
+     * @param array $with
+     */
+    public function getList(array $filter = [], bool $withPaginate = true, array $with = [])
     {
         if (Auth::user()->hasRole('admin'))
         {
-            return $this->taskRepository->search($filter);
+            return $this->taskRepository->search($filter, $withPaginate, $with);
         }
         else
         {
@@ -46,7 +51,7 @@ class TaskService
             if ($member)
             {
                 $filter['is_active'] = 1;
-                return $this->taskRepository->searchByMember($member->id, $filter);
+                return $this->taskRepository->searchByMember($member->id, $filter, $withPaginate, $with);
             }
             else
             {
