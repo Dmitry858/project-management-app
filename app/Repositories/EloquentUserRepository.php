@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 
 class EloquentUserRepository implements UserRepositoryInterface
 {
@@ -80,6 +81,11 @@ class EloquentUserRepository implements UserRepositoryInterface
         $user = $this->find($id);
 
         if (!$user) return false;
+
+        if ($this->hasMember($id) && Cache::has('member_'.$user->member->id.'_fullname'))
+        {
+            Cache::forget('member_'.$user->member->id.'_fullname');
+        }
 
         if (array_key_exists('roles', $data))
         {
