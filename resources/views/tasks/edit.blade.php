@@ -42,7 +42,7 @@
                     @if(isset($members) && count($members) > 0)
                         @foreach($members as $member)
                             <option value="{{ $member->id }}" @if($task->owner_id === $member->id) selected @endif>
-                                {{ $member->user->name }} {{ $member->user->last_name }}
+                                {{ $task->getMemberFullName($member->id) }}
                             </option>
                         @endforeach
                     @endif
@@ -57,7 +57,7 @@
                     @if(isset($members) && count($members) > 0)
                         @foreach($members as $member)
                             <option value="{{ $member->id }}" @if($task->responsible_id === $member->id) selected @endif>
-                                {{ $member->user->name }} {{ $member->user->last_name }}
+                                {{ $task->getMemberFullName($member->id) }}
                             </option>
                         @endforeach
                     @endif
@@ -84,8 +84,8 @@
                     @lang('form.label_activity')
                 </label>
                 <select class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="is_active" name="is_active">
-                    <option value="1" @if($task->is_active) selected @endif>Активный</option>
-                    <option value="0" @if(!$task->is_active) selected @endif>В архиве</option>
+                    <option value="1" @if($task->is_active) selected @endif>@lang('form.status_active')</option>
+                    <option value="0" @if(!$task->is_active) selected @endif>@lang('form.status_archived')</option>
                 </select>
             </div>
 

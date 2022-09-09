@@ -6,13 +6,13 @@
                     <table class="min-w-full">
                         <thead class="bg-blue-300 border-b">
                             <tr>
-                                @include('include.table-th', ['text' => 'Название'])
+                                @include('include.table-th', ['text' => __('table.col_title')])
                                 @if(isset($mode) && $mode === 'full')
-                                    @include('include.table-th', ['text' => 'Проект'])
-                                    @include('include.table-th', ['text' => 'Постановщик'])
+                                    @include('include.table-th', ['text' => __('table.col_project')])
+                                    @include('include.table-th', ['text' => __('table.col_owner')])
                                 @endif
-                                @include('include.table-th', ['text' => 'Ответственный'])
-                                @include('include.table-th', ['text' => 'Стадия'])
+                                @include('include.table-th', ['text' => __('table.col_responsible')])
+                                @include('include.table-th', ['text' => __('table.col_stage')])
                                 @include('include.table-th', ['text' => __('form.label_activity')])
                                 @include('include.table-th', ['text' => ''])
                             </tr>
@@ -28,17 +28,21 @@
                                             {{ $task->project->name }}
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            {{ $task->owner->user->name }} {{ $task->owner->user->last_name }}
+                                            {{ $task->getMemberFullName($task->owner_id) }}
                                         </td>
                                     @endif
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $task->responsible->user->name }} {{ $task->responsible->user->last_name }}
+                                        {{ $task->getMemberFullName($task->responsible_id) }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                         {{ $task->stage->name }}
                                     </td>
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        {{ $task->is_active ? 'Активный' : 'В архиве' }}
+                                        @if($task->is_active)
+                                            @lang('form.status_active')
+                                        @else
+                                            @lang('form.status_archived')
+                                        @endif
                                     </td>
                                     <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         @permission('edit-tasks')

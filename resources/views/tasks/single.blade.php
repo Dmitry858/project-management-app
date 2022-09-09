@@ -79,7 +79,7 @@
                         @lang('form.label_owner')
                     </p>
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
-                        {{ $task->owner->user->name }} {{ $task->owner->user->last_name }}
+                        {{ $task->getMemberFullName($task->owner_id) }}
                     </p>
                 </div>
 
@@ -88,7 +88,7 @@
                         @lang('form.label_responsible')
                     </p>
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
-                        {{ $task->responsible->user->name }} {{ $task->responsible->user->last_name }}
+                        {{ $task->getMemberFullName($task->responsible_id) }}
                     </p>
                 </div>
             </div>
