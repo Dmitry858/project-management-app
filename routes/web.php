@@ -30,7 +30,7 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('/members', MemberController::class);
     Route::resource('/users', UserController::class);
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings')->middleware('permission:edit-settings');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update')->middleware('permission:edit-settings');
     Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');

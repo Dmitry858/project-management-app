@@ -26,7 +26,7 @@ class UserService
         return $this->userRepository->search($filter, $withPaginate);
     }
 
-    public function update(int $id, UpdateUserRequest $request): bool
+    public function update(int $id, UpdateUserRequest $request, bool $isProfile = false): bool
     {
         $data = $request->all();
         unset($data['_token']);
@@ -55,7 +55,7 @@ class UserService
             Cache::forget('user_'.$id.'_permissions');
         }
 
-        return $this->userRepository->updateFromArray($id, $data);
+        return $this->userRepository->updateFromArray($id, $data, $isProfile);
     }
 
     public function create($request)

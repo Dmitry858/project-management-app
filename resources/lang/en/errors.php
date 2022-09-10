@@ -8,4 +8,5 @@ return [
     'task_not_found' => 'Task not found',
     'no_permission' => 'User does not have permission',
     'general' => 'Something went wrong',
+    'user_is_wrong' => 'User is wrong',
 ];

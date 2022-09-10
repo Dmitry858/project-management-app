@@ -2,34 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Services\ProfileService;
-use App\Models\User;
+use App\Services\UserService;
 
 class ProfileController extends Controller
 {
-    protected ProfileService $profileService;
+    protected UserService $userService;
 
-    public function __construct(ProfileService $profileService)
+    public function __construct(UserService $userService)
     {
-        $this->profileService = $profileService;
+        $this->userService = $userService;
     }
 
     public function index()
     {
         $user = Auth::user();
-        $title = 'Профиль пользователя';
+        $title = __('titles.profile');
 
         return view('profile', compact('title', 'user'));
     }
 
-    public function update(UpdateProfileRequest $request)
+    public function update(UpdateUserRequest $request, $id)
     {
-        $data = $this->profileService->handleData($request);
-        $success = User::where('id', Auth::id())->update($data);
-        $flashKey = $success ? 'success' : 'error';
-        $flashValue = $success ? __('flash.changes_saved') : __('flash.general_error');
+        if (intval($id) !== Auth::id())
+        {
+            $flashKey = 'error';
+            $flashValue = __('errors.user_is_wrong');
+        }
+        else
+        {
+            $success = $this->userService->update($id, $request, true);
+            $flashKey = $success ? 'success' : 'error';
+            $flashValue = $success ? __('flash.changes_saved') : __('flash.general_error');
+        }
 
         return redirect()->route('profile')->with($flashKey, $flashValue);
     }

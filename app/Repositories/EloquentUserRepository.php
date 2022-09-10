@@ -76,7 +76,7 @@ class EloquentUserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function updateFromArray(int $id, array $data): bool
+    public function updateFromArray(int $id, array $data, bool $isProfile = false): bool
     {
         $user = $this->find($id);
 
@@ -94,11 +94,11 @@ class EloquentUserRepository implements UserRepositoryInterface
         }
         $result = $user->update($data);
 
-        if ($result && isset($roleIds))
+        if ($result && isset($roleIds) && !$isProfile)
         {
             $user->roles()->sync($roleIds);
         }
-        elseif ($result && !isset($roleIds))
+        elseif ($result && !isset($roleIds) && !$isProfile)
         {
             $user->roles()->detach();
         }
