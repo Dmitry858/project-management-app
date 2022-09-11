@@ -47,11 +47,11 @@ class ProjectService
         }
     }
 
-    public function getList(array $filter = [])
+    public function getList(array $filter = [], bool $withPaginate = true, array $with = [])
     {
         if (Auth::user()->hasRole('admin'))
         {
-            return $this->projectRepository->search($filter);
+            return $this->projectRepository->search($filter, $withPaginate, $with);
         }
         else
         {
@@ -59,7 +59,7 @@ class ProjectService
             if ($member)
             {
                 $filter['is_active'] = 1;
-                return $this->projectRepository->searchByMember($member->id, $filter);
+                return $this->projectRepository->searchByMember($member->id, $filter, $withPaginate, $with);
             }
             else
             {

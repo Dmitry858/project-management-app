@@ -12,16 +12,37 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
         return Project::find($id);
     }
 
-    public function search(array $filter = [])
+    public function search(array $filter = [], bool $withPaginate = true, array $with = [])
     {
-        return Project::where($filter)->paginate();
+        $query = Project::where($filter);
+        if (!empty($with)) $query = $query->with($with);
+
+        if ($withPaginate)
+        {
+            return $query->paginate();
+        }
+        else
+        {
+            return $query->get();
+        }
     }
 
-    public function searchByMember(int $id, array $filter = [])
+    public function searchByMember(int $id, array $filter = [], bool $withPaginate = true, array $with = [])
     {
-        return Project::whereHas('members', function($query) use ($id) {
+        $query = Project::whereHas('members', function($query) use ($id) {
             $query->where('member_id', $id);
-        })->where($filter)->paginate();
+        })->where($filter);
+
+        if (!empty($with)) $query = $query->with($with);
+
+        if ($withPaginate)
+        {
+            return $query->paginate();
+        }
+        else
+        {
+            return $query->get();
+        }
     }
 
     public function createFromArray(array $data)

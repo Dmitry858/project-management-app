@@ -29,7 +29,7 @@ class ProjectController extends Controller
     public function index()
     {
         $title = __('titles.projects_index');
-        $projects = $this->projectService->getList();
+        $projects = $this->projectService->getList([], true, ['members']);
 
         return view('projects.index', compact('title', 'projects'));
     }
