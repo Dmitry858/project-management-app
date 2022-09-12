@@ -18,8 +18,15 @@ class RoleSeeder extends Seeder
             'name' => 'Администратор',
             'slug' => 'admin',
         ]);
-
-        $role->permissions()->attach([1, 2, 3, 4]);
+        $permIds = range(1, 21);
+        $role->permissions()->attach($permIds);
         $role->users()->attach([1]);
+
+        $role = Role::create([
+            'name' => 'Менеджер',
+            'slug' => 'manager',
+        ]);
+        $permIds = range(5, 21);
+        $role->permissions()->attach($permIds);
     }
 }
