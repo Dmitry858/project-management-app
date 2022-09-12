@@ -234,4 +234,8 @@ return [
 
     ],
 
+    'default_user_email' => env('DEFAULT_USER_EMAIL'),
+
+    'default_user_password' => env('DEFAULT_USER_PASSWORD'),
+
 ];
