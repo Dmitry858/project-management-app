@@ -135,7 +135,7 @@ class ProjectService
         }
         $data['memberIds'] = $memberIds;
 
-        if (count($notFoundMembers) > 0)
+        if (isset($notFoundMembers) && count($notFoundMembers) > 0)
         {
             foreach ($notFoundMembers as $id)
             {
