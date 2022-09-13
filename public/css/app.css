@@ -843,6 +843,9 @@ select {
 .cursor-default {
   cursor: default;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 .list-inside {
   list-style-position: inside;
 }
@@ -1024,11 +1027,11 @@ select {
 .p-4 {
   padding: 1rem;
 }
-.p-3 {
-  padding: 0.75rem;
-}
 .p-2 {
   padding: 0.5rem;
+}
+.p-3 {
+  padding: 0.75rem;
 }
 .px-4 {
   padding-left: 1rem;
@@ -1326,6 +1329,14 @@ select {
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+}
+.has-tooltip:hover .tooltip {
+  visibility: visible;
+  z-index: 50;
+}
 .hover\:border-blue-600:hover {
   --tw-border-opacity: 1;
   border-color: rgb(37 99 235 / var(--tw-border-opacity));
@@ -1341,6 +1352,10 @@ select {
 .hover\:bg-blue-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
+.hover\:bg-blue-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
 }
 .hover\:bg-gray-800:hover {
   --tw-bg-opacity: 1;

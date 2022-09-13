@@ -7,8 +7,10 @@ return [
     'col_email' => 'Email',
     'col_roles' => 'Роли',
     'col_title' => 'Название',
+    'col_description' => 'Описание',
     'col_project' => 'Проект',
     'col_owner' => 'Постановщик',
     'col_responsible' => 'Ответственный',
     'col_stage' => 'Стадия',
+    'col_members' => 'Участники',
 ];
