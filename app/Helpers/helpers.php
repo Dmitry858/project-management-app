@@ -9,7 +9,7 @@ if (!function_exists('membersListHtml')) {
         {
             foreach ($members as $member)
             {
-                $html .= '<p>'.$member->user->name.' '.$member->user->last_name.'</p>';
+                $html .= '<p>'.\App\Services\MemberService::getMemberFullName($member->id).'</p>';
             }
         }
 
