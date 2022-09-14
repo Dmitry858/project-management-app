@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Repositories\EloquentMemberRepository;
 use App\Repositories\Interfaces\MemberRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class MemberService
 {
@@ -46,5 +48,26 @@ class MemberService
     public function delete(int $id): bool
     {
         return $this->memberRepository->delete($id);
+    }
+
+    public static function getMemberFullName(int $memberId): string
+    {
+        $fullName = '';
+        if (Cache::has('member_'.$memberId.'_fullname'))
+        {
+            $fullName = Cache::get('member_'.$memberId.'_fullname');
+        }
+        else
+        {
+            $repo = new EloquentMemberRepository;
+            $member = $repo->find($memberId);
+            if ($member)
+            {
+                $fullName = $member->user->name.' '.$member->user->last_name;
+                Cache::put('member_'.$memberId.'_fullname', $fullName, 86400);
+            }
+        }
+
+        return trim($fullName);
     }
 }
