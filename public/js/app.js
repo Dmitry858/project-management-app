@@ -5466,6 +5466,121 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./resources/js/Comments.js":
+/*!**********************************!*\
+  !*** ./resources/js/Comments.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Comments)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Comments = /*#__PURE__*/function () {
+  function Comments() {
+    var _document$querySelect;
+
+    _classCallCheck(this, Comments);
+
+    this.csrf = (_document$querySelect = document.querySelector('meta[name="csrf-token"]')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.getAttribute('content');
+    this.isInited = false;
+  }
+
+  _createClass(Comments, [{
+    key: "init",
+    value: function init() {
+      if (this.isInited) return;
+      this.bindEvents();
+      this.isInited = true;
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      if (this.isInited) return;
+      var addCommentBtn = document.getElementById('add-comment-btn');
+
+      if (addCommentBtn) {
+        addCommentBtn.addEventListener('click', this.addNewComment.bind(this));
+      }
+    }
+  }, {
+    key: "addNewComment",
+    value: function addNewComment(event) {
+      var _this = this;
+
+      event.preventDefault();
+      var commentsWrap = document.getElementById('comments-wrap'),
+          comment = document.getElementById('comment'),
+          error = document.getElementById('add-comment-error');
+      if (!commentsWrap || !comment || !error || !this.csrf) return;
+      error.innerText = '';
+      var value = comment.value.trim();
+
+      if (!value) {
+        error.innerText = 'Пожалуйста, добавьте комментарий';
+        return;
+      }
+
+      var data = {
+        'id': comment.dataset.taskId,
+        'comment': value
+      };
+      fetch('/comments/create', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': this.csrf,
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) {
+        if (result.status && result.status === 'error') {
+          error.innerText = result.text;
+        }
+
+        if (result.status && result.status === 'success') {
+          var commentNode = _this.getCommentNode(result.result);
+
+          commentsWrap.appendChild(commentNode);
+          comment.value = '';
+        }
+      });
+    }
+  }, {
+    key: "getCommentNode",
+    value: function getCommentNode(commentObj) {
+      var node = document.createElement('div');
+      node.className = 'bg-white p-4 mb-3 border border-gray-300 rounded';
+      var header = document.createElement('p');
+      header.className = 'text-sm text-blue-600';
+      header.innerText = commentObj.full_name + ' ';
+      var date = document.createElement('span');
+      date.className = 'text-xs text-gray-400 ml-1';
+      date.innerText = commentObj.datetime;
+      header.appendChild(date);
+      node.appendChild(header);
+      var comment = document.createElement('p');
+      comment.innerText = commentObj.comment_text;
+      node.appendChild(comment);
+      return node;
+    }
+  }]);
+
+  return Comments;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -5475,7 +5590,9 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
+/* harmony import */ var _Comments__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comments */ "./resources/js/Comments.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
@@ -5488,14 +5605,11 @@ window.addEventListener('load', function (e) {
     dropdownTrigger.addEventListener('click', function (e) {
       document.getElementById('user-dropdown').classList.toggle('invisible');
     });
-  } // Add new comment
+  } // Init Comments class
 
 
-  var addCommentBtn = document.getElementById('add-comment-btn');
-
-  if (addCommentBtn) {
-    addCommentBtn.addEventListener('click', addNewComment);
-  }
+  var comments = new _Comments__WEBPACK_IMPORTED_MODULE_1__["default"]();
+  comments.init();
 }); // Close the dropdown menu if the user clicks outside of it
 
 window.onclick = function (event) {
@@ -5510,68 +5624,7 @@ window.onclick = function (event) {
       }
     }
   }
-}; // Add new comment
-
-
-function addNewComment(event) {
-  event.preventDefault();
-  var commentsWrap = document.getElementById('comments-wrap'),
-      comment = document.getElementById('comment'),
-      error = document.getElementById('add-comment-error'),
-      csrf = document.querySelector('input[name="_token"]');
-  if (!commentsWrap || !comment || !error || !csrf) return;
-  error.innerText = '';
-  var value = comment.value.trim();
-
-  if (!value) {
-    error.innerText = 'Пожалуйста, добавьте комментарий';
-    return;
-  }
-
-  var data = {
-    'id': comment.dataset.taskId,
-    'comment': value
-  };
-  fetch('/comments/create', {
-    method: 'POST',
-    headers: {
-      'X-CSRF-TOKEN': csrf.value,
-      'Content-Type': 'application/json;charset=utf-8'
-    },
-    body: JSON.stringify(data)
-  }).then(function (response) {
-    return response.json();
-  }).then(function (result) {
-    if (result.status && result.status === 'error') {
-      error.innerText = result.text;
-    }
-
-    if (result.status && result.status === 'success') {
-      var commentNode = getCommentNode(result.result);
-      commentsWrap.appendChild(commentNode);
-      comment.value = '';
-    }
-
-    console.log(result);
-  });
-}
-
-function getCommentNode(commentObj) {
-  var node = document.createElement('div');
-  node.className = 'bg-white p-4 mb-3 border border-gray-300 rounded';
-  var header = document.createElement('p');
-  header.className = 'text-sm text-blue-600';
-  header.innerText = commentObj.full_name + ' ';
-  var date = document.createElement('span');
-  date.className = 'text-xs text-gray-400 ml-1';
-  date.innerText = commentObj.datetime;
-  header.appendChild(date);
-  node.appendChild(header);
-  var comment = document.createElement('p');
-  comment.innerText = commentObj.comment_text;
-  node.appendChild(comment);
-  return node;
-}
+};
 
 /***/ }),
 
