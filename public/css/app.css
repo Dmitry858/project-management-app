@@ -640,6 +640,10 @@ select {
   margin-left: auto;
   margin-right: auto;
 }
+.mx-1 {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
 .my-2 {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -688,6 +692,9 @@ select {
 }
 .mt-6 {
   margin-top: 1.5rem;
+}
+.-mt-1 {
+  margin-top: -0.25rem;
 }
 .mb-4 {
   margin-bottom: 1rem;
@@ -842,6 +849,9 @@ select {
 }
 .cursor-default {
   cursor: default;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .list-inside {
   list-style-position: inside;
