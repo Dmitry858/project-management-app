@@ -34,4 +34,6 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings')->middleware('permission:edit-settings');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update')->middleware('permission:edit-settings');
     Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
