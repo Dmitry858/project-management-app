@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\MemberService;
+use App\Services\PermissionService;
 
 class Comment extends Model
 {
@@ -23,5 +25,20 @@ class Comment extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    public function getMemberFullName(int $memberId): string
+    {
+        return MemberService::getMemberFullName($memberId);
+    }
+
+    public function isEditable(): bool
+    {
+        return PermissionService::hasUserPermission(auth()->id(), 'edit-comments');
+    }
+
+    public function isDeletable(): bool
+    {
+        return PermissionService::hasUserPermission(auth()->id(), 'delete-comments');
     }
 }
