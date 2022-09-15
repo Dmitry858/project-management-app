@@ -82,6 +82,8 @@ class CommentService
             $result['full_name'] = $user->name;
             if ($user->last_name) $result['full_name'] .= ' ' . $user->last_name;
             $result['datetime'] = Carbon::parse($result['created_at'])->format('d.m.Y H:i:s');
+            $result['editable'] = PermissionService::hasUserPermission($user->id, 'edit-comments');
+            $result['deletable'] = PermissionService::hasUserPermission($user->id, 'delete-comments');
 
             return [
                 'status' => 'success',
