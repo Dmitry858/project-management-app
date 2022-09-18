@@ -13,9 +13,17 @@ export default class Comments {
 
     bindEvents() {
         if (this.isInited) return;
-        const addCommentBtn = document.getElementById('add-comment-btn');
+        const addCommentBtn = document.getElementById('add-comment-btn'),
+              deleteCommentBtns = document.getElementsByClassName('delete-comment-btn');
+
         if (addCommentBtn) {
             addCommentBtn.addEventListener('click', this.addNewComment.bind(this));
+        }
+
+        if (deleteCommentBtns.length > 0) {
+            for (let btn of deleteCommentBtns) {
+                btn.addEventListener('click', this.deleteComment.bind(this));
+            }
         }
     }
 
@@ -56,6 +64,35 @@ export default class Comments {
                     let commentNode = this.getCommentNode(result.result);
                     commentsWrap.appendChild(commentNode);
                     comment.value = '';
+                }
+            });
+    }
+
+    deleteComment(event) {
+        let isConfirmed = confirm('Подтвердите удаление');
+        if (!isConfirmed) return;
+        let commentId = event.currentTarget.dataset.id;
+        if (!commentId) return;
+
+        const error = event.currentTarget.parentElement.querySelector('.error'),
+              commentWrap = event.currentTarget.parentElement.parentElement;
+        if (!error || !this.csrf) return;
+        error.innerText = '';
+
+        fetch('/comments/' + commentId, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': this.csrf
+            }
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status && result.status === 'error') {
+                    error.innerText = result.text;
+                }
+
+                if (result.status && result.status === 'success') {
+                    commentWrap.remove();
                 }
             });
     }

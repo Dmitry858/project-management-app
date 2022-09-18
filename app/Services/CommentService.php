@@ -98,4 +98,40 @@ class CommentService
             ];
         }
     }
+
+    public function delete($id)
+    {
+        if (!PermissionService::hasUserPermission(Auth::id(), 'delete-comments'))
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.no_permission_to_delete_comment')
+            ];
+        }
+
+        $comment = $this->commentRepository->find(intval($id));
+        if (!$comment)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.comment_not_found')
+            ];
+        }
+
+        $success = $this->commentRepository->delete($comment->id);
+
+        if ($success)
+        {
+            return [
+                'status' => 'success'
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.general')
+            ];
+        }
+    }
 }
