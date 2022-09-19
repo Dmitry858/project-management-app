@@ -57,6 +57,19 @@ class EloquentTaskRepository implements TaskRepositoryInterface
     {
         $task = $this->find($id);
 
-        return $task ? $task->delete() : false;
+        if ($task)
+        {
+            if (count($task->comments) > 0)
+            {
+                $task->comments()->delete();
+            }
+            $result = $task->delete();
+        }
+        else
+        {
+            $result = false;
+        }
+
+        return $result;
     }
 }
