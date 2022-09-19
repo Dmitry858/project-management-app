@@ -14,7 +14,8 @@ export default class Comments {
     bindEvents() {
         if (this.isInited) return;
         const addCommentBtn = document.getElementById('add-comment-btn'),
-              deleteCommentBtns = document.getElementsByClassName('delete-comment-btn');
+              deleteCommentBtns = document.getElementsByClassName('delete-comment-btn'),
+              editCommentBtns = document.getElementsByClassName('edit-comment-btn');
 
         if (addCommentBtn) {
             addCommentBtn.addEventListener('click', this.addNewComment.bind(this));
@@ -23,6 +24,12 @@ export default class Comments {
         if (deleteCommentBtns.length > 0) {
             for (let btn of deleteCommentBtns) {
                 btn.addEventListener('click', this.deleteComment.bind(this));
+            }
+        }
+
+        if (editCommentBtns.length > 0) {
+            for (let btn of editCommentBtns) {
+                btn.addEventListener('click', this.editComment.bind(this));
             }
         }
     }
@@ -95,6 +102,80 @@ export default class Comments {
                     commentWrap.remove();
                 }
             });
+    }
+
+    editComment(event) {
+        const editIcon = event.currentTarget,
+              commentWrap = editIcon.parentElement.parentElement,
+              commentText = commentWrap.querySelector('.comment-text'),
+              commentId = editIcon.dataset.id;
+
+        if (!commentText || !commentId) return;
+
+        if (commentText.classList.contains('hidden')) {
+            const input = commentWrap.querySelector('.edit-comment-input'),
+                  error = commentWrap.querySelector('.error');
+            if (!input || !error) return;
+
+            error.innerText = '';
+            let curValue = commentText.innerText,
+                newValue = input.value;
+
+            if (curValue === newValue) {
+                commentText.classList.remove('hidden');
+                editIcon.classList.add('text-gray-400');
+                editIcon.classList.remove('text-blue-600');
+                input.remove();
+                return;
+            }
+
+            if (newValue.trim() === '') {
+                error.innerText = 'Пожалуйста, добавьте комментарий';
+                return;
+            }
+
+            let data = {
+                'comment_text': newValue
+            };
+
+            fetch('/comments/' + commentId, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': this.csrf,
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status && result.status === 'error') {
+                        error.innerText = result.text;
+                    }
+
+                    if (result.status && result.status === 'success') {
+                        commentText.innerText = newValue;
+                        commentText.classList.remove('hidden');
+                        editIcon.classList.add('text-gray-400');
+                        editIcon.classList.remove('text-blue-600');
+                        input.remove();
+                    }
+                });
+        } else {
+            let input = this.getEditCommentInput(commentText.innerText);
+            commentWrap.appendChild(input);
+            commentText.classList.add('hidden');
+            editIcon.classList.add('text-blue-600');
+            editIcon.classList.remove('text-gray-400');
+        }
+    }
+
+    getEditCommentInput(value) {
+        let input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('value', value);
+        input.className = 'edit-comment-input appearance-none block w-full border border-gray-300 rounded py-3 px-4 mt-1 leading-tight focus:outline-none focus:bg-white';
+
+        return input;
     }
 
     getCommentNode(commentObj) {

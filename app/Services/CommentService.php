@@ -134,4 +134,39 @@ class CommentService
             ];
         }
     }
+
+    public function update(int $id, array $data): array
+    {
+        if (!isset($data['comment_text']) || trim($data['comment_text']) === '')
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.comment_is_empty')
+            ];
+        }
+
+        if (!PermissionService::hasUserPermission(Auth::id(), 'edit-comments'))
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.no_permission_to_edit_comment')
+            ];
+        }
+
+        $success = $this->commentRepository->updateFromArray($id, $data);
+
+        if ($success)
+        {
+            return [
+                'status' => 'success'
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.general')
+            ];
+        }
+    }
 }

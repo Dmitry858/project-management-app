@@ -73,13 +73,16 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = json_decode($request->getContent(), true);
+        $result = $this->commentService->update($id, $data);
+
+        return response()->json($result);
     }
 
     /**

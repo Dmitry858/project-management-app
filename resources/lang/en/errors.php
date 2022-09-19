@@ -9,6 +9,7 @@ return [
     'task_not_found' => 'Task not found',
     'no_permission' => 'User does not have permission',
     'no_permission_to_delete_comment' => 'User does not have permission to delete comment',
+    'no_permission_to_edit_comment' => 'User does not have permission to edit comment',
     'general' => 'Something went wrong',
     'user_is_wrong' => 'User is wrong',
 ];

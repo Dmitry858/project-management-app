@@ -5511,7 +5511,8 @@ var Comments = /*#__PURE__*/function () {
     value: function bindEvents() {
       if (this.isInited) return;
       var addCommentBtn = document.getElementById('add-comment-btn'),
-          deleteCommentBtns = document.getElementsByClassName('delete-comment-btn');
+          deleteCommentBtns = document.getElementsByClassName('delete-comment-btn'),
+          editCommentBtns = document.getElementsByClassName('edit-comment-btn');
 
       if (addCommentBtn) {
         addCommentBtn.addEventListener('click', this.addNewComment.bind(this));
@@ -5530,6 +5531,23 @@ var Comments = /*#__PURE__*/function () {
           _iterator.e(err);
         } finally {
           _iterator.f();
+        }
+      }
+
+      if (editCommentBtns.length > 0) {
+        var _iterator2 = _createForOfIteratorHelper(editCommentBtns),
+            _step2;
+
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var _btn = _step2.value;
+
+            _btn.addEventListener('click', this.editComment.bind(this));
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
         }
       }
     }
@@ -5604,6 +5622,79 @@ var Comments = /*#__PURE__*/function () {
           commentWrap.remove();
         }
       });
+    }
+  }, {
+    key: "editComment",
+    value: function editComment(event) {
+      var editIcon = event.currentTarget,
+          commentWrap = editIcon.parentElement.parentElement,
+          commentText = commentWrap.querySelector('.comment-text'),
+          commentId = editIcon.dataset.id;
+      if (!commentText || !commentId) return;
+
+      if (commentText.classList.contains('hidden')) {
+        var input = commentWrap.querySelector('.edit-comment-input'),
+            error = commentWrap.querySelector('.error');
+        if (!input || !error) return;
+        error.innerText = '';
+        var curValue = commentText.innerText,
+            newValue = input.value;
+
+        if (curValue === newValue) {
+          commentText.classList.remove('hidden');
+          editIcon.classList.add('text-gray-400');
+          editIcon.classList.remove('text-blue-600');
+          input.remove();
+          return;
+        }
+
+        if (newValue.trim() === '') {
+          error.innerText = 'Пожалуйста, добавьте комментарий';
+          return;
+        }
+
+        var data = {
+          'comment_text': newValue
+        };
+        fetch('/comments/' + commentId, {
+          method: 'POST',
+          headers: {
+            'X-CSRF-TOKEN': this.csrf,
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify(data)
+        }).then(function (response) {
+          return response.json();
+        }).then(function (result) {
+          if (result.status && result.status === 'error') {
+            error.innerText = result.text;
+          }
+
+          if (result.status && result.status === 'success') {
+            commentText.innerText = newValue;
+            commentText.classList.remove('hidden');
+            editIcon.classList.add('text-gray-400');
+            editIcon.classList.remove('text-blue-600');
+            input.remove();
+          }
+        });
+      } else {
+        var _input = this.getEditCommentInput(commentText.innerText);
+
+        commentWrap.appendChild(_input);
+        commentText.classList.add('hidden');
+        editIcon.classList.add('text-blue-600');
+        editIcon.classList.remove('text-gray-400');
+      }
+    }
+  }, {
+    key: "getEditCommentInput",
+    value: function getEditCommentInput(value) {
+      var input = document.createElement('input');
+      input.setAttribute('type', 'text');
+      input.setAttribute('value', value);
+      input.className = 'edit-comment-input appearance-none block w-full border border-gray-300 rounded py-3 px-4 mt-1 leading-tight focus:outline-none focus:bg-white';
+      return input;
     }
   }, {
     key: "getCommentNode",
