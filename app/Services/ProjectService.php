@@ -150,8 +150,28 @@ class ProjectService
         return $this->projectRepository->updateFromArray($id, $data);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): array
     {
-        return $this->projectRepository->delete($id);
+        $project = $this->projectRepository->find($id);
+
+        if ($project && count($project->tasks) > 0)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.project_contains_tasks')
+            ];
+        }
+
+        if ($project && count($project->members) > 0)
+        {
+            $this->projectRepository->detachAllMembers($project);
+        }
+
+        $success = $this->projectRepository->delete($id);
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? __('flash.project_deleted') : __('flash.general_error')
+        ];
     }
 }

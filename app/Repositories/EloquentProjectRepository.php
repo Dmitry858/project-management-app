@@ -71,4 +71,9 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
     {
         return $memberIds ? $project->members()->attach($memberIds) : false;
     }
+
+    public function detachAllMembers(object $project)
+    {
+        return $project->members()->detach();
+    }
 }

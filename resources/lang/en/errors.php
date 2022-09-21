@@ -12,4 +12,5 @@ return [
     'no_permission_to_edit_comment' => 'User does not have permission to edit comment',
     'general' => 'Something went wrong',
     'user_is_wrong' => 'User is wrong',
+    'project_contains_tasks' => 'The project contains the tasks',
 ];

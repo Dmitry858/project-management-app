@@ -117,10 +117,8 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $success = $this->projectService->delete($id);
-        $flashKey = $success ? 'success' : 'error';
-        $flashValue = $success ? __('flash.project_deleted') : __('flash.general_error');
+        $result = $this->projectService->delete($id);
 
-        return redirect()->route('projects.index')->with($flashKey, $flashValue);
+        return redirect()->route('projects.index')->with($result['status'], $result['text']);
     }
 }
