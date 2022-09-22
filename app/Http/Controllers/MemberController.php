@@ -19,6 +19,10 @@ class MemberController extends Controller
         $this->memberService = $memberService;
         $this->userService = $userService;
         $this->projectService = $projectService;
+        $this->middleware('permission:view-members')->only('index');
+        $this->middleware('permission:create-members')->only(['create', 'store']);
+        $this->middleware('permission:edit-members')->only(['edit', 'update']);
+        $this->middleware('permission:delete-members')->only('destroy');
     }
 
     /**
@@ -83,9 +87,7 @@ class MemberController extends Controller
     public function edit($id)
     {
         $member = $this->memberService->get($id);
-        $memberName = $member->user->name;
-        if ($member->user->last_name) $memberName .= ' '.$member->user->last_name;
-        $title = __('titles.members_edit', ['name' => $memberName]);
+        $title = __('titles.members_edit', ['name' => $member->getFullName()]);
         $projects = $this->projectService->getList();
 
         return view('members.edit', compact('title', 'member', 'projects'));
