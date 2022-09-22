@@ -21,16 +21,9 @@ class MemberService
         return $this->memberRepository->find($id);
     }
 
-    public function getList(array $filter = [])
+    public function getList(array $filter = [], bool $withPaginate = true)
     {
-        if (Auth::user()->hasRole('admin'))
-        {
-            return $this->memberRepository->search($filter);
-        }
-        else
-        {
-            return [];
-        }
+        return $this->memberRepository->search($filter, $withPaginate);
     }
 
     public function create($data)
