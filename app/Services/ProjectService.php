@@ -6,6 +6,7 @@ use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\Interfaces\MemberRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use App\Services\PermissionService;
 
 class ProjectService
 {
@@ -26,7 +27,7 @@ class ProjectService
 
     public function get(int $id)
     {
-        if (Auth::user()->hasRole('admin'))
+        if (PermissionService::hasUserPermission(Auth::id(), 'view-all-projects'))
         {
             return $this->projectRepository->find($id);
         }
@@ -49,7 +50,7 @@ class ProjectService
 
     public function getList(array $filter = [], bool $withPaginate = true, array $with = [])
     {
-        if (Auth::user()->hasRole('admin'))
+        if (PermissionService::hasUserPermission(Auth::id(), 'view-all-projects'))
         {
             return $this->projectRepository->search($filter, $withPaginate, $with);
         }
