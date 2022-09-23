@@ -19,6 +19,9 @@ class ProjectController extends Controller
         $this->projectService = $projectService;
         $this->userService = $userService;
         $this->taskService = $taskService;
+        $this->middleware('permission:create-projects')->only(['create', 'store']);
+        $this->middleware('permission:edit-projects')->only(['edit', 'update']);
+        $this->middleware('permission:delete-projects')->only('destroy');
     }
 
     /**
