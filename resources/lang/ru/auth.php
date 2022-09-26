@@ -13,9 +13,9 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'user_is_blocked' => 'The user is blocked',
+    'failed' => 'Логин или пароль введены неверно',
+    'password' => 'Пароль неверен',
+    'throttle' => 'Слишком много попыток входа. Повторите попытку через :seconds секунд',
+    'user_is_blocked' => 'Пользователь заблокирован',
 
 ];

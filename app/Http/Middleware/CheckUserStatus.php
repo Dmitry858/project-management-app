@@ -25,7 +25,7 @@ class CheckUserStatus
         {
             if (!$users[0]->is_active)
             {
-                 return redirect()->route('login')->with('error', 'Пользователь заблокирован');
+                 return redirect()->route('login')->with('error', __('auth.user_is_blocked'));
             }
         }
 
