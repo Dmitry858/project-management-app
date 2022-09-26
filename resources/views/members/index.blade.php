@@ -20,7 +20,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($members as $member)
-                                    <tr class="bg-white border-b">
+                                    <tr class="bg-white border-b hover:bg-blue-100 transition">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $member->user->name }}
                                         </td>

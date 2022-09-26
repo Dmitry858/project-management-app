@@ -2,10 +2,30 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+.main-content {
+    min-height: calc(100vh - 56px);
+}
+
 .tooltip {
     @apply invisible absolute;
+    top: 0;
+    left: 0;
+    max-height: 76px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.tooltip-bottom {
+    bottom: 0;
+    top: auto;
 }
 
 .has-tooltip:hover .tooltip {
     @apply visible z-50;
+}
+
+@media (min-width: 768px) {
+    .main-nav-wrap {
+        height: calc(100vh - 96px);
+    }
 }

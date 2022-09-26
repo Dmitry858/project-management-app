@@ -23,7 +23,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
-                                    <tr class="bg-white border-b">
+                                    <tr class="bg-white border-b hover:bg-blue-100 transition">
                                         <td class="px-6 py-4">
                                             <img class="w-24" src="{{ $user->photoSrc() }}" alt="{{ $user->name }}">
                                         </td>

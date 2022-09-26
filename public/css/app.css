@@ -1336,13 +1336,30 @@ select {
 .ease-in {
   transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
+.main-content {
+    min-height: calc(100vh - 56px);
+}
 .tooltip {
   visibility: hidden;
   position: absolute;
+    top: 0;
+    left: 0;
+    max-height: 76px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.tooltip-bottom {
+    bottom: 0;
+    top: auto;
 }
 .has-tooltip:hover .tooltip {
   visibility: visible;
   z-index: 50;
+}
+@media (min-width: 768px) {
+    .main-nav-wrap {
+        height: calc(100vh - 96px);
+    }
 }
 .hover\:border-blue-600:hover {
   --tw-border-opacity: 1;
@@ -1626,10 +1643,6 @@ select {
 
   .md\:inline-block {
     display: inline-block;
-  }
-
-  .md\:h-screen {
-    height: 100vh;
   }
 
   .md\:w-1\/3 {

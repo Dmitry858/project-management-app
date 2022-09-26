@@ -19,13 +19,15 @@
                         </thead>
                         <tbody>
                             @foreach ($tasks as $task)
-                                <tr class="bg-white border-b">
+                                <tr class="bg-white border-b hover:bg-blue-100 transition">
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        <a href="{{ route('tasks.show', ['task' => $task->id]) }}">{{ $task->name }}</a>
+                                        <a href="{{ route('tasks.show', ['task' => $task->id]) }}" title="{{ $task->name }}">
+                                            {{ Str::limit($task->name, 40) }}
+                                        </a>
                                     </td>
                                     @if(isset($mode) && $mode === 'full')
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            {{ $task->project->name }}
+                                            {{ Str::limit($task->project->name, 25) }}
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             {{ $task->getMemberFullName($task->owner_id) }}
