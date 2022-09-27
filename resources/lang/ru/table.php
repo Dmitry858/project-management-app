@@ -8,6 +8,7 @@ return [
     'col_roles' => 'Роли',
     'col_title' => 'Название',
     'col_description' => 'Описание',
+    'col_slug' => 'Код',
     'col_project' => 'Проект',
     'col_owner' => 'Постановщик',
     'col_responsible' => 'Ответственный',

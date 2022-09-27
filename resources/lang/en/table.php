@@ -8,6 +8,7 @@ return [
     'col_roles' => 'Roles',
     'col_title' => 'Title',
     'col_description' => 'Description',
+    'col_slug' => 'Slug',
     'col_project' => 'Project',
     'col_owner' => 'Owner',
     'col_responsible' => 'Responsible',

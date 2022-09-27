@@ -20,4 +20,5 @@ return [
     'settings' => 'Settings',
     'app_name' => 'Project Management App',
     'profile' => 'User profile',
+    'stages_index' => 'List of stages',
 ];
