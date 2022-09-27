@@ -3,17 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\StageService;
 
 class StageController extends Controller
 {
+    protected $stageService;
+
+    public function __construct(StageService $stageService)
+    {
+        $this->stageService = $stageService;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
-        //
+        $title = __('titles.stages_index');
+        $stages = $this->stageService->getList();
+
+        return view('stages.index', compact('title', 'stages'));
     }
 
     /**
