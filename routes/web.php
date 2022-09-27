@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\StageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,7 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings')->middleware('permission:edit-settings');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update')->middleware('permission:edit-settings');
+    Route::resource('/settings/stages', StageController::class)->middleware('permission:edit-settings');
     Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
