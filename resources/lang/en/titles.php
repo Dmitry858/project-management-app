@@ -21,4 +21,5 @@ return [
     'app_name' => 'Project Management App',
     'profile' => 'User profile',
     'stages_index' => 'List of stages',
+    'stages_create' => 'Creating a new stage',
 ];
