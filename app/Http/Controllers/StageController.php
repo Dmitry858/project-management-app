@@ -30,11 +30,13 @@ class StageController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
-        //
+        $title = __('titles.stages_create');
+
+        return view('stages.create', compact('title'));
     }
 
     /**
