@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\StageService;
+use App\Http\Requests\StoreStageRequest;
 
 class StageController extends Controller
 {
@@ -42,12 +43,14 @@ class StageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreStageRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreStageRequest $request)
     {
-        //
+        $result = $this->stageService->create($request->all());
+
+        return redirect()->route('stages.index')->with($result['status'], $result['text']);
     }
 
     /**
