@@ -22,4 +22,5 @@ return [
     'profile' => 'User profile',
     'stages_index' => 'List of stages',
     'stages_create' => 'Creating a new stage',
+    'stages_edit' => 'Editing of the stage «:name»',
 ];

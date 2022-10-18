@@ -67,12 +67,15 @@ class StageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit($id)
     {
-        //
+        $stage = $this->stageService->get($id);
+        $title = __('titles.stages_edit', ['name' => $stage->name]);
+
+        return view('stages.edit', compact('title', 'stage'));
     }
 
     /**
