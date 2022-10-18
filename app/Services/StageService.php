@@ -14,6 +14,11 @@ class StageService
         $this->stageRepository = $stageRepository;
     }
 
+    public function get(int $id)
+    {
+        return $this->stageRepository->find($id);
+    }
+
     public function getList(array $filter = [])
     {
         return $this->stageRepository->search($filter);
