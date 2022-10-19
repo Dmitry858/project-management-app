@@ -55,4 +55,37 @@ class StageService
             'text' => $success ? __('flash.stage_updated') : __('flash.general_error')
         ];
     }
+
+    public function delete(int $id): array
+    {
+        $stage = $this->stageRepository->find($id);
+
+        if ($stage && count($stage->tasks) > 0)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.stage_is_used')
+            ];
+        }
+
+        if ($this->stageRepository->getCount() === 1)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.stage_is_last')
+            ];
+        }
+
+        $success = $this->stageRepository->delete($id);
+
+        if ($success && Cache::has('all_stages'))
+        {
+            Cache::forget('all_stages');
+        }
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? __('flash.stage_deleted') : __('flash.general_error')
+        ];
+    }
 }

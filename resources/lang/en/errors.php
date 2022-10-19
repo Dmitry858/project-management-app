@@ -13,4 +13,6 @@ return [
     'general' => 'Something went wrong',
     'user_is_wrong' => 'User is wrong',
     'project_contains_tasks' => 'The project contains the tasks',
+    'stage_is_used' => 'The stage is used',
+    'stage_is_last' => 'This stage is last',
 ];

@@ -16,6 +16,7 @@ return [
     'task_deleted' => 'Task deleted',
     'stage_created' => 'Stage created',
     'stage_updated' => 'Stage updated',
+    'stage_deleted' => 'Stage deleted',
     'general_error' => 'Something went wrong',
     'clear_cache_completed' => 'Clear cache completed',
 ];

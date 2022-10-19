@@ -49,4 +49,9 @@ class EloquentStageRepository implements StageRepositoryInterface
 
         return $stage ? $stage->delete() : false;
     }
+
+    public function getCount(): int
+    {
+        return Stage::all()->count();
+    }
 }
