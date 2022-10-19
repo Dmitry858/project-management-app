@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\StageService;
 use App\Http\Requests\StoreStageRequest;
+use App\Http\Requests\UpdateStageRequest;
 
 class StageController extends Controller
 {
@@ -81,13 +82,15 @@ class StageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  UpdateStageRequest $request
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateStageRequest $request, $id)
     {
-        //
+        $result = $this->stageService->update($id, $request->all());
+
+        return redirect()->route('stages.index')->with($result['status'], $result['text']);
     }
 
     /**
