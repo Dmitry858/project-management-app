@@ -40,4 +40,19 @@ class StageService
             'text' => $success ? __('flash.stage_created') : __('flash.general_error')
         ];
     }
+
+    public function update(int $id, array $data): array
+    {
+        $success = $this->stageRepository->updateFromArray($id, $data);
+
+        if ($success && Cache::has('all_stages'))
+        {
+            Cache::forget('all_stages');
+        }
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? __('flash.stage_updated') : __('flash.general_error')
+        ];
+    }
 }
