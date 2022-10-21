@@ -15,4 +15,6 @@ return [
     'project_contains_tasks' => 'Проект содержит задачи',
     'stage_is_used' => 'Стадия используется в задачах',
     'stage_is_last' => 'Нельзя удалить единственную стадию',
+    'stage_not_found' => 'Стадия не найдена',
+    'change_stage_forbidden' => 'Вы не можете изменять стадию задачи',
 ];

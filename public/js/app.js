@@ -5746,6 +5746,95 @@ var Comments = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/Stages.js":
+/*!********************************!*\
+  !*** ./resources/js/Stages.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Stages)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Stages = /*#__PURE__*/function () {
+  function Stages() {
+    var _document$querySelect;
+
+    _classCallCheck(this, Stages);
+
+    this.csrf = (_document$querySelect = document.querySelector('meta[name="csrf-token"]')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.getAttribute('content');
+    this.isInited = false;
+    this.stageSelect = null;
+  }
+
+  _createClass(Stages, [{
+    key: "init",
+    value: function init() {
+      if (this.isInited) return;
+      this.bindEvents();
+      this.isInited = true;
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      if (this.isInited) return;
+      var stageSelect = document.getElementById('stage_id');
+
+      if (stageSelect) {
+        this.stageSelect = stageSelect;
+        stageSelect.addEventListener('change', this.changeStage.bind(this));
+      }
+    }
+  }, {
+    key: "changeStage",
+    value: function changeStage(event) {
+      event.preventDefault();
+      var success = document.getElementById('change-stage-success-message'),
+          error = document.getElementById('change-stage-error-message');
+      if (!success || !error || !this.csrf) return;
+      success.innerText = '';
+      error.innerText = '';
+      var value = this.stageSelect.value,
+          taskId = this.stageSelect.dataset.taskId;
+      if (!value || !taskId) return;
+      var data = {
+        'stage_id': value
+      };
+      fetch('/change-stage/' + taskId, {
+        method: 'PATCH',
+        headers: {
+          'X-CSRF-TOKEN': this.csrf,
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) {
+        if (result.status && result.status === 'error') {
+          error.innerText = result.text;
+        }
+
+        if (result.status && result.status === 'success') {
+          success.innerText = result.text;
+        }
+      });
+    }
+  }]);
+
+  return Stages;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -5756,7 +5845,9 @@ var Comments = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
 /* harmony import */ var _Comments__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comments */ "./resources/js/Comments.js");
+/* harmony import */ var _Stages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Stages */ "./resources/js/Stages.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -5774,7 +5865,10 @@ window.addEventListener('load', function (e) {
 
 
   var comments = new _Comments__WEBPACK_IMPORTED_MODULE_1__["default"]();
-  comments.init();
+  comments.init(); // Init Stages class
+
+  var stages = new _Stages__WEBPACK_IMPORTED_MODULE_2__["default"]();
+  stages.init();
 }); // Close the dropdown menu if the user clicks outside of it
 
 window.onclick = function (event) {

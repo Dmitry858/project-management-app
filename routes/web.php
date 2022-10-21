@@ -38,4 +38,5 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::patch('/change-stage/{task}', [TaskController::class, 'updateStage']);
 });

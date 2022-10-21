@@ -15,4 +15,6 @@ return [
     'project_contains_tasks' => 'The project contains the tasks',
     'stage_is_used' => 'The stage is used',
     'stage_is_last' => 'This stage is last',
+    'stage_not_found' => 'Stage not found',
+    'change_stage_forbidden' => "You can't change task's stage",
 ];

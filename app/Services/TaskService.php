@@ -67,13 +67,69 @@ class TaskService
         return $this->taskRepository->createFromArray($data);
     }
 
-    public function update(int $id, array $data): bool
+    public function update(int $id, array $data, bool $onlyStage = false)
     {
-        return $this->taskRepository->updateFromArray($id, $data);
+        if ($onlyStage)
+        {
+            if (intval($data['stage_id']) === 0)
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.stage_not_found')
+                ];
+            }
+
+            if (!$this->canUserChangeStage($id))
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.change_stage_forbidden')
+                ];
+            }
+
+            $success = $this->taskRepository->updateFromArray($id, $data);
+
+            if ($success)
+            {
+                return [
+                    'status' => 'success',
+                    'text' => __('success_messages.stage_changed')
+                ];
+            }
+            else
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.general')
+                ];
+            }
+        }
+        else
+        {
+            return $this->taskRepository->updateFromArray($id, $data);
+        }
     }
 
     public function delete(int $id): bool
     {
         return $this->taskRepository->delete($id);
+    }
+
+    public function canUserChangeStage($taskId): bool
+    {
+        $result = false;
+
+        $task = $this->taskRepository->find($taskId);
+        $currentMember = Auth::user()->member;
+
+        if ($task && $currentMember)
+        {
+            if ($task->owner_id === $currentMember->id || $task->responsible_id === $currentMember->id)
+            {
+                $result = true;
+            }
+        }
+
+        return $result;
     }
 }

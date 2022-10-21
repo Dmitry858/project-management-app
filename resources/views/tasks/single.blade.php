@@ -51,13 +51,27 @@
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">{{ $task->project->name }}</p>
                 </div>
 
-                <div class="w-full px-3 mb-6">
+                <div class="w-full px-3 mb-6 relative">
                     <p class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                         @lang('form.label_stage')
                     </p>
-                    <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
-                        {{ $task->stage->name }}
-                    </p>
+                    @if(Auth::user()->id == $task->owner->user->id || Auth::user()->id == $task->responsible->user->id)
+                        <select class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="stage_id" name="stage_id" data-task-id="{{ $task->id }}">
+                            @if(isset($stages) && count($stages) > 0)
+                                @foreach($stages as $stage)
+                                    <option value="{{ $stage->id }}" @if($task->stage_id === $stage->id) selected @endif>
+                                        {{ $stage->name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <p id="change-stage-success-message" class="text-xs text-green-600 absolute"></p>
+                        <p id="change-stage-error-message" class="text-xs text-red-500 absolute"></p>
+                    @else
+                        <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
+                            {{ $task->stage->name }}
+                        </p>
+                    @endif
                 </div>
 
                 <div class="w-full px-3 mb-6">

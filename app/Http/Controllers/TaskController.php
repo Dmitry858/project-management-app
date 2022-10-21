@@ -8,6 +8,7 @@ use App\Services\MemberService;
 use App\Services\StageService;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -91,8 +92,9 @@ class TaskController extends Controller
         if ($task)
         {
             $title = __('titles.tasks_single', ['name' => $task->name]);
+            $stages = $this->stageService->getList();
 
-            return view('tasks.single', compact('title', 'task'));
+            return view('tasks.single', compact('title', 'task', 'stages'));
         }
         else
         {
@@ -137,6 +139,21 @@ class TaskController extends Controller
         $flashValue = $success ? __('flash.task_updated') : __('flash.general_error');
 
         return redirect()->route('tasks.index')->with($flashKey, $flashValue);
+    }
+
+    /**
+     * Update the stage of task in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateStage(Request $request, $id)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $this->taskService->update($id, $data, true);
+
+        return response()->json($result);
     }
 
     /**
