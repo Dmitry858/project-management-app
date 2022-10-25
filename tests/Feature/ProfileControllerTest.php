@@ -27,7 +27,7 @@ class ProfileControllerTest extends TestCase
      */
     public function test_auth_index()
     {
-        $user = User::factory()->make();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get(route('profile'));
 
         $response->assertStatus(200);
@@ -40,7 +40,7 @@ class ProfileControllerTest extends TestCase
     public function test_update_profile()
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->post(route('profile.update'), [
+        $response = $this->actingAs($user)->post(route('profile.update', ['user' => $user->id]), [
             'name' => $user->name,
             'email' => $user->email,
             'password' => $user->password,
@@ -58,7 +58,7 @@ class ProfileControllerTest extends TestCase
     public function test_update_profile_with_empty_email()
     {
         $user = User::factory()->create();
-        $this->actingAs($user)->post(route('profile.update'), [
+        $this->actingAs($user)->post(route('profile.update', ['user' => $user->id]), [
             'name' => $user->name,
             'email' => '',
             'password' => $user->password,
