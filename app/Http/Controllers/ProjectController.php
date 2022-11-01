@@ -74,11 +74,19 @@ class ProjectController extends Controller
     public function show($id)
     {
         $project = $this->projectService->get($id);
-        $title = __('titles.projects_single', ['name' => $project->name]);
-        $members = $this->projectService->getProjectMembers($project);
-        $tasks = $this->taskService->getList(['project_id' => $id]);
 
-        return view('projects.single', compact('title', 'project', 'members', 'tasks'));
+        if ($project)
+        {
+            $title = __('titles.projects_single', ['name' => $project->name]);
+            $members = $this->projectService->getProjectMembers($project);
+            $tasks = $this->taskService->getList(['project_id' => $id]);
+
+            return view('projects.single', compact('title', 'project', 'members', 'tasks'));
+        }
+        else
+        {
+            abort(404);
+        }
     }
 
     /**
@@ -90,10 +98,18 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project = $this->projectService->get($id);
-        $title = __('titles.projects_edit', ['name' => $project->name]);
-        $users = $this->userService->getList(['is_active' => 1], false);
 
-        return view('projects.edit', compact('title', 'project', 'users'));
+        if ($project)
+        {
+            $title = __('titles.projects_edit', ['name' => $project->name]);
+            $users = $this->userService->getList(['is_active' => 1], false);
+
+            return view('projects.edit', compact('title', 'project', 'users'));
+        }
+        else
+        {
+            abort(404);
+        }
     }
 
     /**
