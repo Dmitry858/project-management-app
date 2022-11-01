@@ -92,6 +92,17 @@ class ProjectControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_show_not_member()
+    {
+        $user = User::factory()->create();
+        $project = Project::create([
+            'name' => 'Тестовый'
+        ]);
+        $response = $this->actingAs($user)->get(route('projects.show', ['project' => $project->id]));
+
+        $response->assertStatus(404);
+    }
+
     public function test_edit()
     {
         $user = User::factory()->create();
@@ -121,6 +132,23 @@ class ProjectControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('projects.edit', ['project' => $project->id]));
 
         $response->assertStatus(200);
+    }
+
+    /* Если пользователь не является участником проекта, у него есть право edit-projects, но нет права view-all-projects, то возвращается 404 */
+    public function test_edit_with_permission_not_member()
+    {
+        $user = User::factory()->create();
+        $permission = Permission::create([
+            'name' => 'Редактирование проектов',
+            'slug' => 'edit-projects'
+        ]);
+        $user->permissions()->attach($permission->id);
+        $project = Project::create([
+            'name' => 'Тестовый'
+        ]);
+        $response = $this->actingAs($user)->get(route('projects.edit', ['project' => $project->id]));
+
+        $response->assertStatus(404);
     }
 
     public function test_update()
