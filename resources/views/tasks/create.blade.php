@@ -27,7 +27,9 @@
                 <select class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="project_id" name="project_id">
                     @if(isset($projects) && count($projects) > 0)
                         @foreach($projects as $project)
-                            <option value="{{ $project->id }}">{{ $project->name }}</option>
+                            <option value="{{ $project->id }}" @if($project->id == request()->get('project_id')) selected @endif>
+                                {{ $project->name }}
+                            </option>
                         @endforeach
                     @endif
                 </select>

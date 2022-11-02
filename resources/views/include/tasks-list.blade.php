@@ -69,6 +69,8 @@
 
 @permission('create-tasks')
     <div class="py-4 mt-4">
-        @include('include.buttons.create', ['link' => route('tasks.create')])
+        @include('include.buttons.create', [
+            'link' => isset($project) ? route('tasks.create') . '?project_id=' . $project->id : route('tasks.create')
+        ])
     </div>
 @endpermission
