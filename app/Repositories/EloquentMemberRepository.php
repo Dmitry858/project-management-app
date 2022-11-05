@@ -12,7 +12,7 @@ class EloquentMemberRepository implements MemberRepositoryInterface
         return Member::find($id);
     }
 
-    public function search(array $filter = [], bool $withPaginate = true)
+    public function search(array $filter = [], bool $withPaginate = true, array $with = [])
     {
         $query = Member::query();
         if (count($filter) > 0)
@@ -29,6 +29,8 @@ class EloquentMemberRepository implements MemberRepositoryInterface
                 }
             }
         }
+
+        if (!empty($with)) $query = $query->with($with);
 
         if ($withPaginate)
         {

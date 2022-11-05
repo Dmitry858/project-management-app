@@ -21,9 +21,9 @@ class MemberService
         return $this->memberRepository->find($id);
     }
 
-    public function getList(array $filter = [], bool $withPaginate = true)
+    public function getList(array $filter = [], bool $withPaginate = true, array $with = [])
     {
-        return $this->memberRepository->search($filter, $withPaginate);
+        return $this->memberRepository->search($filter, $withPaginate, $with);
     }
 
     public function create($data)

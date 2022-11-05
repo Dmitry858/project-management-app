@@ -33,7 +33,7 @@ class MemberController extends Controller
     public function index(): object
     {
         $title = __('titles.members_index');
-        $members = $this->memberService->getList();
+        $members = $this->memberService->getList([], true, ['projects', 'user']);
 
         return view('members.index', compact('title', 'members'));
     }
