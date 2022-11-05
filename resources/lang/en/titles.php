@@ -20,7 +20,9 @@ return [
     'settings' => 'Settings',
     'app_name' => 'Project Management App',
     'profile' => 'User profile',
+    'stages' => 'Stages',
     'stages_index' => 'List of stages',
     'stages_create' => 'Creating a new stage',
     'stages_edit' => 'Editing of the stage «:name»',
+    'caching' => 'Caching',
 ];

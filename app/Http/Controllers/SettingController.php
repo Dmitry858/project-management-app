@@ -11,10 +11,17 @@ class SettingController extends Controller
     {
         $title = __('titles.settings');
 
-        return view('settings', compact('title'));
+        return view('settings.index', compact('title'));
     }
 
-    public function update(Request $request)
+    public function indexCaching()
+    {
+        $title = __('titles.caching');
+
+        return view('settings.caching', compact('title'));
+    }
+
+    public function updateCaching(Request $request)
     {
         $data = $request->all();
         if (isset($data['clear_cache']) && $data['clear_cache'])
@@ -29,6 +36,6 @@ class SettingController extends Controller
             $flashValue = __('flash.general_error');
         }
 
-        return redirect()->route('settings')->with($flashKey, $flashValue);
+        return redirect()->route('settings.caching')->with($flashKey, $flashValue);
     }
 }

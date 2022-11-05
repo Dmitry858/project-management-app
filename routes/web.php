@@ -33,7 +33,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings')->middleware('permission:edit-settings');
-    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update')->middleware('permission:edit-settings');
+    Route::get('/settings/caching', [SettingController::class, 'indexCaching'])->name('settings.caching')->middleware('permission:edit-settings');
+    Route::post('/settings/caching', [SettingController::class, 'updateCaching'])->name('settings.caching.update')->middleware('permission:edit-settings');
     Route::resource('/settings/stages', StageController::class)->middleware('permission:edit-settings');
     Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
