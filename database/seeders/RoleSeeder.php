@@ -26,7 +26,7 @@ class RoleSeeder extends Seeder
             'name' => 'Менеджер',
             'slug' => 'manager',
         ]);
-        $permIds = range(5, 21);
+        $permIds = range(6, 21);
         $role->permissions()->attach($permIds);
     }
 }
