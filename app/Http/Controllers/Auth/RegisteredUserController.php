@@ -16,22 +16,24 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      *
+     * @param string $key
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(string $key)
     {
-        return view('auth.register');
+        return view('auth.register', ['key' => $key]);
     }
 
     /**
      * Handle an incoming registration request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param string $key
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(Request $request, string $key)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],

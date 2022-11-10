@@ -55,6 +55,7 @@ class RouteServiceProvider extends ServiceProvider
             'user' => '[0-9]+',
             'comment' => '[0-9]+',
             'stage' => '[0-9]+',
+            'key' => '[A-Za-z0-9]{32}',
         ]);
     }
 
