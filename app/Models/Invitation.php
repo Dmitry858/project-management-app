@@ -13,6 +13,7 @@ class Invitation extends Model
     protected $fillable = [
         'secret_key',
         'email',
+        'is_sent',
     ];
 
     public function isExpired(): bool
