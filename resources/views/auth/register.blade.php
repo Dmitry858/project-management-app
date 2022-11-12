@@ -23,7 +23,15 @@
             <div class="mt-4">
                 <x-label for="email" :value="__('form.label_email')" />
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                <x-input
+                    id="email"
+                    class="block mt-1 w-full bg-gray-100"
+                    type="email"
+                    name="email"
+                    :value="$email"
+                    required
+                    readonly
+                />
             </div>
 
             <!-- Password -->

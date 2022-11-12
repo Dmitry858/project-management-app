@@ -10,9 +10,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Services\InvitationService;
 
 class RegisteredUserController extends Controller
 {
+    protected $invitationService;
+
+    public function __construct(InvitationService $invitationService)
+    {
+        $this->invitationService = $invitationService;
+    }
+
     /**
      * Display the registration view.
      *
@@ -21,7 +29,15 @@ class RegisteredUserController extends Controller
      */
     public function create(string $key)
     {
-        return view('auth.register', ['key' => $key]);
+        $invitation = $this->invitationService->getValidInvitationByKey($key);
+        if ($invitation)
+        {
+            return view('auth.register', ['key' => $key, 'email' => $invitation->email]);
+        }
+        else
+        {
+            abort(404);
+        }
     }
 
     /**
