@@ -12,6 +12,11 @@ class EloquentInvitationRepository implements InvitationRepositoryInterface
         return Invitation::find($id);
     }
 
+    public function findByKey(string $key)
+    {
+        return Invitation::where('secret_key', $key)->first();
+    }
+
     public function search(array $filter = [], bool $withPaginate = true)
     {
         if ($withPaginate)

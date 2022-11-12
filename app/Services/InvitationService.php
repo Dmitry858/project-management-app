@@ -27,6 +27,15 @@ class InvitationService
         return $invitation->isExpired() ? false : $invitation;
     }
 
+    public function getValidInvitationByKey(string $key)
+    {
+        $invitation = $this->invitationRepository->findByKey($key);
+
+        if (!$invitation) return false;
+
+        return $invitation->isExpired() ? false : $invitation;
+    }
+
     public function getList(array $filter = [])
     {
         return $this->invitationRepository->search($filter);
