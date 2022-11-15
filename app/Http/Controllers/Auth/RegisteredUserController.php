@@ -51,6 +51,9 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request, string $key)
     {
+        $invitation = $this->invitationService->getValidInvitationByKey($key);
+        if (!$invitation) abort(404);
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
