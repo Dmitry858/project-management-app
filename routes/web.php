@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\StageController;
+use App\Http\Controllers\InvitationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,7 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::patch('/change-stage/{task}', [TaskController::class, 'updateStage']);
+    Route::resource('/invitations', InvitationController::class)->except([
+        'edit', 'show'
+    ])->middleware('permission:edit-invitations');
 });
