@@ -25,4 +25,5 @@ return [
     'stages_create' => 'Создание стадии',
     'stages_edit' => 'Редактирование стадии «:name»',
     'caching' => 'Кэширование',
+    'invitations_index' => 'Список приглашений',
 ];

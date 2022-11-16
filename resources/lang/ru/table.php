@@ -14,4 +14,10 @@ return [
     'col_responsible' => 'Ответственный',
     'col_stage' => 'Стадия',
     'col_members' => 'Участники',
+    'col_secret_key' => 'Секретный ключ',
+    'col_created_at' => 'Создано',
+    'col_is_sent' => 'Отправлено',
+    'status_yes' => 'Да',
+    'status_no' => 'Нет',
+    'is_expired' => 'просрочено',
 ];

@@ -14,4 +14,10 @@ return [
     'col_responsible' => 'Responsible',
     'col_stage' => 'Stage',
     'col_members' => 'Members',
+    'col_secret_key' => 'Secret key',
+    'col_created_at' => 'Created at',
+    'col_is_sent' => 'Is sent',
+    'status_yes' => 'Yes',
+    'status_no' => 'No',
+    'is_expired' => 'is expired',
 ];
