@@ -7,4 +7,5 @@ return [
     'users' => 'Пользователи',
     'settings' => 'Настройки',
     'profile' => 'Профиль',
+    'invitations' => 'Приглашения',
 ];

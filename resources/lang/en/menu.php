@@ -7,4 +7,5 @@ return [
     'users' => 'Users',
     'settings' => 'Settings',
     'profile' => 'Profile',
+    'invitations' => 'Invitations',
 ];
