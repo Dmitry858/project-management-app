@@ -23,6 +23,7 @@ return [
     'label_confirm_new_password' => 'Подтверждение нового пароля',
     'label_remember_me' => 'Запомнить меня',
     'label_slug' => 'Код',
+    'label_secret_key' => 'Секретный ключ',
     'change_link' => 'Изменить',
     'save_button' => 'Сохранить',
     'empty_select_value' => 'Не выбран',
