@@ -26,4 +26,5 @@ return [
     'stages_edit' => 'Editing of the stage «:name»',
     'caching' => 'Caching',
     'invitations_index' => 'List of invitations',
+    'invitations_create' => 'Creating a new invitation',
 ];

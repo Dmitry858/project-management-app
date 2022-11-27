@@ -30,11 +30,13 @@ class InvitationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
-        //
+        $title = __('titles.invitations_create');
+
+        return view('invitations.create', compact('title'));
     }
 
     /**
