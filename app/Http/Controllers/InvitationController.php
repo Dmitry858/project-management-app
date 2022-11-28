@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\InvitationService;
+use App\Http\Requests\StoreInvitationRequest;
 
 class InvitationController extends Controller
 {
@@ -42,12 +43,14 @@ class InvitationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreInvitationRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreInvitationRequest $request)
     {
-        //
+        $result = $this->invitationService->create($request->all());
+
+        return redirect()->route('invitations.index')->with($result['status'], $result['text']);
     }
 
     /**

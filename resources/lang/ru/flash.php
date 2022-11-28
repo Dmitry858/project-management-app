@@ -17,6 +17,7 @@ return [
     'stage_created' => 'Стадия успешно создана',
     'stage_updated' => 'Стадия успешно обновлена',
     'stage_deleted' => 'Стадия успешно удалена',
+    'invitation_created' => 'Приглашение успешно создано',
     'general_error' => 'Что-то пошло не так, попробуйте позже',
     'clear_cache_completed' => 'Очистка кэша завершена',
 ];
