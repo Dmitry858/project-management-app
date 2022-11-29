@@ -69,10 +69,12 @@ class InvitationController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $result = $this->invitationService->delete($id);
+
+        return redirect()->route('invitations.index')->with($result['status'], $result['text']);
     }
 }

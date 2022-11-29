@@ -18,6 +18,7 @@ return [
     'stage_updated' => 'Stage updated',
     'stage_deleted' => 'Stage deleted',
     'invitation_created' => 'Invitation created',
+    'invitation_deleted' => 'Invitation deleted',
     'general_error' => 'Something went wrong',
     'clear_cache_completed' => 'Clear cache completed',
 ];

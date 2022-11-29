@@ -52,4 +52,14 @@ class InvitationService
             'text' => $success ? __('flash.invitation_created') : __('flash.general_error')
         ];
     }
+
+    public function delete(int $id): array
+    {
+        $success = $this->invitationRepository->delete($id);
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? __('flash.invitation_deleted') : __('flash.general_error')
+        ];
+    }
 }
