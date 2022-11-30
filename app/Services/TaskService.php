@@ -16,7 +16,7 @@ class TaskService
 
     public function get(int $id)
     {
-        if (Auth::user()->hasRole('admin'))
+        if (PermissionService::hasUserPermission(Auth::id(), 'view-all-tasks'))
         {
             return $this->taskRepository->find($id);
         }
@@ -41,7 +41,7 @@ class TaskService
      */
     public function getList(array $filter = [], bool $withPaginate = true, array $with = [])
     {
-        if (Auth::user()->hasRole('admin'))
+        if (PermissionService::hasUserPermission(Auth::id(), 'view-all-tasks'))
         {
             return $this->taskRepository->search($filter, $withPaginate, $with);
         }
@@ -60,7 +60,7 @@ class TaskService
         }
     }
 
-    public function create($data)
+    public function create(array $data)
     {
         unset($data['_token']);
 
