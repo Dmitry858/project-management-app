@@ -17,4 +17,6 @@ return [
     'stage_is_last' => 'This stage is last',
     'stage_not_found' => 'Stage not found',
     'change_stage_forbidden' => "You can't change task's stage",
+    'invitation_not_found' => 'Invitation not found',
+    'invitation_is_expired' => 'Invitation is expired',
 ];

@@ -3,6 +3,8 @@
 @section('content')
     @include('include.flash-success')
     @include('include.flash-error')
+    @include('include.toast-success')
+    @include('include.toast-error')
 
     @if (count($invitations) > 0)
         <div class="flex flex-col">
@@ -34,7 +36,7 @@
                                                 <span class="text-red-500">(@lang('table.is_expired'))</span>
                                             @endif
                                         </td>
-                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        <td id="status-{{ $invitation->id }}" class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             @if($invitation->is_sent)
                                                 @lang('table.status_yes')
                                             @else
@@ -42,7 +44,7 @@
                                             @endif
                                         </td>
                                         <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            @include('include.buttons.send-invitation', ['link' => '#'])
+                                            @include('include.buttons.send-invitation', ['link' => route('invitations.send', ['invitation' => $invitation->id])])
                                             @include('include.buttons.delete', ['link' => route('invitations.destroy', ['invitation' => $invitation->id])])
                                         </td>
                                     </tr>

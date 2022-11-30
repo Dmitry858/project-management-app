@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\InvitationService;
 use App\Http\Requests\StoreInvitationRequest;
 
@@ -54,18 +53,6 @@ class InvitationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -76,5 +63,18 @@ class InvitationController extends Controller
         $result = $this->invitationService->delete($id);
 
         return redirect()->route('invitations.index')->with($result['status'], $result['text']);
+    }
+
+    /**
+     * Send the invitation to the user.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function send($id)
+    {
+        $result = $this->invitationService->send($id);
+
+        return response()->json($result);
     }
 }

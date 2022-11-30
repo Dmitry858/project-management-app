@@ -17,4 +17,6 @@ return [
     'stage_is_last' => 'Нельзя удалить единственную стадию',
     'stage_not_found' => 'Стадия не найдена',
     'change_stage_forbidden' => 'Вы не можете изменять стадию задачи',
+    'invitation_not_found' => 'Приглашение не найдено',
+    'invitation_is_expired' => 'Приглашение просрочено',
 ];

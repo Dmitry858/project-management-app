@@ -24,6 +24,12 @@
     @apply visible z-50;
 }
 
+.send-invitation-btn.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: default;
+}
+
 @media (min-width: 768px) {
     .main-nav-wrap {
         height: calc(100vh - 96px);

@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     Route::patch('/change-stage/{task}', [TaskController::class, 'updateStage']);
     Route::resource('/invitations', InvitationController::class)->except([
-        'edit', 'show'
+        'edit', 'update', 'show'
     ])->middleware('permission:edit-invitations');
+    Route::post('/invitations/{invitation}/send', [InvitationController::class, 'send'])->name('invitations.send')->middleware('permission:edit-invitations');
 });

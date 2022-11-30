@@ -3,6 +3,7 @@ require('./bootstrap');
 import Alpine from 'alpinejs';
 import Comments from './Comments';
 import Stages from './Stages';
+import Invitations from './Invitations';
 
 window.Alpine = Alpine;
 
@@ -24,6 +25,10 @@ window.addEventListener('load', function (e) {
     // Init Stages class
     let stages = new Stages();
     stages.init();
+
+    // Init Invitations class
+    let invitations = new Invitations();
+    invitations.init();
 });
 
 // Close the dropdown menu if the user clicks outside of it

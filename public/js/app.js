@@ -5746,6 +5746,158 @@ var Comments = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/Invitations.js":
+/*!*************************************!*\
+  !*** ./resources/js/Invitations.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Invitations)
+/* harmony export */ });
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Invitations = /*#__PURE__*/function () {
+  function Invitations() {
+    var _document$querySelect;
+
+    _classCallCheck(this, Invitations);
+
+    this.csrf = (_document$querySelect = document.querySelector('meta[name="csrf-token"]')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.getAttribute('content');
+    this.success = document.getElementById('toast-success');
+    this.error = document.getElementById('toast-error');
+    this.isInited = false;
+  }
+
+  _createClass(Invitations, [{
+    key: "init",
+    value: function init() {
+      if (this.isInited) return;
+      this.bindEvents();
+      this.isInited = true;
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      if (this.isInited) return;
+      var sendBtns = document.getElementsByClassName('send-invitation-btn'),
+          closeBtns = document.getElementsByClassName('close-button');
+
+      if (sendBtns.length > 0) {
+        var _iterator = _createForOfIteratorHelper(sendBtns),
+            _step;
+
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var btn = _step.value;
+            btn.addEventListener('click', this.sendInvitation.bind(this));
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
+        }
+      }
+
+      if (closeBtns.length > 0) {
+        var _iterator2 = _createForOfIteratorHelper(closeBtns),
+            _step2;
+
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var _btn = _step2.value;
+
+            _btn.addEventListener('click', this.closeToast.bind(this));
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
+        }
+      }
+    }
+  }, {
+    key: "sendInvitation",
+    value: function sendInvitation(event) {
+      var _this = this;
+
+      event.preventDefault();
+      if (!this.csrf) return;
+      var linkTag = event.currentTarget;
+      var url = linkTag.href;
+      if (!url) return;
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': this.csrf,
+          'Content-Type': 'application/json;charset=utf-8'
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) {
+        if (result.status && result.status === 'error' && _this.error) {
+          _this.showToast(_this.error, result.text);
+        }
+
+        if (result.status && result.status === 'success' && _this.success) {
+          _this.showToast(_this.success, result.text);
+
+          linkTag.classList.add('disabled');
+          var id = linkTag.parentElement.parentElement.dataset.id;
+          var td = document.getElementById('status-' + id);
+          if (td) td.innerText = 'Да';
+        }
+      })["catch"](function (e) {
+        _this.showToast(_this.error, 'Ошибка: ' + e.message);
+      });
+    }
+  }, {
+    key: "showToast",
+    value: function showToast(node, text) {
+      node.querySelector('.toast-text').innerText = text;
+      node.classList.remove('hidden');
+      setTimeout(function () {
+        node.classList.remove('opacity-0');
+      }, 50);
+      setTimeout(function () {
+        node.classList.add('opacity-0');
+      }, 2000);
+      setTimeout(function () {
+        node.classList.add('hidden');
+        node.querySelector('.toast-text').innerText = '';
+      }, 2150);
+    }
+  }, {
+    key: "closeToast",
+    value: function closeToast(event) {
+      var node = event.currentTarget.parentElement;
+      node.classList.add('opacity-0');
+      setTimeout(function () {
+        node.classList.add('hidden');
+        node.querySelector('.toast-text').innerText = '';
+      }, 150);
+    }
+  }]);
+
+  return Invitations;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/js/Stages.js":
 /*!********************************!*\
   !*** ./resources/js/Stages.js ***!
@@ -5846,7 +5998,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
 /* harmony import */ var _Comments__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comments */ "./resources/js/Comments.js");
 /* harmony import */ var _Stages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Stages */ "./resources/js/Stages.js");
+/* harmony import */ var _Invitations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Invitations */ "./resources/js/Invitations.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -5868,7 +6022,10 @@ window.addEventListener('load', function (e) {
   comments.init(); // Init Stages class
 
   var stages = new _Stages__WEBPACK_IMPORTED_MODULE_2__["default"]();
-  stages.init();
+  stages.init(); // Init Invitations class
+
+  var invitations = new _Invitations__WEBPACK_IMPORTED_MODULE_3__["default"]();
+  invitations.init();
 }); // Close the dropdown menu if the user clicks outside of it
 
 window.onclick = function (event) {

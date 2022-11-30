@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\InvitationRepositoryInterface;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InvitationSent;
 
 class InvitationService
 {
@@ -60,6 +62,37 @@ class InvitationService
         return [
             'status' => $success ? 'success' : 'error',
             'text' => $success ? __('flash.invitation_deleted') : __('flash.general_error')
+        ];
+    }
+
+    public function send(int $id): array
+    {
+        $invitation = $this->invitationRepository->find($id);
+
+        if (!$invitation)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.invitation_not_found')
+            ];
+        }
+
+        if ($invitation->isExpired())
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.invitation_is_expired')
+            ];
+        }
+
+        $link = config('app.url').'/register/'.$invitation->secret_key;
+        Mail::to($invitation->email)->send(new InvitationSent($link));
+
+        $this->invitationRepository->updateSendingStatus($id, 1);
+
+        return [
+            'status' => 'success',
+            'text' => __('success_messages.invitation_sent')
         ];
     }
 }
