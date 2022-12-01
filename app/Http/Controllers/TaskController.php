@@ -9,6 +9,7 @@ use App\Services\StageService;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use Illuminate\Http\Request;
+use App\Filters\TasksFilter;
 
 class TaskController extends Controller
 {
@@ -16,18 +17,21 @@ class TaskController extends Controller
     protected $projectService;
     protected $memberService;
     protected $stageService;
+    protected $filter;
 
     public function __construct(
         TaskService $taskService,
         ProjectService $projectService,
         MemberService $memberService,
-        StageService $stageService
+        StageService $stageService,
+        TasksFilter $filter
     )
     {
         $this->taskService = $taskService;
         $this->projectService = $projectService;
         $this->memberService = $memberService;
         $this->stageService = $stageService;
+        $this->filter = $filter;
         $this->middleware('permission:create-tasks')->only(['create', 'store']);
         $this->middleware('permission:edit-tasks')->only(['edit', 'update']);
         $this->middleware('permission:delete-tasks')->only('destroy');
@@ -42,7 +46,7 @@ class TaskController extends Controller
     {
         $title = __('titles.tasks_index');
         $tasks = $this->taskService->getList(
-            [],
+            $this->filter->params(),
             true,
             ['project', 'stage', 'owner', 'responsible']
         );
