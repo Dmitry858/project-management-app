@@ -27,4 +27,5 @@ return [
     'caching' => 'Caching',
     'invitations_index' => 'List of invitations',
     'invitations_create' => 'Creating a new invitation',
+    'filter' => 'Filter',
 ];

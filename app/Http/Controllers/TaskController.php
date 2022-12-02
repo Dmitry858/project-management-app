@@ -50,8 +50,10 @@ class TaskController extends Controller
             true,
             ['project', 'stage', 'owner', 'responsible']
         );
+        $projects = $this->projectService->getList([], false);
+        $stages = $this->stageService->getList();
 
-        return view('tasks.index', compact('title', 'tasks'));
+        return view('tasks.index', compact('title', 'tasks', 'projects', 'stages'));
     }
 
     /**

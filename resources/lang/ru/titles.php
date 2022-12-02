@@ -27,4 +27,5 @@ return [
     'caching' => 'Кэширование',
     'invitations_index' => 'Список приглашений',
     'invitations_create' => 'Создание приглашения',
+    'filter' => 'Фильтр',
 ];

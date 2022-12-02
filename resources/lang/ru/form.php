@@ -33,4 +33,5 @@ return [
     'placeholder_add_comment' => 'Добавить комментарий',
     'forgot_password' => 'Забыли пароль?',
     'already_registered' => 'Уже зарегистрированы?',
+    'option_all' => 'Все',
 ];

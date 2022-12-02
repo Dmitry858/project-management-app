@@ -33,4 +33,5 @@ return [
     'placeholder_add_comment' => 'Add comment',
     'forgot_password' => 'Forgot your password?',
     'already_registered' => 'Already registered?',
+    'option_all' => 'All',
 ];
