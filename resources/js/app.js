@@ -4,6 +4,7 @@ import Alpine from 'alpinejs';
 import Comments from './Comments';
 import Stages from './Stages';
 import Invitations from './Invitations';
+import Filters from './Filters';
 
 window.Alpine = Alpine;
 
@@ -29,6 +30,10 @@ window.addEventListener('load', function (e) {
     // Init Invitations class
     let invitations = new Invitations();
     invitations.init();
+
+    // Init Filters class
+    let filters = new Filters();
+    filters.init();
 });
 
 // Close the dropdown menu if the user clicks outside of it

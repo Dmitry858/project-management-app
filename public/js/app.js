@@ -5746,6 +5746,91 @@ var Comments = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/Filters.js":
+/*!*********************************!*\
+  !*** ./resources/js/Filters.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Filters)
+/* harmony export */ });
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Filters = /*#__PURE__*/function () {
+  function Filters() {
+    _classCallCheck(this, Filters);
+
+    this.isInited = false;
+  }
+
+  _createClass(Filters, [{
+    key: "init",
+    value: function init() {
+      if (this.isInited) return;
+      this.bindEvents();
+      this.isInited = true;
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      if (this.isInited) return;
+      var applyBtn = document.querySelector('.filter .filter-apply-btn');
+      if (!applyBtn) return;
+      applyBtn.addEventListener('click', this.applyFilter.bind(this));
+    }
+  }, {
+    key: "applyFilter",
+    value: function applyFilter(event) {
+      event.preventDefault();
+      var formData = new FormData(event.currentTarget.parentElement.parentElement),
+          queryString = '';
+
+      var _iterator = _createForOfIteratorHelper(formData.entries()),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var arr = _step.value;
+          if (arr[0] === '_token' || arr[1] === '') continue;
+          var firstSymbol = queryString === '' ? '?' : '&';
+          queryString += firstSymbol + arr[0] + '=' + arr[1];
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      var href = window.location.origin + window.location.pathname;
+
+      if (queryString !== '') {
+        href += queryString;
+      }
+
+      window.location.href = href;
+    }
+  }]);
+
+  return Filters;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/js/Invitations.js":
 /*!*************************************!*\
   !*** ./resources/js/Invitations.js ***!
@@ -5999,7 +6084,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Comments__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Comments */ "./resources/js/Comments.js");
 /* harmony import */ var _Stages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Stages */ "./resources/js/Stages.js");
 /* harmony import */ var _Invitations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Invitations */ "./resources/js/Invitations.js");
+/* harmony import */ var _Filters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Filters */ "./resources/js/Filters.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -6025,7 +6112,10 @@ window.addEventListener('load', function (e) {
   stages.init(); // Init Invitations class
 
   var invitations = new _Invitations__WEBPACK_IMPORTED_MODULE_3__["default"]();
-  invitations.init();
+  invitations.init(); // Init Filters class
+
+  var filters = new _Filters__WEBPACK_IMPORTED_MODULE_4__["default"]();
+  filters.init();
 }); // Close the dropdown menu if the user clicks outside of it
 
 window.onclick = function (event) {
