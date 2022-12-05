@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\StageController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\InvitationController;
 
 /*
@@ -37,6 +38,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/settings/caching', [SettingController::class, 'indexCaching'])->name('settings.caching')->middleware('permission:edit-settings');
     Route::post('/settings/caching', [SettingController::class, 'updateCaching'])->name('settings.caching.update')->middleware('permission:edit-settings');
     Route::resource('/settings/stages', StageController::class)->middleware('permission:edit-settings');
+    Route::resource('/settings/roles', RoleController::class)->middleware('permission:edit-settings');
     Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
