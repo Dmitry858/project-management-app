@@ -17,6 +17,7 @@ return [
     'col_secret_key' => 'Secret key',
     'col_created_at' => 'Created at',
     'col_is_sent' => 'Is sent',
+    'col_permissions' => 'Permissions',
     'status_yes' => 'Yes',
     'status_no' => 'No',
     'is_expired' => 'is expired',

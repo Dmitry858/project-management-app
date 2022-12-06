@@ -20,6 +20,8 @@ return [
     'settings' => 'Settings',
     'app_name' => 'Project Management App',
     'profile' => 'User profile',
+    'roles' => 'Roles of users',
+    'roles_index' => 'List of roles',
     'stages' => 'Stages',
     'stages_index' => 'List of stages',
     'stages_create' => 'Creating a new stage',
