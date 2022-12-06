@@ -22,6 +22,7 @@ return [
     'profile' => 'User profile',
     'roles' => 'Roles of users',
     'roles_index' => 'List of roles',
+    'roles_create' => 'Creating a new role',
     'stages' => 'Stages',
     'stages_index' => 'List of stages',
     'stages_create' => 'Creating a new stage',

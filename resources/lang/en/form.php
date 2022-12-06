@@ -24,6 +24,7 @@ return [
     'label_remember_me' => 'Remember me',
     'label_slug' => 'Slug',
     'label_secret_key' => 'Secret key',
+    'label_permissions' => 'Permissions',
     'change_link' => 'Change',
     'save_button' => 'Save',
     'empty_select_value' => 'Not selected',
