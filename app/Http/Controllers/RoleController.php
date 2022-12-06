@@ -3,17 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\RoleService;
 
 class RoleController extends Controller
 {
+    protected $roleService;
+
+    public function __construct(RoleService $roleService)
+    {
+        $this->roleService = $roleService;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
-        //
+        $title = __('titles.roles_index');
+        $roles = $this->roleService->getList();
+
+        return view('roles.index', compact('title', 'roles'));
     }
 
     /**
