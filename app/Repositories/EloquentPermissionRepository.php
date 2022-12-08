@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
+use App\Models\Permission;
 
 class EloquentPermissionRepository implements PermissionRepositoryInterface
 {
@@ -35,5 +36,10 @@ class EloquentPermissionRepository implements PermissionRepositoryInterface
         }
 
         return $permissions;
+    }
+
+    public function search(array $filter = [])
+    {
+        return Permission::where($filter)->get();
     }
 }
