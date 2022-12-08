@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\RoleService;
+use App\Services\PermissionService;
 
 class RoleController extends Controller
 {
     protected $roleService;
+    protected $permissionService;
 
-    public function __construct(RoleService $roleService)
+    public function __construct(RoleService $roleService, PermissionService $permissionService)
     {
         $this->roleService = $roleService;
+        $this->permissionService = $permissionService;
     }
 
     /**
@@ -30,11 +33,14 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
-        //
+        $title = __('titles.roles_create');
+        $permissions = $this->permissionService->getList();
+
+        return view('roles.create', compact('title', 'permissions'));
     }
 
     /**
