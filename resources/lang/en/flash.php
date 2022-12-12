@@ -17,6 +17,7 @@ return [
     'stage_created' => 'Stage created',
     'stage_updated' => 'Stage updated',
     'stage_deleted' => 'Stage deleted',
+    'role_created' => 'Role created',
     'invitation_created' => 'Invitation created',
     'invitation_deleted' => 'Invitation deleted',
     'general_error' => 'Something went wrong',

@@ -238,4 +238,5 @@ return [
 
     'default_user_password' => env('DEFAULT_USER_PASSWORD'),
 
+    'permissions_only_for_admin' => [1, 2, 3, 4, 5],
 ];

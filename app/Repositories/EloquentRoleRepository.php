@@ -42,4 +42,16 @@ class EloquentRoleRepository implements RoleRepositoryInterface
 
         return $roles;
     }
+
+    public function createFromArray(array $data)
+    {
+        return Role::create($data);
+    }
+
+    public function attachPermissions(int $roleId, array $permissionIds = [])
+    {
+        $role = Role::find($roleId);
+
+        return $role ? $role->permissions()->attach($permissionIds) : false;
+    }
 }

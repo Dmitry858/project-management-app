@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRoleRequest;
 use Illuminate\Http\Request;
 use App\Services\RoleService;
 use App\Services\PermissionService;
@@ -46,12 +47,14 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreRoleRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //
+        $result = $this->roleService->create($request->all());
+
+        return redirect()->route('roles.index')->with($result['status'], $result['text']);
     }
 
     /**

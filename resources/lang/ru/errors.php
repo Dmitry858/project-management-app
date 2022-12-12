@@ -19,4 +19,5 @@ return [
     'change_stage_forbidden' => 'Вы не можете изменять стадию задачи',
     'invitation_not_found' => 'Приглашение не найдено',
     'invitation_is_expired' => 'Приглашение просрочено',
+    'there_are_invalid_permissions' => 'Присутствуют недопустимые права',
 ];

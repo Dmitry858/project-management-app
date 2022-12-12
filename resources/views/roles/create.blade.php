@@ -26,12 +26,14 @@
                 </label>
                 @if(isset($permissions) && count($permissions) > 0)
                     @foreach($permissions as $permission)
-                        <div class="form-check">
-                            <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" name="permissions[]" value="{{ $permission->id }}" id="permission-{{ $permission->id }}">
-                            <label class="form-check-label inline-block text-gray-800" for="permission-{{ $permission->id }}">
-                                {{ $permission->name }}
-                            </label>
-                        </div>
+                        @if(!in_array($permission->id, config('app.permissions_only_for_admin')))
+                            <div class="form-check">
+                                <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" name="permissions[]" value="{{ $permission->id }}" id="permission-{{ $permission->id }}">
+                                <label class="form-check-label inline-block text-gray-800" for="permission-{{ $permission->id }}">
+                                    {{ $permission->name }}
+                                </label>
+                            </div>
+                        @endif
                     @endforeach
                 @endif
             </div>
