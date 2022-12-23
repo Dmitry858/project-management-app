@@ -80,7 +80,7 @@ class RoleController extends Controller
 
         if ($role && $role->slug !== 'admin')
         {
-            $title = __('titles.projects_edit', ['name' => $role->name]); //исправить ключ
+            $title = __('titles.roles_edit', ['name' => $role->name]);
             $permissions = $this->permissionService->getList();
         }
         else

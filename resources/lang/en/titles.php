@@ -23,6 +23,7 @@ return [
     'roles' => 'Roles of users',
     'roles_index' => 'List of roles',
     'roles_create' => 'Creating a new role',
+    'roles_edit' => 'Editing of the role «:name»',
     'stages' => 'Stages',
     'stages_index' => 'List of stages',
     'stages_create' => 'Creating a new stage',
