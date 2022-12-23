@@ -15,6 +15,11 @@ class RoleService
         $this->roleRepository = $roleRepository;
     }
 
+    public function get(int $id)
+    {
+        return $this->roleRepository->find($id);
+    }
+
     public function getList(array $filter = [])
     {
         return $this->roleRepository->search($filter);

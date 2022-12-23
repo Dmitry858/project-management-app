@@ -25,6 +25,11 @@ class EloquentRoleRepository implements RoleRepositoryInterface
         return $roles;
     }
 
+    public function find(int $id)
+    {
+        return Role::find($id);
+    }
+
     public function search(array $filter = [])
     {
         if (empty($filter) && Cache::has('all_roles'))

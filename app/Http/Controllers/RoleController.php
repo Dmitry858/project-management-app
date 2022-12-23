@@ -72,11 +72,23 @@ class RoleController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit($id)
     {
-        //
+        $role = $this->roleService->get($id);
+
+        if ($role && $role->slug !== 'admin')
+        {
+            $title = __('titles.projects_edit', ['name' => $role->name]); //исправить ключ
+            $permissions = $this->permissionService->getList();
+        }
+        else
+        {
+            abort(404);
+        }
+
+        return view('roles.edit', compact('title', 'role', 'permissions'));
     }
 
     /**
