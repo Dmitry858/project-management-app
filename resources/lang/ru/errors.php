@@ -20,4 +20,5 @@ return [
     'invitation_not_found' => 'Приглашение не найдено',
     'invitation_is_expired' => 'Приглашение просрочено',
     'there_are_invalid_permissions' => 'Присутствуют недопустимые права',
+    'change_admin_role_forbidden' => 'Вы не можете изменять роль «Администратор»',
 ];

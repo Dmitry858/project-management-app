@@ -53,6 +53,20 @@ class EloquentRoleRepository implements RoleRepositoryInterface
         return Role::create($data);
     }
 
+    public function updateFromArray(int $id, array $data): bool
+    {
+        $role = $this->find($id);
+
+        return $role ? $role->update($data) : false;
+    }
+
+    public function syncingPermissions(int $roleId, array $permissionIds = [])
+    {
+        $role = Role::find($roleId);
+
+        return $role ? $role->permissions()->sync($permissionIds) : false;
+    }
+
     public function attachPermissions(int $roleId, array $permissionIds = [])
     {
         $role = Role::find($roleId);

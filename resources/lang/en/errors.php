@@ -20,4 +20,5 @@ return [
     'invitation_not_found' => 'Invitation not found',
     'invitation_is_expired' => 'Invitation is expired',
     'there_are_invalid_permissions' => 'There are invalid permissions',
+    'change_admin_role_forbidden' => "You can't change the admin role",
 ];

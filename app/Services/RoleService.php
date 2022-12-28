@@ -25,6 +25,51 @@ class RoleService
         return $this->roleRepository->search($filter);
     }
 
+    public function update(int $id, array $data): array
+    {
+        unset($data['_token']);
+        unset($data['_method']);
+
+        if ($id === 1)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.change_admin_role_forbidden')
+            ];
+        }
+
+        foreach ($data['permissions'] as $permission)
+        {
+            if (in_array($permission, config('app.permissions_only_for_admin')))
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.there_are_invalid_permissions')
+                ];
+            }
+        }
+
+        $permissionIds = $data['permissions'];
+        unset($data['permissions']);
+
+        $success = $this->roleRepository->updateFromArray($id, $data);
+
+        if ($success)
+        {
+            if (is_array($permissionIds))
+            {
+                $this->roleRepository->syncingPermissions($id, $permissionIds);
+            }
+
+            Cache::flush();
+        }
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? __('flash.role_updated') : __('flash.general_error')
+        ];
+    }
+
     public static function hasUserRole(int $userId, string $roleSlug): bool
     {
         $repo = new EloquentRoleRepository;
