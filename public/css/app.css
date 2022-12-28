@@ -649,6 +649,9 @@ select {
 .z-30 {
   z-index: 30;
 }
+.float-left {
+  float: left;
+}
 .-mx-3 {
   margin-left: -0.75rem;
   margin-right: -0.75rem;
@@ -706,14 +709,14 @@ select {
 .ml-2 {
   margin-left: 0.5rem;
 }
+.mr-2 {
+  margin-right: 0.5rem;
+}
 .ml-1 {
   margin-left: 0.25rem;
 }
 .mt-2 {
   margin-top: 0.5rem;
-}
-.mr-2 {
-  margin-right: 0.5rem;
 }
 .ml-4 {
   margin-left: 1rem;
@@ -793,6 +796,9 @@ select {
 .h-5 {
   height: 1.25rem;
 }
+.h-4 {
+  height: 1rem;
+}
 .h-8 {
   height: 2rem;
 }
@@ -808,9 +814,6 @@ select {
 .h-3 {
   height: 0.75rem;
 }
-.h-4 {
-  height: 1rem;
-}
 .h-10 {
   height: 2.5rem;
 }
@@ -825,6 +828,9 @@ select {
 }
 .w-full {
   width: 100%;
+}
+.w-4 {
+  width: 1rem;
 }
 .w-8 {
   width: 2rem;
@@ -843,9 +849,6 @@ select {
 }
 .w-48 {
   width: 12rem;
-}
-.w-4 {
-  width: 1rem;
 }
 .w-6 {
   width: 1.5rem;
@@ -973,6 +976,9 @@ select {
 }
 .rounded {
   border-radius: 0.25rem;
+}
+.rounded-sm {
+  border-radius: 0.125rem;
 }
 .rounded-lg {
   border-radius: 0.5rem;
@@ -1111,6 +1117,15 @@ select {
 .to-gray-800 {
   --tw-gradient-to: #1f2937;
 }
+.bg-contain {
+  background-size: contain;
+}
+.bg-center {
+  background-position: center;
+}
+.bg-no-repeat {
+  background-repeat: no-repeat;
+}
 .fill-current {
   fill: currentColor;
 }
@@ -1225,6 +1240,9 @@ select {
 .text-right {
   text-align: right;
 }
+.align-top {
+  vertical-align: top;
+}
 .align-middle {
   vertical-align: middle;
 }
@@ -1321,6 +1339,10 @@ select {
   --tw-text-opacity: 1;
   color: rgb(37 99 235 / var(--tw-text-opacity));
 }
+.text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
 .text-gray-200 {
   --tw-text-opacity: 1;
   color: rgb(229 231 235 / var(--tw-text-opacity));
@@ -1356,10 +1378,6 @@ select {
 .text-indigo-700 {
   --tw-text-opacity: 1;
   color: rgb(67 56 202 / var(--tw-text-opacity));
-}
-.text-gray-800 {
-  --tw-text-opacity: 1;
-  color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 .underline {
   -webkit-text-decoration-line: underline;
@@ -1433,11 +1451,11 @@ select {
 .duration-150 {
   transition-duration: 150ms;
 }
-.duration-300 {
-  transition-duration: 300ms;
-}
 .duration-200 {
   transition-duration: 200ms;
+}
+.duration-300 {
+  transition-duration: 300ms;
 }
 .duration-75 {
   transition-duration: 75ms;
@@ -1471,7 +1489,9 @@ select {
   visibility: visible;
   z-index: 50;
 }
-.send-invitation-btn.disabled {
+.send-invitation-btn.disabled,
+.is-admin a,
+.is-admin form {
     pointer-events: none;
     opacity: 0.5;
     cursor: default;
@@ -1480,6 +1500,14 @@ select {
     .main-nav-wrap {
         height: calc(100vh - 96px);
     }
+}
+.checked\:border-blue-600:checked {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity));
+}
+.checked\:bg-blue-600:checked {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 .hover\:border-blue-600:hover {
   --tw-border-opacity: 1;

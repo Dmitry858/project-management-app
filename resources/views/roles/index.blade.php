@@ -32,7 +32,7 @@
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             {{ count($role->permissions) }}
                                         </td>
-                                        <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap @if($role->id === 1) is-admin @endif">
                                             @include('include.buttons.edit', ['link' => route('roles.edit', ['role' => $role->id])])
                                             @include('include.buttons.delete', ['link' => route('roles.destroy', ['role' => $role->id])])
                                         </td>

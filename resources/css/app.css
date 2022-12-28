@@ -24,7 +24,9 @@
     @apply visible z-50;
 }
 
-.send-invitation-btn.disabled {
+.send-invitation-btn.disabled,
+.is-admin a,
+.is-admin form {
     pointer-events: none;
     opacity: 0.5;
     cursor: default;
