@@ -32,4 +32,5 @@ return [
     'invitations_index' => 'List of invitations',
     'invitations_create' => 'Creating a new invitation',
     'filter' => 'Filter',
+    'users_with_role' => 'Users with this role',
 ];

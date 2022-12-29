@@ -12,4 +12,5 @@ return [
     'send' => 'Send',
     'login' => 'Log in',
     'register' => 'Register',
+    'back_to_list' => 'Back to list',
 ];

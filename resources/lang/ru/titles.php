@@ -32,4 +32,5 @@ return [
     'invitations_index' => 'Список приглашений',
     'invitations_create' => 'Создание приглашения',
     'filter' => 'Фильтр',
+    'users_with_role' => 'Пользователи с этой ролью',
 ];
