@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use Illuminate\Http\Request;
 use App\Services\RoleService;
 use App\Services\PermissionService;
 
@@ -62,11 +61,17 @@ class RoleController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function show($id)
     {
-        //
+        $role = $this->roleService->get($id);
+
+        if (!$role) abort(404);
+
+        $title = __('titles.roles_single', ['name' => $role->name]);
+
+        return view('roles.single', compact('title', 'role'));
     }
 
     /**

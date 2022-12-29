@@ -24,6 +24,7 @@ return [
     'roles_index' => 'Список ролей пользователей',
     'roles_create' => 'Создание новой роли',
     'roles_edit' => 'Редактирование роли «:name»',
+    'roles_single' => 'Роль «:name»',
     'stages' => 'Стадии задач',
     'stages_index' => 'Список стадий задач',
     'stages_create' => 'Создание стадии',

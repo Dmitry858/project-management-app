@@ -24,6 +24,7 @@ return [
     'roles_index' => 'List of roles',
     'roles_create' => 'Creating a new role',
     'roles_edit' => 'Editing of the role «:name»',
+    'roles_single' => 'The role «:name»',
     'stages' => 'Stages',
     'stages_index' => 'List of stages',
     'stages_create' => 'Creating a new stage',
