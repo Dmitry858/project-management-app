@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
             'name' => 'Администратор',
             'slug' => 'admin',
         ]);
-        $permIds = range(1, 21);
+        $permIds = range(1, count(config('app.permissions_list')));
         $role->permissions()->attach($permIds);
         $role->users()->attach([1]);
 
@@ -26,7 +26,14 @@ class RoleSeeder extends Seeder
             'name' => 'Менеджер',
             'slug' => 'manager',
         ]);
-        $permIds = range(6, 21);
+        foreach ($permIds as $key => $id)
+        {
+            if (in_array($id, config('app.permissions_only_for_admin')))
+            {
+                unset($permIds[$key]);
+            }
+        }
+        $permIds = array_values($permIds);
         $role->permissions()->attach($permIds);
     }
 }
