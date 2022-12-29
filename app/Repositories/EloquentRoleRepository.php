@@ -73,4 +73,28 @@ class EloquentRoleRepository implements RoleRepositoryInterface
 
         return $role ? $role->permissions()->attach($permissionIds) : false;
     }
+
+    public function delete(int $id): bool
+    {
+        $role = $this->find($id);
+
+        if ($role)
+        {
+            if (count($role->permissions) > 0)
+            {
+                $role->permissions()->detach();
+            }
+            if (count($role->users) > 0)
+            {
+                $role->users()->detach();
+            }
+            $result = $role->delete();
+        }
+        else
+        {
+            $result = false;
+        }
+
+        return $result;
+    }
 }

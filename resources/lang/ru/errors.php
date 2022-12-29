@@ -21,4 +21,6 @@ return [
     'invitation_is_expired' => 'Приглашение просрочено',
     'there_are_invalid_permissions' => 'Присутствуют недопустимые права',
     'change_admin_role_forbidden' => 'Вы не можете изменять роль «Администратор»',
+    'delete_admin_role_forbidden' => 'Вы не можете удалить роль «Администратор»',
+    'role_not_found' => 'Роль не найдена',
 ];

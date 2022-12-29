@@ -21,4 +21,6 @@ return [
     'invitation_is_expired' => 'Invitation is expired',
     'there_are_invalid_permissions' => 'There are invalid permissions',
     'change_admin_role_forbidden' => "You can't change the admin role",
+    'delete_admin_role_forbidden' => "You can't delete the admin role",
+    'role_not_found' => 'Role not found',
 ];

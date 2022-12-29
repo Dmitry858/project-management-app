@@ -121,4 +121,37 @@ class RoleService
             'text' => $newRole ? __('flash.role_created') : __('flash.general_error')
         ];
     }
+
+    public function delete(int $id): array
+    {
+        if ($id === 1)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.delete_admin_role_forbidden')
+            ];
+        }
+
+        $role = $this->roleRepository->find($id);
+
+        if (!$role)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.role_not_found')
+            ];
+        }
+
+        $success = $this->roleRepository->delete($id);
+
+        if ($success)
+        {
+            Cache::flush();
+        }
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? __('flash.role_deleted') : __('flash.general_error')
+        ];
+    }
 }

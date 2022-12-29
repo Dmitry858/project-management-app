@@ -109,11 +109,13 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        $result = $this->roleService->delete($id);
+
+        return redirect()->route('roles.index')->with($result['status'], $result['text']);
     }
 }
