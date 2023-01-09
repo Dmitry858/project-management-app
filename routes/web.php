@@ -7,10 +7,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\StageController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\InvitationController;
 
 /*
@@ -25,6 +22,7 @@ use App\Http\Controllers\InvitationController;
 */
 
 require __DIR__.'/auth.php';
+require __DIR__.'/settings.php';
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -34,11 +32,6 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('/users', UserController::class);
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings')->middleware('permission:edit-settings');
-    Route::get('/settings/caching', [SettingController::class, 'indexCaching'])->name('settings.caching')->middleware('permission:edit-settings');
-    Route::post('/settings/caching', [SettingController::class, 'updateCaching'])->name('settings.caching.update')->middleware('permission:edit-settings');
-    Route::resource('/settings/stages', StageController::class)->middleware('permission:edit-settings');
-    Route::resource('/settings/roles', RoleController::class)->middleware('permission:edit-settings');
     Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
