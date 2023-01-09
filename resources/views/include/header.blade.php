@@ -3,7 +3,11 @@
         <div class="flex flex-wrap items-center">
             <div class="flex flex-shrink md:w-1/3 justify-center md:justify-start text-white">
                 <a href="{{ route('dashboard') }}" aria-label="Home">
-                    <span class="text-3xl pl-2">Logo</span>
+                    @if(Storage::disk('public')->exists('logo.png'))
+                        <img src="{{ asset('storage/logo.png') }}" class="max-h-9 max-w-xs pl-2" alt="{{ __('header.logo') }}">
+                    @else
+                        <span class="text-3xl pl-2">@lang('header.logo')</span>
+                    @endif
                 </a>
             </div>
 

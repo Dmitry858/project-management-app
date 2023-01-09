@@ -820,6 +820,9 @@ select {
 .h-6 {
   height: 1.5rem;
 }
+.max-h-9 {
+  max-height: 2.25rem;
+}
 .min-h-screen {
   min-height: 100vh;
 }
