@@ -18,6 +18,7 @@ return [
     'tasks_single' => 'Задача «:name»',
     'comments' => 'Комментарии',
     'settings' => 'Настройки',
+    'general_settings' => 'Общие настройки',
     'app_name' => 'Менеджер проектов',
     'profile' => 'Профиль пользователя',
     'roles' => 'Роли пользователей',
