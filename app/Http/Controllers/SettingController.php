@@ -4,14 +4,36 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use App\Services\SettingService;
 
 class SettingController extends Controller
 {
+    protected $settingService;
+
+    public function __construct(SettingService $settingService)
+    {
+        $this->settingService = $settingService;
+    }
+
     public function index()
     {
         $title = __('titles.settings');
 
         return view('settings.index', compact('title'));
+    }
+
+    public function indexGeneral()
+    {
+        $title = __('titles.general_settings');
+
+        return view('settings.general', compact('title'));
+    }
+
+    public function updateGeneral(Request $request)
+    {
+        $result = $this->settingService->updateGeneral($request);
+
+        return redirect()->route('settings.general')->with($result['status'], $result['text']);
     }
 
     public function indexCaching()
