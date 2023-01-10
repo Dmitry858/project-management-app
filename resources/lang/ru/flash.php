@@ -24,4 +24,5 @@ return [
     'invitation_deleted' => 'Приглашение успешно удалено',
     'general_error' => 'Что-то пошло не так, попробуйте позже',
     'clear_cache_completed' => 'Очистка кэша завершена',
+    'general_settings_updated' => 'Общие настройки обновлены',
 ];

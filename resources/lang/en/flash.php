@@ -24,4 +24,5 @@ return [
     'invitation_deleted' => 'Invitation deleted',
     'general_error' => 'Something went wrong',
     'clear_cache_completed' => 'Clear cache completed',
+    'general_settings_updated' => 'General settings updated',
 ];
