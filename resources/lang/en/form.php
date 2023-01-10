@@ -25,6 +25,8 @@ return [
     'label_slug' => 'Slug',
     'label_secret_key' => 'Secret key',
     'label_permissions' => 'Permissions',
+    'label_logo' => 'Logo',
+    'logo_input_hint' => 'only png images',
     'change_link' => 'Change',
     'save_button' => 'Save',
     'empty_select_value' => 'Not selected',

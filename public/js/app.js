@@ -6102,6 +6102,15 @@ window.addEventListener('load', function (e) {
     dropdownTrigger.addEventListener('click', function (e) {
       document.getElementById('user-dropdown').classList.toggle('invisible');
     });
+  } // Delete current logo
+
+
+  var deleteLogoBtn = document.getElementById('delete-logo-btn');
+
+  if (deleteLogoBtn) {
+    deleteLogoBtn.addEventListener('click', function (e) {
+      e.currentTarget.parentElement.remove();
+    });
   } // Init Comments class
 
 

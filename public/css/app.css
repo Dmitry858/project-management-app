@@ -628,6 +628,9 @@ select {
 .right-6 {
   right: 1.5rem;
 }
+.-right-6 {
+  right: -1.5rem;
+}
 .bottom-0 {
   bottom: 0px;
 }

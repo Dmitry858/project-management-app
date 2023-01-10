@@ -19,6 +19,14 @@ window.addEventListener('load', function (e) {
         });
     }
 
+    // Delete current logo
+    const deleteLogoBtn = document.getElementById('delete-logo-btn');
+    if (deleteLogoBtn) {
+        deleteLogoBtn.addEventListener('click', function (e) {
+            e.currentTarget.parentElement.remove();
+        });
+    }
+
     // Init Comments class
     let comments = new Comments();
     comments.init();

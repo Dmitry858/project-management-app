@@ -25,6 +25,8 @@ return [
     'label_slug' => 'Код',
     'label_secret_key' => 'Секретный ключ',
     'label_permissions' => 'Права',
+    'label_logo' => 'Логотип',
+    'logo_input_hint' => 'только изображения png',
     'change_link' => 'Изменить',
     'save_button' => 'Сохранить',
     'empty_select_value' => 'Не выбран',
