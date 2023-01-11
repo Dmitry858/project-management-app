@@ -46,6 +46,11 @@ class Task extends Model
         return $this->belongsTo(Member::class, 'responsible_id');
     }
 
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
+
     public function getMemberFullName(int $memberId): string
     {
         return MemberService::getMemberFullName($memberId);
