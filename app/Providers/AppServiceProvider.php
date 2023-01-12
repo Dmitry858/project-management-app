@@ -12,6 +12,7 @@ use App\Repositories\Interfaces\RoleRepositoryInterface;
 use App\Repositories\Interfaces\PermissionRepositoryInterface;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\InvitationRepositoryInterface;
+use App\Repositories\Interfaces\AttachmentRepositoryInterface;
 use App\Repositories\EloquentProjectRepository;
 use App\Repositories\EloquentUserRepository;
 use App\Repositories\EloquentMemberRepository;
@@ -21,6 +22,7 @@ use App\Repositories\EloquentRoleRepository;
 use App\Repositories\EloquentPermissionRepository;
 use App\Repositories\EloquentCommentRepository;
 use App\Repositories\EloquentInvitationRepository;
+use App\Repositories\EloquentAttachmentRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -62,5 +64,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CommentRepositoryInterface::class, EloquentCommentRepository::class);
 
         $this->app->bind(InvitationRepositoryInterface::class, EloquentInvitationRepository::class);
+
+        $this->app->bind(AttachmentRepositoryInterface::class, EloquentAttachmentRepository::class);
     }
 }
