@@ -26,6 +26,7 @@ return [
     'label_secret_key' => 'Secret key',
     'label_permissions' => 'Permissions',
     'label_logo' => 'Logo',
+    'label_attachments' => 'Attachments',
     'logo_input_hint' => 'only png images',
     'change_link' => 'Change',
     'save_button' => 'Save',

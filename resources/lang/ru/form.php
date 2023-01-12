@@ -26,6 +26,7 @@ return [
     'label_secret_key' => 'Секретный ключ',
     'label_permissions' => 'Права',
     'label_logo' => 'Логотип',
+    'label_attachments' => 'Файлы',
     'logo_input_hint' => 'только изображения png',
     'change_link' => 'Изменить',
     'save_button' => 'Сохранить',
