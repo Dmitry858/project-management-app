@@ -79,11 +79,9 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        $success = $this->taskService->create($request->all());
-        $flashKey = $success ? 'success' : 'error';
-        $flashValue = $success ? __('flash.task_created') : __('flash.general_error');
+        $result = $this->taskService->create($request);
 
-        return redirect()->route('tasks.index')->with($flashKey, $flashValue);
+        return redirect()->route('tasks.index')->with($result['status'], $result['text']);
     }
 
     /**

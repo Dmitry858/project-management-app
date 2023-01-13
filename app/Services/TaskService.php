@@ -3,15 +3,20 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\TaskRepositoryInterface;
+use App\Repositories\Interfaces\AttachmentRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class TaskService
 {
     protected $taskRepository;
+    protected $attachmentRepository;
 
-    public function __construct(TaskRepositoryInterface $taskRepository)
+    public function __construct(TaskRepositoryInterface $taskRepository, AttachmentRepositoryInterface $attachmentRepository)
     {
         $this->taskRepository = $taskRepository;
+        $this->attachmentRepository = $attachmentRepository;
     }
 
     public function get(int $id)
@@ -60,11 +65,47 @@ class TaskService
         }
     }
 
-    public function create(array $data)
+    public function create(Request $request): array
     {
+        $data = $request->all();
         unset($data['_token']);
 
-        return $this->taskRepository->createFromArray($data);
+        $task = $this->taskRepository->createFromArray($data);
+        if ($task)
+        {
+            $attachments = [];
+            if ($request->hasFile('attachments'))
+            {
+                foreach ($request->file('attachments') as $file)
+                {
+                    $filePath = $file->store('attachments');
+                    $attachments[] = [
+                        'file_name' => $file->getClientOriginalName(),
+                        'file' => $filePath,
+                        'task_id' => $task->id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
+                }
+            }
+
+            if (count($attachments) > 0)
+            {
+                $this->attachmentRepository->createFromArray($attachments);
+            }
+
+            return [
+                'status' => 'success',
+                'text' => __('flash.task_created')
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'error',
+                'text' => __('flash.general_error')
+            ];
+        }
     }
 
     public function update(int $id, array $data, bool $onlyStage = false)
