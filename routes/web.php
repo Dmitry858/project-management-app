@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\AttachmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,5 @@ Route::middleware(['auth'])->group(function() {
         'edit', 'update', 'show'
     ])->middleware('permission:edit-invitations');
     Route::post('/invitations/{invitation}/send', [InvitationController::class, 'send'])->name('invitations.send')->middleware('permission:edit-invitations');
+    Route::get('/attachments/{attachment}', [AttachmentController::class, 'show'])->name('attachment');
 });
