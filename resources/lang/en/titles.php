@@ -17,6 +17,7 @@ return [
     'tasks_edit' => 'Editing of the task «:name»',
     'tasks_single' => 'The task «:name»',
     'comments' => 'Comments',
+    'attachments' => 'Attachments',
     'settings' => 'Settings',
     'general_settings' => 'General settings',
     'app_name' => 'Project Management App',

@@ -4,7 +4,17 @@
     <div class="flex flex-wrap">
         <div class="w-full sm:w-2/3 sm:pr-5 mb-6">
             {{ $task->description }}
-            <h4 class="font-medium leading-tight text-3xl mt-6 mb-2">
+
+            @if(count($task->attachments) > 0)
+                <h4 class="font-medium leading-tight text-2xl mt-6 mb-2">
+                    @lang('titles.attachments')
+                </h4>
+                @foreach($task->attachments as $attachment)
+                    @include('include.attachment')
+                @endforeach
+            @endif
+
+            <h4 class="font-medium leading-tight text-2xl mt-6 mb-2">
                 @lang('titles.comments')
             </h4>
             <div id="comments-wrap">

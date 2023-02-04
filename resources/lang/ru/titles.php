@@ -17,6 +17,7 @@ return [
     'tasks_edit' => 'Редактирование задачи «:name»',
     'tasks_single' => 'Задача «:name»',
     'comments' => 'Комментарии',
+    'attachments' => 'Прикреплённые файлы',
     'settings' => 'Настройки',
     'general_settings' => 'Общие настройки',
     'app_name' => 'Менеджер проектов',
