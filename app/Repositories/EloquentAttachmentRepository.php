@@ -7,6 +7,11 @@ use App\Models\Attachment;
 
 class EloquentAttachmentRepository implements AttachmentRepositoryInterface
 {
+    public function find(int $id)
+    {
+        return Attachment::find($id);
+    }
+
     public function search(array $filter = [])
     {
         return Attachment::where($filter)->get();
