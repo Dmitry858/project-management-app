@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Models\Task;
+use Illuminate\Support\Facades\Storage;
 
 class EloquentTaskRepository implements TaskRepositoryInterface
 {
@@ -62,6 +63,16 @@ class EloquentTaskRepository implements TaskRepositoryInterface
             if (count($task->comments) > 0)
             {
                 $task->comments()->delete();
+            }
+            if (count($task->attachments) > 0)
+            {
+                $files = [];
+                foreach ($task->attachments as $attachment)
+                {
+                    $files[] = $attachment->file;
+                }
+                Storage::delete($files);
+                $task->attachments()->delete();
             }
             $result = $task->delete();
         }
