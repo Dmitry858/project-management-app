@@ -38,4 +38,5 @@ return [
     'forgot_password' => 'Forgot your password?',
     'already_registered' => 'Already registered?',
     'option_all' => 'All',
+    'add_new_files' => 'Add new files',
 ];

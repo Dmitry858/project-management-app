@@ -138,7 +138,7 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, $id)
     {
-        $success = $this->taskService->update($id, $request->all());
+        $success = $this->taskService->update($id, $request->all(), false, $request);
         $flashKey = $success ? 'success' : 'error';
         $flashValue = $success ? __('flash.task_updated') : __('flash.general_error');
 

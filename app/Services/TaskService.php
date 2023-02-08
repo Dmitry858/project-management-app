@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\AttachmentRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class TaskService
 {
@@ -108,7 +109,7 @@ class TaskService
         }
     }
 
-    public function update(int $id, array $data, bool $onlyStage = false)
+    public function update(int $id, array $data, bool $onlyStage = false, $request = null)
     {
         if ($onlyStage)
         {
@@ -147,6 +148,42 @@ class TaskService
         }
         else
         {
+            $attachments = [];
+            if ($request && $request->hasFile('attachments'))
+            {
+                foreach ($request->file('attachments') as $file)
+                {
+                    $filePath = $file->store('attachments');
+                    $attachments[] = [
+                        'file_name' => $file->getClientOriginalName(),
+                        'file' => $filePath,
+                        'task_id' => $id,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
+                }
+            }
+
+            if (count($attachments) > 0)
+            {
+                $this->attachmentRepository->createFromArray($attachments);
+            }
+
+            if ($data['deleted_attachments'])
+            {
+                $needDeleteIds = explode(', ', $data['deleted_attachments']);
+                $needDeleteFiles = $this->attachmentRepository->search(['id' => $needDeleteIds]);
+                $files = [];
+                foreach ($needDeleteFiles as $attachment)
+                {
+                    $files[] = $attachment->file;
+                }
+                if (count($files) > 0)
+                {
+                    Storage::delete($files);
+                }
+                $this->attachmentRepository->delete($needDeleteIds);
+            }
             return $this->taskRepository->updateFromArray($id, $data);
         }
     }

@@ -27,6 +27,28 @@ window.addEventListener('load', function (e) {
         });
     }
 
+    // Delete current attachments
+    const deleteFileBtns = document.getElementsByClassName('delete-file-btn'),
+          deletedFilesInput = document.getElementById('deleted_attachments');
+
+    if (deleteFileBtns.length > 0 && deletedFilesInput) {
+        for (let btn of deleteFileBtns) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                let value = deletedFilesInput.value,
+                    fileId = e.currentTarget.dataset.id;
+
+                if (value === '') {
+                    value = fileId;
+                } else {
+                    value += ', ' + fileId;
+                }
+                deletedFilesInput.value = value;
+                e.currentTarget.parentElement.remove();
+            });
+        }
+    }
+
     // Init Comments class
     let comments = new Comments();
     comments.init();

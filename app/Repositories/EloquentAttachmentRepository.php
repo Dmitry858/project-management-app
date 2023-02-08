@@ -14,7 +14,22 @@ class EloquentAttachmentRepository implements AttachmentRepositoryInterface
 
     public function search(array $filter = [])
     {
-        return Attachment::where($filter)->get();
+        $query = Attachment::query();
+        if (count($filter) > 0)
+        {
+            foreach ($filter as $key => $value)
+            {
+                if (is_array($value))
+                {
+                    $query = $query->whereIn($key, $value);
+                }
+                else
+                {
+                    $query = $query->where($key, $value);
+                }
+            }
+        }
+        return $query->get();
     }
 
     public function createFromArray(array $data)

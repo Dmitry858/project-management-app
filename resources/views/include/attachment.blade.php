@@ -1,4 +1,4 @@
-<div class="mb-2">
+<div class="flex items-center mb-2">
     <a href="{{ route('attachment', ['attachment' => $attachment->id]) }}" target="_blank" class="inline-flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text mr-1" viewBox="0 0 16 16">
             <path d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
@@ -6,4 +6,7 @@
         </svg>
         {{ $attachment->file_name }}
     </a>
+    @if(isset($template) && $template === 'edit')
+        <a href="#" class="delete-file-btn ml-2" data-id="{{ $attachment->id }}">x</a>
+    @endif
 </div>

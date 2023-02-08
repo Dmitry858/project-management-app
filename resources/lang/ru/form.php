@@ -38,4 +38,5 @@ return [
     'forgot_password' => 'Забыли пароль?',
     'already_registered' => 'Уже зарегистрированы?',
     'option_all' => 'Все',
+    'add_new_files' => 'Добавить новые файлы',
 ];
