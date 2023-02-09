@@ -7,18 +7,26 @@ use App\Services\UserService;
 use App\Services\TaskService;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Filters\ProjectsFilter;
 
 class ProjectController extends Controller
 {
     protected $projectService;
     protected $userService;
     protected $taskService;
+    protected $filter;
 
-    public function __construct(ProjectService $projectService, UserService $userService, TaskService $taskService)
+    public function __construct(
+        ProjectService $projectService,
+        UserService $userService,
+        TaskService $taskService,
+        ProjectsFilter $filter
+    )
     {
         $this->projectService = $projectService;
         $this->userService = $userService;
         $this->taskService = $taskService;
+        $this->filter = $filter;
         $this->middleware('permission:create-projects')->only(['create', 'store']);
         $this->middleware('permission:edit-projects')->only(['edit', 'update']);
         $this->middleware('permission:delete-projects')->only('destroy');
@@ -32,7 +40,11 @@ class ProjectController extends Controller
     public function index()
     {
         $title = __('titles.projects_index');
-        $projects = $this->projectService->getList([], true, ['members']);
+        $projects = $this->projectService->getList(
+            $this->filter->params(),
+            true,
+            ['members']
+        );
 
         return view('projects.index', compact('title', 'projects'));
     }

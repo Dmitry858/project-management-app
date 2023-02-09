@@ -3,6 +3,9 @@
 @section('content')
     @include('include.flash-success')
     @include('include.flash-error')
+    @permission('view-all-projects')
+        @include('include.projects-filter')
+    @endpermission
 
     @if (count($projects) > 0)
         <div class="flex flex-col overflow-x-auto">
