@@ -3,6 +3,7 @@
 @section('content')
     @include('include.flash-success')
     @include('include.flash-error')
+    @include('include.filter', ['entity' => 'users'])
 
     @if (count($users) > 0)
         <div class="flex flex-col">

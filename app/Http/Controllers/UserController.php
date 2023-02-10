@@ -7,16 +7,19 @@ use App\Services\UserService;
 use App\Services\RoleService;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Filters\UsersFilter;
 
 class UserController extends Controller
 {
     protected $userService;
     protected $roleService;
+    protected $filter;
 
-    public function __construct(UserService $userService, RoleService $roleService)
+    public function __construct(UserService $userService, RoleService $roleService, UsersFilter $filter)
     {
         $this->userService = $userService;
         $this->roleService = $roleService;
+        $this->filter = $filter;
         $this->middleware('permission:view-users')->only(['index']);
         $this->middleware('permission:create-users')->only(['create', 'store']);
         $this->middleware('permission:edit-users')->only(['edit', 'update']);
@@ -31,7 +34,7 @@ class UserController extends Controller
     public function index()
     {
         $title = __('titles.users_index');
-        $users = $this->userService->getList();
+        $users = $this->userService->getList($this->filter->params());
 
         return view('users.index', compact('title', 'users'));
     }

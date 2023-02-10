@@ -4,7 +4,7 @@
     @include('include.flash-success')
     @include('include.flash-error')
     @permission('view-all-projects')
-        @include('include.projects-filter')
+        @include('include.filter', ['entity' => 'projects'])
     @endpermission
 
     @if (count($projects) > 0)
