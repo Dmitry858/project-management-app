@@ -32,6 +32,10 @@
     cursor: default;
 }
 
+.min-h-50 {
+    min-height: 50px;
+}
+
 @media (min-width: 768px) {
     .main-nav-wrap {
         height: calc(100vh - 96px);

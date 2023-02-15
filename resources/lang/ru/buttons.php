@@ -13,4 +13,6 @@ return [
     'login' => 'Войти',
     'register' => 'Зарегистрироваться',
     'back_to_list' => 'К списку',
+    'all_tasks' => 'Все задачи',
+    'all_projects' => 'Все проекты',
 ];

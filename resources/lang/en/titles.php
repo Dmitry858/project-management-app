@@ -36,4 +36,6 @@ return [
     'invitations_create' => 'Creating a new invitation',
     'filter' => 'Filter',
     'users_with_role' => 'Users with this role',
+    'active_projects' => 'Active projects',
+    'new_tasks' => 'New tasks',
 ];

@@ -36,4 +36,6 @@ return [
     'invitations_create' => 'Создание приглашения',
     'filter' => 'Фильтр',
     'users_with_role' => 'Пользователи с этой ролью',
+    'active_projects' => 'Активные проекты',
+    'new_tasks' => 'Новые задачи',
 ];

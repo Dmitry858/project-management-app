@@ -15,7 +15,25 @@ class EloquentTaskRepository implements TaskRepositoryInterface
 
     public function search(array $filter = [], bool $withPaginate = true, array $with = [])
     {
-        $query = Task::where($filter);
+        $query = Task::query();
+        if (count($filter) > 0)
+        {
+            foreach ($filter as $key => $value)
+            {
+                if ($key === 'created_at' || $key === 'updated_at')
+                {
+                    if (is_array($value) && $value[0] && $value[1])
+                    {
+                        $query = $query->whereDate($key, $value[0], $value[1]);
+                    }
+                }
+                else
+                {
+                    $query = $query->where($key, $value);
+                }
+            }
+        }
+
         if (!empty($with)) $query = $query->with($with);
 
         if ($withPaginate)
@@ -33,11 +51,37 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         $query = Task::query();
         if (!empty($with)) $query = $query->with($with);
 
+        $filterDate = [];
+        foreach ($filter as $key => $value)
+        {
+            if ($key === 'created_at' || $key === 'updated_at')
+            {
+                $filterDate = [
+                    'key' => $key,
+                    'operator' => $value[0],
+                    'value' => $value[1],
+                ];
+                unset($filter[$key]);
+            }
+        }
+
         $query = $query->whereHas('owner', function($query) use ($id) {
             $query->where('owner_id', $id);
-        })->where($filter)->orWhereHas('responsible', function($query) use ($id) {
+        })->where($filter);
+
+        if (!empty($filterDate))
+        {
+            $query = $query->whereDate($filterDate['key'], $filterDate['operator'], $filterDate['value']);
+        }
+
+        $query = $query->orWhereHas('responsible', function($query) use ($id) {
             $query->where('responsible_id', $id);
         })->where($filter);
+
+        if (!empty($filterDate))
+        {
+            $query = $query->whereDate($filterDate['key'], $filterDate['operator'], $filterDate['value']);
+        }
 
         return $withPaginate ? $query->paginate() : $query->get();
     }
