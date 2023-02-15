@@ -169,7 +169,7 @@ class TaskService
                 $this->attachmentRepository->createFromArray($attachments);
             }
 
-            if ($data['deleted_attachments'])
+            if (isset($data['deleted_attachments']) && $data['deleted_attachments'])
             {
                 $needDeleteIds = explode(', ', $data['deleted_attachments']);
                 $needDeleteFiles = $this->attachmentRepository->search(['id' => $needDeleteIds]);
