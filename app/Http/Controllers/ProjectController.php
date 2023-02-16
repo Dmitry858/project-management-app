@@ -91,7 +91,11 @@ class ProjectController extends Controller
         {
             $title = __('titles.projects_single', ['name' => $project->name]);
             $members = $this->projectService->getProjectMembers($project);
-            $tasks = $this->taskService->getList(['project_id' => $id]);
+            $tasks = $this->taskService->getList(
+                ['project_id' => $id],
+                true,
+                ['stage']
+            );
 
             return view('projects.single', compact('title', 'project', 'members', 'tasks'));
         }
