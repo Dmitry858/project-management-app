@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('create-task') }}
     @include('include.flash-error')
 
     <form class="w-full max-w-lg" method="POST" action="{{ route('tasks.store') }}" enctype="multipart/form-data">

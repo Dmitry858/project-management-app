@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('single-role', $role) }}
     <div class="flex flex-wrap -mx-3 mb-6">
         <div class="w-full px-3 mb-6">
             <p class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">

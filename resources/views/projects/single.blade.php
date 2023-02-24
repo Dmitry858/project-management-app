@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('single-project', $project) }}
     <div class="flex flex-wrap">
         <div class="w-full sm:w-2/3 sm:pr-5 mb-6">
             <h4 class="font-medium leading-tight text-3xl mt-0 mb-2">

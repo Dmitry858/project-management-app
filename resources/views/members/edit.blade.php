@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('edit-member', $member) }}
     @include('include.flash-error')
 
     <form class="w-full max-w-lg" method="POST" action="{{ route('members.update', ['member' => $member->id]) }}">
@@ -12,7 +13,7 @@
                     @lang('form.label_user')
                 </p>
                 <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
-                    {{ $member->user->name }} {{ $member->user->last_name }}
+                    {{ $member->getFullName() }}
                 </p>
             </div>
 

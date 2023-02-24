@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('single-task', $task) }}
     <div class="flex flex-wrap">
         <div class="w-full sm:w-2/3 sm:pr-5 mb-6">
             {{ $task->description }}

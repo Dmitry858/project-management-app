@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('edit-stage', $stage) }}
     @include('include.flash-error')
 
     <form class="w-full max-w-lg" method="POST" action="{{ route('stages.update', ['stage' => $stage->id]) }}">

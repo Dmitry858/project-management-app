@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('edit-user', $user) }}
     @include('include.flash-success')
     @include('include.flash-error')
 

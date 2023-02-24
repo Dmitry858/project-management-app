@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('edit-task', $task) }}
     @include('include.flash-error')
 
     <form class="w-full max-w-lg" method="POST" action="{{ route('tasks.update', ['task' => $task->id]) }}" enctype="multipart/form-data">

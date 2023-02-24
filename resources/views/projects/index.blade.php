@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('projects') }}
     @include('include.flash-success')
     @include('include.flash-error')
     @permission('view-all-projects')

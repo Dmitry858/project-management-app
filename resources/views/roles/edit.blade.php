@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('edit-role', $role) }}
     @include('include.flash-error')
 
     <form class="w-full max-w-lg" method="POST" action="{{ route('roles.update', ['role' => $role->id]) }}">

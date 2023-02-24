@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    {{ Breadcrumbs::render('general-settings') }}
     @include('include.flash-success')
     @include('include.flash-error')
 
