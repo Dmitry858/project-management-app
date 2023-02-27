@@ -22,6 +22,7 @@ return [
     'role_deleted' => 'Роль успешно удалена',
     'invitation_created' => 'Приглашение успешно создано',
     'invitation_deleted' => 'Приглашение успешно удалено',
+    'invitations_deleted' => 'Приглашения успешно удалены',
     'general_error' => 'Что-то пошло не так, попробуйте позже',
     'clear_cache_completed' => 'Очистка кэша завершена',
     'general_settings_updated' => 'Общие настройки обновлены',

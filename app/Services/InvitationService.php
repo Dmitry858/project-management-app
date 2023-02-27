@@ -55,13 +55,15 @@ class InvitationService
         ];
     }
 
-    public function delete(int $id): array
+    public function delete(array $ids): array
     {
-        $success = $this->invitationRepository->delete($id);
+        if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];
+        $success = $this->invitationRepository->delete($ids);
+        $successMsg = count($ids) > 1 ? __('flash.invitations_deleted') : __('flash.invitation_deleted');
 
         return [
             'status' => $success ? 'success' : 'error',
-            'text' => $success ? __('flash.invitation_deleted') : __('flash.general_error')
+            'text' => $success ? $successMsg : __('flash.general_error')
         ];
     }
 

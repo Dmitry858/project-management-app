@@ -5,6 +5,7 @@ import Comments from './Comments';
 import Stages from './Stages';
 import Invitations from './Invitations';
 import Filters from './Filters';
+import DeleteItemsGroupHandler from './DeleteItemsGroupHandler';
 
 window.Alpine = Alpine;
 
@@ -64,6 +65,10 @@ window.addEventListener('load', function (e) {
     // Init Filters class
     let filters = new Filters();
     filters.init();
+
+    // Init DeleteItemsGroupHandler class
+    let handler = new DeleteItemsGroupHandler();
+    handler.init();
 });
 
 // Close the dropdown menu if the user clicks outside of it

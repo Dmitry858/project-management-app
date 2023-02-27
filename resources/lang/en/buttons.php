@@ -15,4 +15,5 @@ return [
     'back_to_list' => 'Back to list',
     'all_tasks' => 'All tasks',
     'all_projects' => 'All projects',
+    'delete_selected' => 'Delete selected',
 ];

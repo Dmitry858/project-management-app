@@ -15,6 +15,7 @@
                         <table class="min-w-full">
                             <thead class="bg-blue-300 border-b">
                                 <tr>
+                                    @include('include.table-th', ['type' => 'checkbox'])
                                     @include('include.table-th', ['text' => __('table.col_secret_key')])
                                     @include('include.table-th', ['text' => __('table.col_email')])
                                     @include('include.table-th', ['text' => __('table.col_created_at')])
@@ -24,7 +25,8 @@
                             </thead>
                             <tbody>
                                 @foreach ($invitations as $invitation)
-                                    <tr class="bg-white border-b hover:bg-blue-100 transition" data-id="{{ $invitation->id }}">
+                                    <tr class="bg-white border-b hover:bg-blue-100 transition" data-id="{{ $invitation->id }}" data-entity="invitations">
+                                        @include('include.table-td', ['type' => 'checkbox'])
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $invitation->secret_key }}
                                         </td>
@@ -61,8 +63,11 @@
         <p>@lang('empty.invitations')</p>
     @endif
 
-    <div class="py-4 mt-4">
+    <div class="flex items-center py-4 mt-2">
         @include('include.buttons.create', ['link' => route('invitations.create')])
+        <a href="#" id="delete-items-link" class="ml-4 text-gray-900 text-sm font-medium hidden">
+            @lang('buttons.delete_selected')
+        </a>
     </div>
 @endsection
 

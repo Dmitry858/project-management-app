@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\InvitationService;
 use App\Http\Requests\StoreInvitationRequest;
+use Illuminate\Http\Request;
 
 class InvitationController extends Controller
 {
@@ -60,9 +61,24 @@ class InvitationController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->invitationService->delete($id);
+        $result = $this->invitationService->delete([$id]);
 
         return redirect()->route('invitations.index')->with($result['status'], $result['text']);
+    }
+
+    /**
+     * Remove the group of specified resources from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyGroup(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $this->invitationService->delete($data);
+        $request->session()->flash($result['status'], $result['text']);
+
+        return response()->json($result);
     }
 
     /**

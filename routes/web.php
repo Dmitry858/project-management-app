@@ -41,5 +41,6 @@ Route::middleware(['auth'])->group(function() {
         'edit', 'update', 'show'
     ])->middleware('permission:edit-invitations');
     Route::post('/invitations/{invitation}/send', [InvitationController::class, 'send'])->name('invitations.send')->middleware('permission:edit-invitations');
+    Route::post('/invitations/delete', [InvitationController::class, 'destroyGroup'])->name('invitations.destroy-group')->middleware('permission:edit-invitations');
     Route::get('/attachments/{attachment}', [AttachmentController::class, 'show'])->name('attachment');
 });

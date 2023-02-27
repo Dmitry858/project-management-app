@@ -5404,6 +5404,190 @@ var Comments = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/DeleteItemsGroupHandler.js":
+/*!*************************************************!*\
+  !*** ./resources/js/DeleteItemsGroupHandler.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DeleteItemsGroupHandler)
+/* harmony export */ });
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var DeleteItemsGroupHandler = /*#__PURE__*/function () {
+  function DeleteItemsGroupHandler() {
+    var _document$querySelect;
+    _classCallCheck(this, DeleteItemsGroupHandler);
+    this.csrf = (_document$querySelect = document.querySelector('meta[name="csrf-token"]')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.getAttribute('content');
+    this.isInited = false;
+    this.mainMark = null;
+    this.marks = [];
+    this.deleteItemsLink = null;
+  }
+  _createClass(DeleteItemsGroupHandler, [{
+    key: "init",
+    value: function init() {
+      if (this.isInited) return;
+      this.mainMark = document.querySelector('input[name="mark-deleted-all"]');
+      this.marks = document.querySelectorAll('input[name="mark-deleted"]');
+      this.deleteItemsLink = document.getElementById('delete-items-link');
+      this.bindEvents();
+      this.inactivateAllCheckboxes();
+      this.isInited = true;
+    }
+  }, {
+    key: "bindEvents",
+    value: function bindEvents() {
+      if (this.isInited || this.marks.length === 0) return;
+      if (this.mainMark) {
+        this.mainMark.addEventListener('change', this.markAllItems.bind(this));
+      }
+      if (this.deleteItemsLink) {
+        this.deleteItemsLink.addEventListener('click', this.deleteItems.bind(this));
+      }
+      var _iterator = _createForOfIteratorHelper(this.marks),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var mark = _step.value;
+          mark.addEventListener('click', this.controlLinkVisibility.bind(this));
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }, {
+    key: "markAllItems",
+    value: function markAllItems(event) {
+      var _iterator2 = _createForOfIteratorHelper(this.marks),
+        _step2;
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var mark = _step2.value;
+          mark.checked = event.currentTarget.checked;
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+      this.controlLinkVisibility();
+    }
+  }, {
+    key: "deleteItems",
+    value: function deleteItems(event) {
+      event.preventDefault();
+      var confirmed = confirm('Подтвердите удаление');
+      if (!confirmed || !this.csrf) return;
+      var entity = this.getEntity(),
+        data = {
+          'ids': this.getItemsIds()
+        };
+      if (!entity || data.ids.length === 0) return;
+      fetch('/' + entity + '/delete', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': this.csrf,
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) {
+        window.location.reload();
+      })["catch"](function (e) {
+        console.log(e.message);
+      });
+    }
+  }, {
+    key: "inactivateAllCheckboxes",
+    value: function inactivateAllCheckboxes() {
+      if (this.mainMark && this.mainMark.checked) {
+        this.mainMark.checked = false;
+      }
+      if (this.marks.length > 0) {
+        var _iterator3 = _createForOfIteratorHelper(this.marks),
+          _step3;
+        try {
+          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+            var mark = _step3.value;
+            if (mark.checked) mark.checked = false;
+          }
+        } catch (err) {
+          _iterator3.e(err);
+        } finally {
+          _iterator3.f();
+        }
+      }
+    }
+  }, {
+    key: "controlLinkVisibility",
+    value: function controlLinkVisibility() {
+      if (this.marks.length === 0 || !this.deleteItemsLink) return;
+      var isChecked = false;
+      var _iterator4 = _createForOfIteratorHelper(this.marks),
+        _step4;
+      try {
+        for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+          var mark = _step4.value;
+          if (mark.checked) isChecked = true;
+        }
+      } catch (err) {
+        _iterator4.e(err);
+      } finally {
+        _iterator4.f();
+      }
+      if (isChecked && this.deleteItemsLink.classList.contains('hidden')) {
+        this.deleteItemsLink.classList.remove('hidden');
+      } else if (!isChecked && !this.deleteItemsLink.classList.contains('hidden')) {
+        this.deleteItemsLink.classList.add('hidden');
+      }
+    }
+  }, {
+    key: "getEntity",
+    value: function getEntity() {
+      var tr = document.querySelector('tbody tr');
+      return tr.dataset.entity;
+    }
+  }, {
+    key: "getItemsIds",
+    value: function getItemsIds() {
+      var ids = [];
+      var _iterator5 = _createForOfIteratorHelper(this.marks),
+        _step5;
+      try {
+        for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+          var mark = _step5.value;
+          if (mark.checked) {
+            ids.push(Number(mark.parentElement.parentElement.parentElement.dataset.id));
+          }
+        }
+      } catch (err) {
+        _iterator5.e(err);
+      } finally {
+        _iterator5.f();
+      }
+      return ids;
+    }
+  }]);
+  return DeleteItemsGroupHandler;
+}();
+
+
+/***/ }),
+
 /***/ "./resources/js/Filters.js":
 /*!*********************************!*\
   !*** ./resources/js/Filters.js ***!
@@ -5708,10 +5892,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Stages__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Stages */ "./resources/js/Stages.js");
 /* harmony import */ var _Invitations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Invitations */ "./resources/js/Invitations.js");
 /* harmony import */ var _Filters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Filters */ "./resources/js/Filters.js");
+/* harmony import */ var _DeleteItemsGroupHandler__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DeleteItemsGroupHandler */ "./resources/js/DeleteItemsGroupHandler.js");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -5780,6 +5966,10 @@ window.addEventListener('load', function (e) {
   // Init Filters class
   var filters = new _Filters__WEBPACK_IMPORTED_MODULE_4__["default"]();
   filters.init();
+
+  // Init DeleteItemsGroupHandler class
+  var handler = new _DeleteItemsGroupHandler__WEBPACK_IMPORTED_MODULE_5__["default"]();
+  handler.init();
 });
 
 // Close the dropdown menu if the user clicks outside of it

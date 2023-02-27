@@ -41,10 +41,8 @@ class EloquentInvitationRepository implements InvitationRepositoryInterface
         return $invitation ? $invitation->update(['is_sent' => $status]) : false;
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): bool
     {
-        $invitation = $this->find($id);
-
-        return $invitation ? $invitation->delete() : false;
+        return Invitation::destroy($ids);
     }
 }

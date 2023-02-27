@@ -12,5 +12,5 @@ interface InvitationRepositoryInterface
 
     public function updateSendingStatus(int $id, int $status): bool;
 
-    public function delete(int $id): bool;
+    public function delete(array $ids): bool;
 }

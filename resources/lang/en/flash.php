@@ -22,6 +22,7 @@ return [
     'role_deleted' => 'Role deleted',
     'invitation_created' => 'Invitation created',
     'invitation_deleted' => 'Invitation deleted',
+    'invitations_deleted' => 'Invitations deleted',
     'general_error' => 'Something went wrong',
     'clear_cache_completed' => 'Clear cache completed',
     'general_settings_updated' => 'General settings updated',
