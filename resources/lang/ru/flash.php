@@ -20,6 +20,7 @@ return [
     'role_created' => 'Роль успешно создана',
     'role_updated' => 'Роль успешно обновлена',
     'role_deleted' => 'Роль успешно удалена',
+    'roles_deleted' => 'Роли успешно удалены',
     'invitation_created' => 'Приглашение успешно создано',
     'invitation_deleted' => 'Приглашение успешно удалено',
     'invitations_deleted' => 'Приглашения успешно удалены',

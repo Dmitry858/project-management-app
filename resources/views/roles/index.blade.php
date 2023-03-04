@@ -13,6 +13,7 @@
                         <table>
                             <thead class="bg-blue-300 border-b">
                                 <tr>
+                                    @include('include.table-th', ['type' => 'checkbox'])
                                     @include('include.table-th', ['text' => __('table.col_title')])
                                     @include('include.table-th', ['text' => __('table.col_slug')])
                                     @include('include.table-th', ['text' => __('table.col_permissions')])
@@ -21,7 +22,8 @@
                             </thead>
                             <tbody>
                                 @foreach ($roles as $role)
-                                    <tr class="bg-white border-b hover:bg-blue-100 transition">
+                                    <tr class="bg-white border-b hover:bg-blue-100 transition" data-id="{{ $role->id }}" data-entity="roles">
+                                        @include('include.table-td', ['type' => 'checkbox'])
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             <a href="{{ route('roles.show', ['role' => $role->id]) }}" title="{{ $role->name }}">
                                                 {{ $role->name }}
@@ -51,6 +53,9 @@
 
     <div class="py-4 mt-4">
         @include('include.buttons.create', ['link' => route('roles.create')])
+        <a href="#" id="delete-items-link" class="ml-4 text-gray-900 text-sm font-medium hidden">
+            @lang('buttons.delete_selected')
+        </a>
     </div>
 @endsection
 

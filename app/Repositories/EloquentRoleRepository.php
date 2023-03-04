@@ -38,7 +38,22 @@ class EloquentRoleRepository implements RoleRepositoryInterface
         }
         else
         {
-            $roles = Role::where($filter)->get();
+            $query = Role::query();
+            if (count($filter) > 0)
+            {
+                foreach ($filter as $key => $value)
+                {
+                    if (is_array($value))
+                    {
+                        $query = $query->whereIn($key, $value);
+                    }
+                    else
+                    {
+                        $query = $query->where($key, $value);
+                    }
+                }
+            }
+            $roles = $query->get();
             if (empty($filter))
             {
                 Cache::put('all_roles', $roles, 14400);
@@ -74,21 +89,25 @@ class EloquentRoleRepository implements RoleRepositoryInterface
         return $role ? $role->permissions()->attach($permissionIds) : false;
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): bool
     {
-        $role = $this->find($id);
+        $roles = $this->search(['id' => $ids]);
 
-        if ($role)
+        if (count($roles) > 0)
         {
-            if (count($role->permissions) > 0)
+            foreach ($roles as $role)
             {
-                $role->permissions()->detach();
+                if (count($role->permissions) > 0)
+                {
+                    $role->permissions()->detach();
+                }
+                if (count($role->users) > 0)
+                {
+                    $role->users()->detach();
+                }
             }
-            if (count($role->users) > 0)
-            {
-                $role->users()->detach();
-            }
-            $result = $role->delete();
+
+            $result = Role::destroy($ids);
         }
         else
         {

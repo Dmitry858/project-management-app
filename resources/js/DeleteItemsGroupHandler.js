@@ -36,7 +36,9 @@ export default class DeleteItemsGroupHandler {
 
     markAllItems(event) {
         for (let mark of this.marks) {
-            mark.checked = event.currentTarget.checked;
+            if (!mark.disabled) {
+                mark.checked = event.currentTarget.checked;
+            }
         }
 
         this.controlLinkVisibility();
@@ -55,7 +57,12 @@ export default class DeleteItemsGroupHandler {
 
         if (!entity || data.ids.length === 0) return;
 
-        fetch('/' + entity + '/delete', {
+        let url = '/' + entity + '/delete';
+        if (entity === 'roles' || entity === 'stages') {
+            url = '/settings' + url;
+        }
+
+        fetch(url, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': this.csrf,
@@ -79,6 +86,12 @@ export default class DeleteItemsGroupHandler {
         if (this.marks.length > 0) {
             for (let mark of this.marks) {
                 if (mark.checked) mark.checked = false;
+                let tr = mark.parentElement.parentElement.parentElement;
+                if (tr.dataset.entity === 'roles' && tr.dataset.id === '1') {
+                    mark.setAttribute('disabled', '');
+                    mark.classList.add('bg-gray-100');
+                    mark.classList.remove('bg-white');
+                }
             }
         }
     }

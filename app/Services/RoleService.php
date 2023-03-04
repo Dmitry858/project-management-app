@@ -122,9 +122,11 @@ class RoleService
         ];
     }
 
-    public function delete(int $id): array
+    public function delete(array $ids): array
     {
-        if ($id === 1)
+        if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];
+
+        if (in_array(1, $ids))
         {
             return [
                 'status' => 'error',
@@ -132,9 +134,9 @@ class RoleService
             ];
         }
 
-        $role = $this->roleRepository->find($id);
+        $roles = $this->roleRepository->search(['id' => $ids]);
 
-        if (!$role)
+        if (count($roles) === 0)
         {
             return [
                 'status' => 'error',
@@ -142,16 +144,18 @@ class RoleService
             ];
         }
 
-        $success = $this->roleRepository->delete($id);
+        $success = $this->roleRepository->delete($ids);
 
         if ($success)
         {
             Cache::flush();
         }
 
+        $successMsg = count($ids) > 1 ? __('flash.roles_deleted') : __('flash.role_deleted');
+
         return [
             'status' => $success ? 'success' : 'error',
-            'text' => $success ? __('flash.role_deleted') : __('flash.general_error')
+            'text' => $success ? $successMsg : __('flash.general_error')
         ];
     }
 }

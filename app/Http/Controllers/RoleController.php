@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Services\RoleService;
 use App\Services\PermissionService;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -119,8 +120,23 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->roleService->delete($id);
+        $result = $this->roleService->delete([$id]);
 
         return redirect()->route('roles.index')->with($result['status'], $result['text']);
+    }
+
+    /**
+     * Remove the group of specified resources from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyGroup(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $this->roleService->delete($data);
+        $request->session()->flash($result['status'], $result['text']);
+
+        return response()->json($result);
     }
 }

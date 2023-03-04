@@ -13,4 +13,5 @@ Route::middleware(['auth', 'permission:edit-settings'])->group(function() {
     Route::post('/settings/caching', [SettingController::class, 'updateCaching'])->name('settings.caching.update');
     Route::resource('/settings/stages', StageController::class);
     Route::resource('/settings/roles', RoleController::class);
+    Route::post('/settings/roles/delete', [RoleController::class, 'destroyGroup'])->name('roles.destroy-group');
 });

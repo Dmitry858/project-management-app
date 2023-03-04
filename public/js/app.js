@@ -5476,7 +5476,9 @@ var DeleteItemsGroupHandler = /*#__PURE__*/function () {
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
           var mark = _step2.value;
-          mark.checked = event.currentTarget.checked;
+          if (!mark.disabled) {
+            mark.checked = event.currentTarget.checked;
+          }
         }
       } catch (err) {
         _iterator2.e(err);
@@ -5496,7 +5498,11 @@ var DeleteItemsGroupHandler = /*#__PURE__*/function () {
           'ids': this.getItemsIds()
         };
       if (!entity || data.ids.length === 0) return;
-      fetch('/' + entity + '/delete', {
+      var url = '/' + entity + '/delete';
+      if (entity === 'roles' || entity === 'stages') {
+        url = '/settings' + url;
+      }
+      fetch(url, {
         method: 'POST',
         headers: {
           'X-CSRF-TOKEN': this.csrf,
@@ -5524,6 +5530,12 @@ var DeleteItemsGroupHandler = /*#__PURE__*/function () {
           for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
             var mark = _step3.value;
             if (mark.checked) mark.checked = false;
+            var tr = mark.parentElement.parentElement.parentElement;
+            if (tr.dataset.entity === 'roles' && tr.dataset.id === '1') {
+              mark.setAttribute('disabled', '');
+              mark.classList.add('bg-gray-100');
+              mark.classList.remove('bg-white');
+            }
           }
         } catch (err) {
           _iterator3.e(err);
