@@ -17,6 +17,7 @@ return [
     'stage_created' => 'Stage created',
     'stage_updated' => 'Stage updated',
     'stage_deleted' => 'Stage deleted',
+    'stages_deleted' => 'Stages deleted',
     'role_created' => 'Role created',
     'role_updated' => 'Role updated',
     'role_deleted' => 'Role deleted',

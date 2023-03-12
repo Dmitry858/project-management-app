@@ -101,8 +101,23 @@ class StageController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->stageService->delete($id);
+        $result = $this->stageService->delete([$id]);
 
         return redirect()->route('stages.index')->with($result['status'], $result['text']);
+    }
+
+    /**
+     * Remove the group of specified resources from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyGroup(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $this->stageService->delete($data);
+        $request->session()->flash($result['status'], $result['text']);
+
+        return response()->json($result);
     }
 }

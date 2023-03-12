@@ -13,6 +13,7 @@
                         <table>
                             <thead class="bg-blue-300 border-b">
                                 <tr>
+                                    @include('include.table-th', ['type' => 'checkbox'])
                                     @include('include.table-th', ['text' => __('table.col_title')])
                                     @include('include.table-th', ['text' => __('table.col_slug')])
                                     @include('include.table-th', ['text' => ''])
@@ -20,7 +21,8 @@
                             </thead>
                             <tbody>
                                 @foreach ($stages as $stage)
-                                    <tr class="bg-white border-b hover:bg-blue-100 transition">
+                                    <tr class="bg-white border-b hover:bg-blue-100 transition" data-id="{{ $stage->id }}" data-entity="stages">
+                                        @include('include.table-td', ['type' => 'checkbox'])
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                             {{ $stage->name }}
                                         </td>
@@ -43,8 +45,11 @@
         <p>@lang('empty.stages')</p>
     @endif
 
-    <div class="py-4 mt-4">
+    <div class="flex items-center py-4 mt-2">
         @include('include.buttons.create', ['link' => route('stages.create')])
+        <a href="#" id="delete-items-link" class="ml-4 text-gray-900 text-sm font-medium hidden">
+            @lang('buttons.delete_selected')
+        </a>
     </div>
 @endsection
 

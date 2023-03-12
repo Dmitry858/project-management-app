@@ -14,7 +14,7 @@ return [
     'user_is_wrong' => 'User is wrong',
     'project_contains_tasks' => 'The project contains the tasks',
     'stage_is_used' => 'The stage is used',
-    'stage_is_last' => 'This stage is last',
+    'stage_is_last' => 'It is forbidden to delete all stages',
     'stage_not_found' => 'Stage not found',
     'change_stage_forbidden' => "You can't change task's stage",
     'invitation_not_found' => 'Invitation not found',

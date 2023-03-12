@@ -56,19 +56,32 @@ class StageService
         ];
     }
 
-    public function delete(int $id): array
+    public function delete(array $ids): array
     {
-        $stage = $this->stageRepository->find($id);
+        if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];
 
-        if ($stage && count($stage->tasks) > 0)
+        $stages = $this->stageRepository->search(['id' => $ids]);
+
+        if (count($stages) === 0)
         {
             return [
                 'status' => 'error',
-                'text' => __('errors.stage_is_used')
+                'text' => __('errors.stage_not_found')
             ];
         }
 
-        if ($this->stageRepository->getCount() === 1)
+        foreach ($stages as $stage)
+        {
+            if (count($stage->tasks) > 0)
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.stage_is_used')
+                ];
+            }
+        }
+
+        if ($this->stageRepository->getCount() === count($ids))
         {
             return [
                 'status' => 'error',
@@ -76,16 +89,18 @@ class StageService
             ];
         }
 
-        $success = $this->stageRepository->delete($id);
+        $success = $this->stageRepository->delete($ids);
 
         if ($success && Cache::has('all_stages'))
         {
             Cache::forget('all_stages');
         }
 
+        $successMsg = count($ids) > 1 ? __('flash.stages_deleted') : __('flash.stage_deleted');
+
         return [
             'status' => $success ? 'success' : 'error',
-            'text' => $success ? __('flash.stage_deleted') : __('flash.general_error')
+            'text' => $success ? $successMsg : __('flash.general_error')
         ];
     }
 }

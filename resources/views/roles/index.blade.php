@@ -51,7 +51,7 @@
         <p>@lang('empty.roles')</p>
     @endif
 
-    <div class="py-4 mt-4">
+    <div class="flex items-center py-4 mt-2">
         @include('include.buttons.create', ['link' => route('roles.create')])
         <a href="#" id="delete-items-link" class="ml-4 text-gray-900 text-sm font-medium hidden">
             @lang('buttons.delete_selected')

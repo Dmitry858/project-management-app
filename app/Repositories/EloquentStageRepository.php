@@ -21,7 +21,22 @@ class EloquentStageRepository implements StageRepositoryInterface
         }
         else
         {
-            $stages = Stage::where($filter)->get();
+            $query = Stage::query();
+            if (count($filter) > 0)
+            {
+                foreach ($filter as $key => $value)
+                {
+                    if (is_array($value))
+                    {
+                        $query = $query->whereIn($key, $value);
+                    }
+                    else
+                    {
+                        $query = $query->where($key, $value);
+                    }
+                }
+            }
+            $stages = $query->get();
             if (empty($filter))
             {
                 Cache::put('all_stages', $stages, 14400);
@@ -43,11 +58,19 @@ class EloquentStageRepository implements StageRepositoryInterface
         return $stage ? $stage->update($data) : false;
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): bool
     {
-        $stage = $this->find($id);
+        $stages = $this->search(['id' => $ids]);
 
-        return $stage ? $stage->delete() : false;
+        if (count($stages) > 0)
+        {
+            $result = Stage::destroy($ids);
+        }
+        else
+        {
+            $result = false;
+        }
+        return $result;
     }
 
     public function getCount(): int

@@ -14,7 +14,7 @@ return [
     'user_is_wrong' => 'Ошибка проверки пользователя',
     'project_contains_tasks' => 'Проект содержит задачи',
     'stage_is_used' => 'Стадия используется в задачах',
-    'stage_is_last' => 'Нельзя удалить единственную стадию',
+    'stage_is_last' => 'Нельзя удалить все стадии',
     'stage_not_found' => 'Стадия не найдена',
     'change_stage_forbidden' => 'Вы не можете изменять стадию задачи',
     'invitation_not_found' => 'Приглашение не найдено',
