@@ -22,7 +22,7 @@ class MemberController extends Controller
         $this->middleware('permission:view-members')->only('index');
         $this->middleware('permission:create-members')->only(['create', 'store']);
         $this->middleware('permission:edit-members')->only(['edit', 'update']);
-        $this->middleware('permission:delete-members')->only('destroy');
+        $this->middleware('permission:delete-members')->only(['destroy', 'destroyGroup']);
     }
 
     /**
@@ -117,10 +117,23 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
-        $success = $this->memberService->delete($id);
-        $flashKey = $success ? 'success' : 'error';
-        $flashValue = $success ? __('flash.member_deleted') : __('flash.general_error');
+        $result = $this->memberService->delete([$id]);
 
-        return redirect()->route('members.index')->with($flashKey, $flashValue);
+        return redirect()->route('members.index')->with($result['status'], $result['text']);
+    }
+
+    /**
+     * Remove the group of specified resources from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyGroup(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $this->memberService->delete($data);
+        $request->session()->flash($result['status'], $result['text']);
+
+        return response()->json($result);
     }
 }

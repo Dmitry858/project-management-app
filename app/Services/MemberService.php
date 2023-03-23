@@ -38,9 +38,28 @@ class MemberService
         return $this->memberRepository->updateFromArray($id, $data);
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): array
     {
-        return $this->memberRepository->delete($id);
+        if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];
+
+        $members = $this->memberRepository->search(['id' => $ids], false);
+
+        if (count($members) === 0)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.member_not_found')
+            ];
+        }
+
+        $success = $this->memberRepository->delete($ids);
+
+        $successMsg = count($ids) > 1 ? __('flash.members_deleted') : __('flash.member_deleted');
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? $successMsg : __('flash.general_error')
+        ];
     }
 
     public static function getMemberFullName(int $memberId): string

@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('/projects', ProjectController::class);
     Route::resource('/tasks', TaskController::class);
     Route::resource('/members', MemberController::class);
+    Route::post('/members/delete', [MemberController::class, 'destroyGroup'])->name('members.destroy-group');
     Route::resource('/users', UserController::class);
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');

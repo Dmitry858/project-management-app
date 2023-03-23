@@ -84,17 +84,20 @@ class EloquentMemberRepository implements MemberRepositoryInterface
         return $result;
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): bool
     {
-        $member = $this->find($id);
+        $members = $this->search(['id' => $ids], false);
 
-        if ($member)
+        if (count($members) > 0)
         {
-            if (count($member->projects) > 0)
+            foreach ($members as $member)
             {
-                $member->projects()->detach();
+                if (count($member->projects) > 0)
+                {
+                    $member->projects()->detach();
+                }
             }
-            $result = $member->delete();
+            $result = Member::destroy($ids);
         }
         else
         {
