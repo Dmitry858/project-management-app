@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('/members', MemberController::class);
     Route::post('/members/delete', [MemberController::class, 'destroyGroup'])->name('members.destroy-group');
     Route::resource('/users', UserController::class);
+    Route::post('/users/delete', [UserController::class, 'destroyGroup'])->name('users.destroy-group');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::post('/profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/comments/create', [CommentController::class, 'store'])->name('comments.store');

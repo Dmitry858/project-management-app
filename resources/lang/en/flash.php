@@ -12,6 +12,7 @@ return [
     'user_created' => 'User created',
     'user_updated' => 'User updated',
     'user_deleted' => 'User deleted',
+    'users_deleted' => 'Users deleted',
     'task_created' => 'Task created',
     'task_updated' => 'Task updated',
     'task_deleted' => 'Task deleted',

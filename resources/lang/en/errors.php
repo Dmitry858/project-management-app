@@ -2,6 +2,7 @@
 
 return [
     'user_is_member' => 'The user is a member of projects',
+    'user_not_found' => 'User not found',
     'comment_is_empty' => 'Comment is empty',
     'comment_not_found' => 'Comment not found',
     'member_not_found' => 'Member not found',

@@ -14,6 +14,9 @@
                         <table class="min-w-full">
                             <thead class="bg-blue-300 border-b">
                                 <tr>
+                                    @permission('delete-users')
+                                        @include('include.table-th', ['type' => 'checkbox'])
+                                    @endpermission
                                     @include('include.table-th', ['text' => __('table.col_photo')])
                                     @include('include.table-th', ['text' => __('table.col_name')])
                                     @include('include.table-th', ['text' => __('table.col_last_name')])
@@ -25,7 +28,10 @@
                             </thead>
                             <tbody>
                                 @foreach ($users as $user)
-                                    <tr class="bg-white border-b hover:bg-blue-100 transition">
+                                    <tr class="bg-white border-b hover:bg-blue-100 transition" data-id="{{ $user->id }}" data-entity="users">
+                                        @permission('delete-users')
+                                            @include('include.table-td', ['type' => 'checkbox'])
+                                        @endpermission
                                         <td class="px-6 py-4">
                                             <img class="w-24" src="{{ $user->photoSrc() }}" alt="{{ $user->name }}">
                                         </td>
@@ -69,9 +75,14 @@
         <p>@lang('empty.users')</p>
     @endif
 
-    @permission('create-users')
-        <div class="py-4 mt-4">
+    <div class="flex items-center py-4 mt-2">
+        @permission('create-users')
             @include('include.buttons.create', ['link' => route('users.create')])
-        </div>
-    @endpermission
+        @endpermission
+        @permission('delete-users')
+            <a href="#" id="delete-items-link" class="ml-4 text-gray-900 text-sm font-medium hidden">
+                @lang('buttons.delete_selected')
+            </a>
+        @endpermission
+    </div>
 @endsection

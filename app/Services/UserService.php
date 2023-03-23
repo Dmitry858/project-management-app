@@ -72,21 +72,38 @@ class UserService
         return $this->userRepository->createFromArray($data);
     }
 
-    public function delete(int $id): array
+    public function delete(array $ids): array
     {
-        if ($this->userRepository->hasMember($id))
+        if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];
+
+        $users = $this->userRepository->search(['id' => $ids], false);
+
+        if (count($users) === 0)
         {
             return [
                 'status' => 'error',
-                'text' => __('errors.user_is_member')
+                'text' => __('errors.user_not_found')
             ];
         }
 
-        $success = $this->userRepository->delete($id);
+        foreach ($users as $user)
+        {
+            if ($this->userRepository->hasMember($user->id))
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.user_is_member')
+                ];
+            }
+        }
+
+        $success = $this->userRepository->delete($ids);
+
+        $successMsg = count($ids) > 1 ? __('flash.users_deleted') : __('flash.user_deleted');
 
         return [
             'status' => $success ? 'success' : 'error',
-            'text' => $success ? __('flash.user_deleted') : __('flash.general_error')
+            'text' => $success ? $successMsg : __('flash.general_error')
         ];
     }
 }

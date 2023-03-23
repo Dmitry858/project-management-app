@@ -106,17 +106,20 @@ class EloquentUserRepository implements UserRepositoryInterface
         return $result;
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): bool
     {
-        $user = $this->find($id);
+        $users = $this->search(['id' => $ids], false);
 
-        if ($user)
+        if (count($users) > 0)
         {
-            if (count($user->roles) > 0)
+            foreach ($users as $user)
             {
-                $user->roles()->detach();
+                if (count($user->roles) > 0)
+                {
+                    $user->roles()->detach();
+                }
             }
-            $result = $user->delete();
+            $result = User::destroy($ids);
         }
         else
         {

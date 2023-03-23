@@ -23,7 +23,7 @@ class UserController extends Controller
         $this->middleware('permission:view-users')->only(['index']);
         $this->middleware('permission:create-users')->only(['create', 'store']);
         $this->middleware('permission:edit-users')->only(['edit', 'update']);
-        $this->middleware('permission:delete-users')->only('destroy');
+        $this->middleware('permission:delete-users')->only(['destroy', 'destroyGroup']);
     }
 
     /**
@@ -125,8 +125,23 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->userService->delete($id);
+        $result = $this->userService->delete([$id]);
 
         return redirect()->route('users.index')->with($result['status'], $result['text']);
+    }
+
+    /**
+     * Remove the group of specified resources from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyGroup(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $this->userService->delete($data);
+        $request->session()->flash($result['status'], $result['text']);
+
+        return response()->json($result);
     }
 }
