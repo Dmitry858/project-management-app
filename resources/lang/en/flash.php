@@ -5,6 +5,7 @@ return [
     'project_created' => 'Project created',
     'project_updated' => 'Project updated',
     'project_deleted' => 'Project deleted',
+    'projects_deleted' => 'Projects deleted',
     'member_created' => 'Member created',
     'member_updated' => 'Member updated',
     'member_deleted' => 'Member deleted',

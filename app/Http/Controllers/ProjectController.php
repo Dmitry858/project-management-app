@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Services\ProjectService;
 use App\Services\UserService;
 use App\Services\TaskService;
@@ -29,7 +30,7 @@ class ProjectController extends Controller
         $this->filter = $filter;
         $this->middleware('permission:create-projects')->only(['create', 'store']);
         $this->middleware('permission:edit-projects')->only(['edit', 'update']);
-        $this->middleware('permission:delete-projects')->only('destroy');
+        $this->middleware('permission:delete-projects')->only(['destroy', 'destroyGroup']);
     }
 
     /**
@@ -152,8 +153,23 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->projectService->delete($id);
+        $result = $this->projectService->delete([$id]);
 
         return redirect()->route('projects.index')->with($result['status'], $result['text']);
+    }
+
+    /**
+     * Remove the group of specified resources from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyGroup(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $this->projectService->delete($data);
+        $request->session()->flash($result['status'], $result['text']);
+
+        return response()->json($result);
     }
 }

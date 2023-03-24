@@ -151,28 +151,46 @@ class ProjectService
         return $this->projectRepository->updateFromArray($id, $data);
     }
 
-    public function delete(int $id): array
+    public function delete(array $ids): array
     {
-        $project = $this->projectRepository->find($id);
+        if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];
 
-        if ($project && count($project->tasks) > 0)
+        $projects = $this->projectRepository->search(['id' => $ids], false);
+
+        if (count($projects) === 0)
         {
             return [
                 'status' => 'error',
-                'text' => __('errors.project_contains_tasks')
+                'text' => __('errors.project_not_found')
             ];
         }
 
-        if ($project && count($project->members) > 0)
+        foreach ($projects as $project)
         {
-            $this->projectRepository->detachAllMembers($project);
+            if (count($project->tasks) > 0)
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.project_contains_tasks')
+                ];
+            }
         }
 
-        $success = $this->projectRepository->delete($id);
+        foreach ($projects as $project)
+        {
+            if (count($project->members) > 0)
+            {
+                $this->projectRepository->detachAllMembers($project);
+            }
+        }
+
+        $success = $this->projectRepository->delete($ids);
+
+        $successMsg = count($ids) > 1 ? __('flash.projects_deleted') : __('flash.project_deleted');
 
         return [
             'status' => $success ? 'success' : 'error',
-            'text' => $success ? __('flash.project_deleted') : __('flash.general_error')
+            'text' => $success ? $successMsg : __('flash.general_error')
         ];
     }
 }

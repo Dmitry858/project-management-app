@@ -28,6 +28,7 @@ require __DIR__.'/settings.php';
 Route::middleware(['auth'])->group(function() {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/projects', ProjectController::class);
+    Route::post('/projects/delete', [ProjectController::class, 'destroyGroup'])->name('projects.destroy-group');
     Route::resource('/tasks', TaskController::class);
     Route::resource('/members', MemberController::class);
     Route::post('/members/delete', [MemberController::class, 'destroyGroup'])->name('members.destroy-group');

@@ -14,7 +14,22 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
 
     public function search(array $filter = [], bool $withPaginate = true, array $with = [])
     {
-        $query = Project::where($filter);
+        $query = Project::query();
+        if (count($filter) > 0)
+        {
+            foreach ($filter as $key => $value)
+            {
+                if (is_array($value))
+                {
+                    $query = $query->whereIn($key, $value);
+                }
+                else
+                {
+                    $query = $query->where($key, $value);
+                }
+            }
+        }
+
         if (!empty($with)) $query = $query->with($with);
 
         if ($withPaginate)
@@ -60,11 +75,20 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
         return is_array($result) ? true : $result;
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): bool
     {
-        $project = $this->find($id);
+        $projects = $this->search(['id' => $ids], false);
 
-        return $project ? $project->delete() : false;
+        if (count($projects) > 0)
+        {
+            $result = Project::destroy($ids);
+        }
+        else
+        {
+            $result = false;
+        }
+
+        return $result;
     }
 
     public function attachMembers(object $project, array $memberIds = [])

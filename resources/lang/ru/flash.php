@@ -5,6 +5,7 @@ return [
     'project_created' => 'Проект успешно создан',
     'project_updated' => 'Проект успешно обновлён',
     'project_deleted' => 'Проект успешно удалён',
+    'projects_deleted' => 'Проекты успешно удалены',
     'member_created' => 'Участник успешно создан',
     'member_updated' => 'Участник успешно обновлён',
     'member_deleted' => 'Участник успешно удалён',
