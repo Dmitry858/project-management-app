@@ -91,7 +91,7 @@ class EloquentUserRepositoryTest extends TestCase
     public function test_delete_user()
     {
         $user = User::factory()->create();
-        $result = $this->getUserRepository()->delete($user->id);
+        $result = $this->getUserRepository()->delete([$user->id]);
 
         $this->assertTrue($result);
         $this->assertDeleted($user);
