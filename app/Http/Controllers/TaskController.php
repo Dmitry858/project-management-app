@@ -34,7 +34,7 @@ class TaskController extends Controller
         $this->filter = $filter;
         $this->middleware('permission:create-tasks')->only(['create', 'store']);
         $this->middleware('permission:edit-tasks')->only(['edit', 'update']);
-        $this->middleware('permission:delete-tasks')->only('destroy');
+        $this->middleware('permission:delete-tasks')->only(['destroy', 'destroyGroup']);
     }
 
     /**
@@ -168,10 +168,23 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $success = $this->taskService->delete($id);
-        $flashKey = $success ? 'success' : 'error';
-        $flashValue = $success ? __('flash.task_deleted') : __('flash.general_error');
+        $result = $this->taskService->delete([$id]);
 
-        return redirect()->route('tasks.index')->with($flashKey, $flashValue);
+        return redirect()->route('tasks.index')->with($result['status'], $result['text']);
+    }
+
+    /**
+     * Remove the group of specified resources from storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyGroup(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $result = $this->taskService->delete($data);
+        $request->session()->flash($result['status'], $result['text']);
+
+        return response()->json($result);
     }
 }

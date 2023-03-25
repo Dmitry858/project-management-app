@@ -12,5 +12,5 @@ interface TaskRepositoryInterface
 
     public function updateFromArray(int $id, array $data): bool;
 
-    public function delete(int $id): bool;
+    public function delete(array $ids): bool;
 }

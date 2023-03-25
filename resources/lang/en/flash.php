@@ -17,6 +17,7 @@ return [
     'task_created' => 'Task created',
     'task_updated' => 'Task updated',
     'task_deleted' => 'Task deleted',
+    'tasks_deleted' => 'Tasks deleted',
     'stage_created' => 'Stage created',
     'stage_updated' => 'Stage updated',
     'stage_deleted' => 'Stage deleted',

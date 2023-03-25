@@ -188,9 +188,28 @@ class TaskService
         }
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): array
     {
-        return $this->taskRepository->delete($id);
+        if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];
+
+        $tasks = $this->taskRepository->search(['id' => $ids], false);
+
+        if (count($tasks) === 0)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.task_not_found')
+            ];
+        }
+
+        $success = $this->taskRepository->delete($ids);
+
+        $successMsg = count($ids) > 1 ? __('flash.tasks_deleted') : __('flash.task_deleted');
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? $successMsg : __('flash.general_error')
+        ];
     }
 
     public function canUserChangeStage($taskId): bool

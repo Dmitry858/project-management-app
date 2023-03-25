@@ -27,6 +27,10 @@ class EloquentTaskRepository implements TaskRepositoryInterface
                         $query = $query->whereDate($key, $value[0], $value[1]);
                     }
                 }
+                else if (is_array($value))
+                {
+                    $query = $query->whereIn($key, $value);
+                }
                 else
                 {
                     $query = $query->where($key, $value);
@@ -98,27 +102,30 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         return $task ? $task->update($data) : false;
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): bool
     {
-        $task = $this->find($id);
+        $tasks = $this->search(['id' => $ids], false);
 
-        if ($task)
+        if (count($tasks) > 0)
         {
-            if (count($task->comments) > 0)
+            foreach ($tasks as $task)
             {
-                $task->comments()->delete();
-            }
-            if (count($task->attachments) > 0)
-            {
-                $files = [];
-                foreach ($task->attachments as $attachment)
+                if (count($task->comments) > 0)
                 {
-                    $files[] = $attachment->file;
+                    $task->comments()->delete();
                 }
-                Storage::delete($files);
-                $task->attachments()->delete();
+                if (count($task->attachments) > 0)
+                {
+                    $files = [];
+                    foreach ($task->attachments as $attachment)
+                    {
+                        $files[] = $attachment->file;
+                    }
+                    Storage::delete($files);
+                    $task->attachments()->delete();
+                }
             }
-            $result = $task->delete();
+            $result = Task::destroy($ids);
         }
         else
         {

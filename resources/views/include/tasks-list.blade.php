@@ -6,6 +6,9 @@
                     <table class="min-w-full">
                         <thead class="bg-blue-300 border-b">
                             <tr>
+                                @permission('delete-tasks')
+                                    @include('include.table-th', ['type' => 'checkbox'])
+                                @endpermission
                                 @include('include.table-th', ['text' => __('table.col_title')])
                                 @if(isset($mode) && $mode === 'full')
                                     @include('include.table-th', ['text' => __('table.col_project')])
@@ -19,7 +22,10 @@
                         </thead>
                         <tbody>
                             @foreach ($tasks as $task)
-                                <tr class="bg-white border-b hover:bg-blue-100 transition">
+                                <tr class="bg-white border-b hover:bg-blue-100 transition" data-id="{{ $task->id }}" data-entity="tasks">
+                                    @permission('delete-tasks')
+                                        @include('include.table-td', ['type' => 'checkbox'])
+                                    @endpermission
                                     <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                         <a href="{{ route('tasks.show', ['task' => $task->id]) }}" title="{{ $task->name }}">
                                             {{ Str::limit($task->name, 40) }}
@@ -67,10 +73,15 @@
     <p>@lang('empty.tasks')</p>
 @endif
 
-@permission('create-tasks')
-    <div class="py-4 mt-4">
+<div class="flex items-center py-4 mt-2">
+    @permission('create-tasks')
         @include('include.buttons.create', [
             'link' => isset($project) ? route('tasks.create') . '?project_id=' . $project->id : route('tasks.create')
         ])
-    </div>
-@endpermission
+    @endpermission
+    @permission('delete-tasks')
+        <a href="#" id="delete-items-link" class="ml-4 text-gray-900 text-sm font-medium hidden">
+            @lang('buttons.delete_selected')
+        </a>
+    @endpermission
+</div>
