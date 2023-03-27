@@ -113,38 +113,7 @@ class TaskService
     {
         if ($onlyStage)
         {
-            if (intval($data['stage_id']) === 0)
-            {
-                return [
-                    'status' => 'error',
-                    'text' => __('errors.stage_not_found')
-                ];
-            }
-
-            if (!$this->canUserChangeStage($id))
-            {
-                return [
-                    'status' => 'error',
-                    'text' => __('errors.change_stage_forbidden')
-                ];
-            }
-
-            $success = $this->taskRepository->updateFromArray($id, $data);
-
-            if ($success)
-            {
-                return [
-                    'status' => 'success',
-                    'text' => __('success_messages.stage_changed')
-                ];
-            }
-            else
-            {
-                return [
-                    'status' => 'error',
-                    'text' => __('errors.general')
-                ];
-            }
+            return $this->updateOnlyStage($id, $data);
         }
         else
         {
@@ -228,5 +197,41 @@ class TaskService
         }
 
         return $result;
+    }
+
+    private function updateOnlyStage(int $id, array $data): array
+    {
+        if (intval($data['stage_id']) === 0)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.stage_not_found')
+            ];
+        }
+
+        if (!$this->canUserChangeStage($id))
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.change_stage_forbidden')
+            ];
+        }
+
+        $success = $this->taskRepository->updateFromArray($id, $data);
+
+        if ($success)
+        {
+            return [
+                'status' => 'success',
+                'text' => __('success_messages.stage_changed')
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.general')
+            ];
+        }
     }
 }
