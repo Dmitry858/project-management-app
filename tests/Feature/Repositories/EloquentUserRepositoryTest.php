@@ -94,6 +94,6 @@ class EloquentUserRepositoryTest extends TestCase
         $result = $this->getUserRepository()->delete([$user->id]);
 
         $this->assertTrue($result);
-        $this->assertDeleted($user);
+        $this->assertModelMissing($user);
     }
 }
