@@ -20,6 +20,10 @@ npm install
 ```
 php artisan key:generate
 ```
+
+```
+php artisan storage:link
+```
 5. Запустите миграции:
 ```
 php artisan migrate
@@ -48,6 +52,10 @@ npm install
 
 ```
 php artisan key:generate
+```
+
+```
+php artisan storage:link
 ```
 5. Run the migrations:
 ```
