@@ -14,10 +14,16 @@ class Invitation extends Model
         'secret_key',
         'email',
         'is_sent',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function isExpired(): bool
     {
-        return $this->created_at->diffInHours(Carbon::now()) >= 24;
+        return $this->created_at->diffInHours(Carbon::now()) >= config('app.invitation_expired_time');
     }
 }

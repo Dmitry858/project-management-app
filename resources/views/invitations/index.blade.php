@@ -20,6 +20,7 @@
                                     @include('include.table-th', ['text' => __('table.col_email')])
                                     @include('include.table-th', ['text' => __('table.col_created_at')])
                                     @include('include.table-th', ['text' => __('table.col_is_sent')])
+                                    @include('include.table-th', ['text' => __('table.col_user')])
                                     @include('include.table-th', ['text' => ''])
                                 </tr>
                             </thead>
@@ -46,8 +47,15 @@
                                                 @lang('table.status_no')
                                             @endif
                                         </td>
+                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                            @if($invitation->user_id)
+                                                {{ $invitation->user->full_name }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            @include('include.buttons.send-invitation', ['link' => route('invitations.send', ['invitation' => $invitation->id])])
+                                            @include('include.buttons.send-invitation', ['link' => route('invitations.send', ['invitation' => $invitation->id]), 'user_id' => $invitation->user_id])
                                             @include('include.buttons.delete', ['link' => route('invitations.destroy', ['invitation' => $invitation->id])])
                                         </td>
                                     </tr>

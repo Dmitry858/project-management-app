@@ -18,6 +18,7 @@ return [
     'col_created_at' => 'Created at',
     'col_is_sent' => 'Is sent',
     'col_permissions' => 'Permissions',
+    'col_user' => 'User',
     'status_yes' => 'Yes',
     'status_no' => 'No',
     'is_expired' => 'is expired',

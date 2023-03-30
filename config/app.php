@@ -263,4 +263,6 @@ return [
         'edit-comments' => 'Редактирование комментариев',
         'delete-comments' => 'Удаление комментариев',
     ],
+
+    'invitation_expired_time' => 24, // in hours
 ];

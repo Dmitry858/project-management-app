@@ -18,6 +18,7 @@ class CreateInvitationsTable extends Migration
             $table->string('secret_key', 64)->unique();
             $table->string('email', 128);
             $table->tinyInteger('is_sent')->default(0);
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }

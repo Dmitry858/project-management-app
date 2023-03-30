@@ -18,6 +18,7 @@ return [
     'col_created_at' => 'Создано',
     'col_is_sent' => 'Отправлено',
     'col_permissions' => 'Права',
+    'col_user' => 'Пользователь',
     'status_yes' => 'Да',
     'status_no' => 'Нет',
     'is_expired' => 'просрочено',

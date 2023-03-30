@@ -34,6 +34,7 @@ class InvitationService
         $invitation = $this->invitationRepository->findByKey($key);
 
         if (!$invitation) return false;
+        if ($invitation->user_id) return false;
 
         return $invitation->isExpired() ? false : $invitation;
     }
@@ -46,6 +47,16 @@ class InvitationService
     public function create($data)
     {
         unset($data['_token']);
+
+        $invitations = $this->getList(['email' => htmlspecialchars($data['email'])]);
+
+        if (count($invitations) > 0)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.invitation_exists'),
+            ];
+        }
 
         $success = $this->invitationRepository->createFromArray($data);
 

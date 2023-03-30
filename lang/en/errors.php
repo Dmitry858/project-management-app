@@ -21,6 +21,7 @@ return [
     'change_stage_forbidden' => "You can't change task's stage",
     'invitation_not_found' => 'Invitation not found',
     'invitation_is_expired' => 'Invitation is expired',
+    'invitation_exists' => 'Invitation exists with this email',
     'there_are_invalid_permissions' => 'There are invalid permissions',
     'change_admin_role_forbidden' => "You can't change the admin role",
     'delete_admin_role_forbidden' => "You can't delete the admin role",

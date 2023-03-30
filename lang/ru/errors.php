@@ -21,6 +21,7 @@ return [
     'change_stage_forbidden' => 'Вы не можете изменять стадию задачи',
     'invitation_not_found' => 'Приглашение не найдено',
     'invitation_is_expired' => 'Приглашение просрочено',
+    'invitation_exists' => 'Приглашение с такой почтой уже создано',
     'there_are_invalid_permissions' => 'Присутствуют недопустимые права',
     'change_admin_role_forbidden' => 'Вы не можете изменять роль «Администратор»',
     'delete_admin_role_forbidden' => 'Вы не можете удалить роль «Администратор»',
