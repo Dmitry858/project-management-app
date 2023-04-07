@@ -37,6 +37,11 @@ class UpdateUserRequest extends FormRequest
             $rules['password'] = ['required', 'confirmed', 'max:255', Rules\Password::defaults()];
         }
 
+        if (isset($data['photo']))
+        {
+            $rules['photo'] = ['mimes:jpeg,jpg,png,gif,bmp,webp'];
+        }
+
         return $rules;
     }
 }
