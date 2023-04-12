@@ -6,6 +6,7 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UpdateUserRequest;
+use Intervention\Image\Facades\Image;
 
 class UserService
 {
@@ -42,7 +43,7 @@ class UserService
 
         if ($request->hasFile('photo'))
         {
-            $data['photo'] = $request->file('photo')->store('users-photo');
+            $data['photo'] = $this->resizeAndSavePhoto($request);
         }
 
         if (Cache::has('user_'.$id.'_roles'))
@@ -66,7 +67,7 @@ class UserService
 
         if ($request->hasFile('photo'))
         {
-            $data['photo'] = $request->file('photo')->store('users-photo');
+            $data['photo'] = $this->resizeAndSavePhoto($request);
         }
 
         return $this->userRepository->createFromArray($data);
@@ -105,5 +106,19 @@ class UserService
             'status' => $success ? 'success' : 'error',
             'text' => $success ? $successMsg : __('flash.general_error')
         ];
+    }
+
+    public function resizeAndSavePhoto($request): string
+    {
+        $photo = $request->file('photo');
+        $fileName = $photo->getClientOriginalName();
+        $resizedPhoto = Image::make($photo->path());
+        $resizedPhoto->resize(250, null, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $resizedPhoto->save(storage_path('app/users-photo/'.$fileName));
+
+        return 'users-photo/'.$fileName;
     }
 }
