@@ -3,6 +3,7 @@
 namespace App\Services;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class SettingService
 {
@@ -17,7 +18,7 @@ class SettingService
             {
                 if ($request->file('logo')->isValid())
                 {
-                    $request->file('logo')->storeAs('public', 'logo.png');
+                    $this->resizeAndSaveLogo($request);
                 }
                 else
                 {
@@ -29,7 +30,7 @@ class SettingService
         {
             if ($request->file('logo')->isValid())
             {
-                $request->file('logo')->storeAs('public', 'logo.png');
+                $this->resizeAndSaveLogo($request);
             }
             else
             {
@@ -41,5 +42,16 @@ class SettingService
             'status' => $success ? 'success' : 'error',
             'text' => $success ? __('flash.general_settings_updated') : __('flash.general_error')
         ];
+    }
+
+    private function resizeAndSaveLogo($request)
+    {
+        $logo = $request->file('logo');
+        $resizedLogo = Image::make($logo->path());
+        $resizedLogo->resize(null, 60, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $resizedLogo->save(storage_path('app/public/logo.png'), 100);
     }
 }
