@@ -68,7 +68,10 @@ class SettingControllerTest extends TestCase
     public function test_update_general_with_permission()
     {
         $user = $this->getUserWithPermission();
-        $response = $this->actingAs($user)->post(route('settings.general.update'));
+        $response = $this->actingAs($user)->post(
+            route('settings.general.update'),
+            ['logo_exists' => 1]
+        );
 
         $response->assertSessionHas('success');
         $response->assertRedirect(route('settings.general'));
