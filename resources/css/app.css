@@ -2,6 +2,21 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+header .user-photo {
+    width: 32px;
+    height: 32px;
+}
+
+header .user-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.greeting-wrap {
+    margin-top: -3px;
+}
+
 .main-content {
     min-height: calc(100vh - 56px);
 }
