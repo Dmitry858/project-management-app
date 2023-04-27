@@ -264,6 +264,9 @@ return [
         'add-comments' => 'Добавление комментариев',
         'edit-comments' => 'Редактирование комментариев',
         'delete-comments' => 'Удаление комментариев',
+        'create-events-of-projects-and-public-events' => 'Создание событий проектов и общих событий',
+        'edit-events-of-projects-and-public-events' => 'Редактирование событий проектов и общих событий',
+        'delete-events-of-projects-and-public-events' => 'Удаление событий проектов и общих событий',
     ],
 
     'invitation_expired_time' => 24, // in hours
