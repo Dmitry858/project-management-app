@@ -31,4 +31,22 @@ class PermissionService
     {
         return $this->permissionRepository->search($filter);
     }
+
+    public function getUserEventsPermissions(): array
+    {
+        $permissions = $this->permissionRepository->getUserPermissions(auth()->id());
+
+        if (count($permissions) === 0) return [];
+
+        $eventsPermissions = [];
+        foreach ($permissions as $permission)
+        {
+            if (strpos($permission['slug'], 'events') !== false)
+            {
+                $eventsPermissions[] = $permission['slug'];
+            }
+        }
+
+        return $eventsPermissions;
+    }
 }
