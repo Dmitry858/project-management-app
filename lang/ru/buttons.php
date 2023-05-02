@@ -16,4 +16,5 @@ return [
     'all_tasks' => 'Все задачи',
     'all_projects' => 'Все проекты',
     'delete_selected' => 'Удалить выбранное',
+    'today' => 'Сегодня',
 ];
