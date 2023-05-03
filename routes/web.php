@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +48,6 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/invitations/{invitation}/send', [InvitationController::class, 'send'])->name('invitations.send')->middleware('permission:edit-invitations');
     Route::post('/invitations/delete', [InvitationController::class, 'destroyGroup'])->name('invitations.destroy-group')->middleware('permission:edit-invitations');
     Route::get('/attachments/{attachment}', [AttachmentController::class, 'show'])->name('attachment');
+    Route::get('/calendar', [EventController::class, 'calendar'])->name('calendar');
+    Route::resource('/events', EventController::class);
 });
