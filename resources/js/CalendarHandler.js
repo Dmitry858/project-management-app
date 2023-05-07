@@ -133,23 +133,16 @@ export default class CalendarHandler {
             }
 
             that.modifyCalendarDropdownSection();
+            that.fixAllDayEvents();
         });
 
         this.calendar.on('beforeCreateEvent', (eventObj) => {
-            console.log('beforeCreateEvent');
-            console.log(this.eventObj);
             if (that.locale === 'ru' && this.eventObj) {
                 eventObj.start.d.d = this.eventObj.start;
                 eventObj.end.d.d = this.eventObj.end;
                 eventObj.isAllday = this.eventObj.isAllday;
-                setTimeout(() => {
-                    let mark = document.querySelector('.toastui-calendar-time.toastui-calendar-grid-selection');
-                    if (mark) {
-                        mark.remove();
-                    }
-                }, 50);
             }
-            console.log(eventObj);
+            this.createNewEvent(eventObj);
         });
 
         this.calendar.on('beforeUpdateEvent', ({ event, changes }) => {
@@ -170,10 +163,19 @@ export default class CalendarHandler {
         document.querySelector('button.prev').addEventListener('click', this.moveToNextOrPrevRange.bind(this, -1));
 
         document.querySelector('button.next').addEventListener('click', this.moveToNextOrPrevRange.bind(this, 1));
+
+        setTimeout(() => {
+            let alldayPanel = document.querySelector('.toastui-calendar-allday-panel');
+            if (alldayPanel) {
+                alldayPanel.addEventListener('mousedown', this.fixAllDayEvents.bind(this));
+                alldayPanel.addEventListener('mouseup', this.fixAllDayEvents.bind(this));
+            }
+        }, 100);
     }
 
     onClickTodayBtn() {
         this.calendar.today();
+        this.fixAllDayEvents();
     }
 
     moveToNextOrPrevRange(offset) {
@@ -182,6 +184,7 @@ export default class CalendarHandler {
         } else if (offset === 1) {
             this.calendar.next();
         }
+        this.fixAllDayEvents();
     }
 
     onClickEditBtn(eventObj) {
@@ -227,7 +230,6 @@ export default class CalendarHandler {
 
     modifyPopupFields(eventObj) {
         setTimeout(() => {
-            this.modifyAllDayCheckbox();
             const datePickers = document.querySelectorAll('.toastui-calendar-popup-date-picker');
 
             if (datePickers.length > 0) {
@@ -289,6 +291,7 @@ export default class CalendarHandler {
                     });
                 }
             }
+            this.modifyAllDayCheckbox(eventObj.isAllday);
         }, 100);
     }
 
@@ -318,7 +321,7 @@ export default class CalendarHandler {
         }, 50);
     }
 
-    modifyAllDayCheckbox() {
+    modifyAllDayCheckbox(isAllday) {
         const allDayCheckbox = document.querySelector('.toastui-calendar-popup-section-allday');
         if (allDayCheckbox) {
             let clone = allDayCheckbox.cloneNode(true);
@@ -326,6 +329,15 @@ export default class CalendarHandler {
             allDayCheckbox.classList.add('hidden');
             clone.classList.add('clone');
             clone.addEventListener('click', this.allDayCheckboxHandler.bind(this));
+
+            if (isAllday) {
+                const icon = clone.querySelector('.toastui-calendar-icon'),
+                      input = clone.querySelector('input[name="isAllday"]');
+                input.value = 'true';
+                icon.classList.add('toastui-calendar-ic-checkbox-checked');
+                icon.classList.remove('toastui-calendar-ic-checkbox-normal');
+                this.toggleTimeDisplay(false, clone);
+            }
         }
     }
 
@@ -394,11 +406,97 @@ export default class CalendarHandler {
 
                 if (result.status && result.status === 'success') {
                     this.calendar.createEvents(result.result);
+                    this.fixAllDayEvents();
                 }
             })
             .catch((e) => {
                 document.querySelector('.error-message').innerText = e.message;
             });
+    }
+
+    createNewEvent(eventObj) {
+        let data = {
+            'title': eventObj.title,
+            'start': eventObj.start.d.d,
+            'end': eventObj.end.d.d,
+            'is_allday': eventObj.isAllday ? 1 : 0,
+            'is_private': eventObj.calendarId === 'private' ? 1 : 0,
+        };
+
+        if (eventObj.calendarId.indexOf('project_') !== -1) {
+            data.project_id = Number(eventObj.calendarId.replace('project_',''));
+        }
+
+        fetch('/events?ajax=1', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': this.csrf,
+                'Content-Type': 'application/json;charset=utf-8',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status && result.status === 'error') {
+                    document.querySelector('.error-message').innerText = result.text;
+                } else if ((result.errors || result.exception) && result.message) {
+                    document.querySelector('.error-message').innerText = result.message;
+                }
+
+                if (result.status && result.status === 'success' && result.id) {
+                    let newEvent = {
+                        id: result.id,
+                        calendarId: eventObj.calendarId,
+                        title: data.title,
+                        start: data.start,
+                        end: data.end,
+                        state: '',
+                    };
+                    if (eventObj.isAllday) {
+                        newEvent.isAllday = true;
+                        newEvent.category = 'allday';
+                    }
+                    this.calendar.createEvents([newEvent]);
+                    this.hideMarks(eventObj.isAllday);
+                    this.fixAllDayEvents();
+                }
+            })
+            .catch((e) => {
+                document.querySelector('.error-message').innerText = e.message;
+            });
+    }
+
+    hideMarks(isAllday) {
+        let selector = isAllday ? '.toastui-calendar-allday' : '.toastui-calendar-time';
+        selector += '.toastui-calendar-grid-selection';
+        let marks = document.querySelectorAll(selector);
+        if (marks.length > 0) {
+            for (let mark of marks) {
+                mark.classList.add('hidden');
+            }
+        }
+    }
+
+    fixAllDayEvents() {
+        let dateRangeStart = this.calendar.getDateRangeStart(),
+            dateRangeEnd = this.calendar.getDateRangeEnd();
+
+        setTimeout(() => {
+            let allDayEventsNodes = document.querySelectorAll('.toastui-calendar-allday-panel .toastui-calendar-weekday-event-block');
+            if (allDayEventsNodes.length === 0) return;
+
+            for (let node of allDayEventsNodes) {
+                const event = this.calendar.getEvent(node.dataset.eventId, node.dataset.calendarId);
+                if (event) {
+                    let start = event.start.d.d,
+                        end = event.end.d.d;
+                    if (start > dateRangeEnd || end < dateRangeStart) {
+                        node.remove();
+                    }
+                }
+            }
+        }, 30);
     }
 
 }

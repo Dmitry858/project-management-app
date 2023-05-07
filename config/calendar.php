@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'timezoneName' => 'Europe/Moscow',
+    'timezoneName' => 'Europe/Astrakhan',
     'colors' => [
         'private' => '#fff13d',
         'public' => '#2067ff',

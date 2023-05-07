@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\EventService;
 use App\Services\PermissionService;
+use App\Http\Requests\StoreEventRequest;
 
 class EventController extends Controller
 {
@@ -61,12 +62,18 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\StoreEventRequest $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreEventRequest $request)
     {
-        //
+        $isAjax = boolval($request->query('ajax', '0'));
+
+        if ($isAjax)
+        {
+            $result = $this->eventService->create($request->all());
+            return response()->json($result);
+        }
     }
 
     /**

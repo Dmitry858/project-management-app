@@ -61,6 +61,22 @@ button.toastui-calendar-popup-section-private {
     pointer-events: none;
 }
 
+.toastui-calendar-event-time, .toastui-calendar-weekday-event-block {
+    opacity: 0;
+    transition: 0.2s;
+    animation: show 0.2s 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .preloader-wrap {
     position: absolute;
     top: 0;

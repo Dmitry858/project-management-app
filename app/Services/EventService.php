@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\EventRepositoryInterface;
+use Illuminate\Support\Carbon;
 
 class EventService
 {
@@ -134,7 +135,7 @@ class EventService
         }
 
         $formattedEvent = [
-            'id' => $event->id,
+            'id' => strval($event->id),
             'calendarId' => $calendarId,
             'title' => $event->title,
             'start' => $event->start,
@@ -149,5 +150,34 @@ class EventService
         }
 
         return $formattedEvent;
+    }
+
+    public function create($data): array
+    {
+        if (isset($data['ajax']))
+        {
+            unset($data['ajax']);
+        }
+        $endDateFormat = $data['is_allday'] === 1 ? 'Y-m-d 23:59:59' : 'Y-m-d H:i:s';
+        $data['start'] = Carbon::parse($data['start'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');
+        $data['end'] = Carbon::parse($data['end'])->setTimezone(config('calendar.timezoneName'))->format($endDateFormat);
+        $data['user_id'] = auth()->id();
+
+        $event = $this->eventRepository->createFromArray($data);
+
+        if ($event)
+        {
+            return [
+                'status' => 'success',
+                'id' => strval($event->id)
+            ];
+        }
+        else
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.general')
+            ];
+        }
     }
 }
