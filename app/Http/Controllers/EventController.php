@@ -113,12 +113,19 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $isAjax = boolval($request->query('ajax', '0'));
+
+        if ($isAjax)
+        {
+            $result = $this->eventService->delete([$id]);
+            return response()->json($result);
+        }
     }
 
     /**

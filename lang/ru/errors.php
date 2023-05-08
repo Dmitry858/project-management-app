@@ -27,4 +27,6 @@ return [
     'change_admin_role_forbidden' => 'Вы не можете изменять роль «Администратор»',
     'delete_admin_role_forbidden' => 'Вы не можете удалить роль «Администратор»',
     'role_not_found' => 'Роль не найдена',
+    'event_not_found' => 'Событие не найдено',
+    'no_permission_to_delete_event' => 'Недостаточно прав для удаления события',
 ];

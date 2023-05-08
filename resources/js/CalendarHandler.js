@@ -152,10 +152,26 @@ export default class CalendarHandler {
         });
 
         this.calendar.on('beforeDeleteEvent', (eventObj) => {
-            console.log('beforeDeleteEvent');
-            console.log(eventObj);
+            fetch('/events/' + eventObj.id + '?ajax=1', {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': this.csrf
+                }
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status && result.status === 'error') {
+                        document.querySelector('.error-message').innerText = result.text;
+                    }
 
-            this.calendar.deleteEvent(eventObj.id, eventObj.calendarId);
+                    if (result.status && result.status === 'success') {
+                        this.calendar.deleteEvent(eventObj.id, eventObj.calendarId);
+                        this.fixAllDayEvents();
+                    }
+                })
+                .catch((e) => {
+                    document.querySelector('.error-message').innerText = e.message;
+                });
         });
 
         document.querySelector('button.today').addEventListener('click', this.onClickTodayBtn.bind(this));

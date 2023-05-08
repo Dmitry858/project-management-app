@@ -19763,9 +19763,24 @@ var CalendarHandler = /*#__PURE__*/function () {
         console.log(changes);
       });
       this.calendar.on('beforeDeleteEvent', function (eventObj) {
-        console.log('beforeDeleteEvent');
-        console.log(eventObj);
-        _this.calendar.deleteEvent(eventObj.id, eventObj.calendarId);
+        fetch('/events/' + eventObj.id + '?ajax=1', {
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-TOKEN': _this.csrf
+          }
+        }).then(function (response) {
+          return response.json();
+        }).then(function (result) {
+          if (result.status && result.status === 'error') {
+            document.querySelector('.error-message').innerText = result.text;
+          }
+          if (result.status && result.status === 'success') {
+            _this.calendar.deleteEvent(eventObj.id, eventObj.calendarId);
+            _this.fixAllDayEvents();
+          }
+        })["catch"](function (e) {
+          document.querySelector('.error-message').innerText = e.message;
+        });
       });
       document.querySelector('button.today').addEventListener('click', this.onClickTodayBtn.bind(this));
       document.querySelector('button.prev').addEventListener('click', this.moveToNextOrPrevRange.bind(this, -1));

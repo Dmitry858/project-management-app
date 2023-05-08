@@ -180,4 +180,40 @@ class EventService
             ];
         }
     }
+
+    public function delete(array $ids): array
+    {
+        if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];
+        $hasPermission = PermissionService::hasUserPermission(auth()->id(), 'delete-events-of-projects-and-public-events');
+        $events = $this->eventRepository->search(['id' => $ids], false);
+
+        if (count($events) === 0)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.event_not_found')
+            ];
+        }
+
+        foreach ($events as $event)
+        {
+            if (($event->is_private === 0 && !$hasPermission)
+                || ($event->is_private === 1 && auth()->id() !== $event->user_id))
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.no_permission_to_delete_event')
+                ];
+            }
+        }
+
+        $success = $this->eventRepository->delete($ids);
+
+        $successMsg = count($ids) > 1 ? __('flash.events_deleted') : __('flash.event_deleted');
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? $successMsg : __('flash.general_error')
+        ];
+    }
 }
