@@ -146,9 +146,67 @@ export default class CalendarHandler {
         });
 
         this.calendar.on('beforeUpdateEvent', ({ event, changes }) => {
-            console.log('beforeUpdateEvent');
-            console.log(event);
-            console.log(changes);
+            let isEmpty = Object.entries(changes).length === 0;
+
+            if (isEmpty) {
+                if (this.eventObj && this.eventObj.start != event.start.d.d) {
+                    isEmpty = false;
+                    changes.start.d.d = this.eventObj.start;
+                }
+                if (this.eventObj && this.eventObj.end != event.end.d.d) {
+                    isEmpty = false;
+                    changes.end.d.d = this.eventObj.end;
+                }
+                if (this.eventObj && this.eventObj.isAllday != event.isAllday) {
+                    isEmpty = false;
+                    changes.isAllday = this.eventObj.isAllday;
+                }
+            }
+            if (isEmpty) return;
+
+            let data = {};
+            for (let key in changes) {
+                if (key === 'title') {
+                    data[key] = changes[key];
+                } else if (key === 'start' || key === 'end') {
+                    data[key] = changes[key].d.d;
+                } else if (key === 'isAllday') {
+                    data.is_allday = changes[key] ? 1 : 0;
+                } else if (key === 'calendarId') {
+                    data.is_private = changes[key] === 'private' ? 1 : 0;
+                    if (changes[key].indexOf('project_') !== -1) {
+                        data.project_id = Number(changes[key].replace('project_',''));
+                    }
+                }
+            }
+
+            fetch('/events/' + event.id + '?ajax=1', {
+                method: 'PATCH',
+                headers: {
+                    'X-CSRF-TOKEN': this.csrf,
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status && result.status === 'error') {
+                        document.querySelector('.error-message').innerText = result.text;
+                    } else if ((result.errors || result.exception) && result.message) {
+                        document.querySelector('.error-message').innerText = result.message;
+                    }
+
+                    if (result.status && result.status === 'success') {
+                        if (changes.isAllday !== undefined) {
+                            changes.category = changes.isAllday === true ? 'allday' : 'time';
+                        }
+                        this.calendar.updateEvent(event.id, event.calendarId, changes);
+                    }
+                })
+                .catch((e) => {
+                    document.querySelector('.error-message').innerText = e.message;
+                });
         });
 
         this.calendar.on('beforeDeleteEvent', (eventObj) => {
@@ -211,6 +269,7 @@ export default class CalendarHandler {
         }
         this.eventObj = eventObj;
         this.changePopupOpacity('.toastui-calendar-form-container');
+        this.modifyCalendarDropdownSection();
 
         if (this.locale === 'ru') {
             this.modifyPopupFields(eventObj);

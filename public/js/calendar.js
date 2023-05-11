@@ -19758,9 +19758,62 @@ var CalendarHandler = /*#__PURE__*/function () {
       this.calendar.on('beforeUpdateEvent', function (_ref3) {
         var event = _ref3.event,
           changes = _ref3.changes;
-        console.log('beforeUpdateEvent');
-        console.log(event);
-        console.log(changes);
+        var isEmpty = Object.entries(changes).length === 0;
+        if (isEmpty) {
+          if (_this.eventObj && _this.eventObj.start != event.start.d.d) {
+            isEmpty = false;
+            changes.start.d.d = _this.eventObj.start;
+          }
+          if (_this.eventObj && _this.eventObj.end != event.end.d.d) {
+            isEmpty = false;
+            changes.end.d.d = _this.eventObj.end;
+          }
+          if (_this.eventObj && _this.eventObj.isAllday != event.isAllday) {
+            isEmpty = false;
+            changes.isAllday = _this.eventObj.isAllday;
+          }
+        }
+        if (isEmpty) return;
+        var data = {};
+        for (var key in changes) {
+          if (key === 'title') {
+            data[key] = changes[key];
+          } else if (key === 'start' || key === 'end') {
+            data[key] = changes[key].d.d;
+          } else if (key === 'isAllday') {
+            data.is_allday = changes[key] ? 1 : 0;
+          } else if (key === 'calendarId') {
+            data.is_private = changes[key] === 'private' ? 1 : 0;
+            if (changes[key].indexOf('project_') !== -1) {
+              data.project_id = Number(changes[key].replace('project_', ''));
+            }
+          }
+        }
+        fetch('/events/' + event.id + '?ajax=1', {
+          method: 'PATCH',
+          headers: {
+            'X-CSRF-TOKEN': _this.csrf,
+            'Content-Type': 'application/json;charset=utf-8',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }).then(function (response) {
+          return response.json();
+        }).then(function (result) {
+          if (result.status && result.status === 'error') {
+            document.querySelector('.error-message').innerText = result.text;
+          } else if ((result.errors || result.exception) && result.message) {
+            document.querySelector('.error-message').innerText = result.message;
+          }
+          if (result.status && result.status === 'success') {
+            if (changes.isAllday !== undefined) {
+              changes.category = changes.isAllday === true ? 'allday' : 'time';
+            }
+            _this.calendar.updateEvent(event.id, event.calendarId, changes);
+          }
+        })["catch"](function (e) {
+          document.querySelector('.error-message').innerText = e.message;
+        });
       });
       this.calendar.on('beforeDeleteEvent', function (eventObj) {
         fetch('/events/' + eventObj.id + '?ajax=1', {
@@ -19819,6 +19872,7 @@ var CalendarHandler = /*#__PURE__*/function () {
       }
       this.eventObj = eventObj;
       this.changePopupOpacity('.toastui-calendar-form-container');
+      this.modifyCalendarDropdownSection();
       if (this.locale === 'ru') {
         this.modifyPopupFields(eventObj);
       }

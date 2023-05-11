@@ -181,6 +181,51 @@ class EventService
         }
     }
 
+    public function update(int $id, array $data): array
+    {
+        $event = $this->eventRepository->find($id);
+        if (!$event)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.event_not_found')
+            ];
+        }
+
+        if (isset($data['is_private']))
+        {
+            if (intval($data['is_private']) === 1 && intval($event->project_id) > 0)
+            {
+                $data['project_id'] = null;
+            }
+            else if (intval($data['is_private']) === 0 && !isset($data['project_id']) && intval($event->project_id) > 0)
+            {
+                $data['project_id'] = null;
+            }
+        }
+        if (isset($data['start']))
+        {
+            $data['start'] = Carbon::parse($data['start'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');
+        }
+        if (isset($data['end']))
+        {
+            $endDateFormat = 'Y-m-d H:i:s';
+            if ((isset($data['is_allday']) && $data['is_allday'] === 1)
+                || (!isset($data['is_allday']) && $event->is_allday === 1))
+            {
+                $endDateFormat = 'Y-m-d 23:59:59';
+            }
+            $data['end'] = Carbon::parse($data['end'])->setTimezone(config('calendar.timezoneName'))->format($endDateFormat);
+        }
+
+        $success = $this->eventRepository->updateFromArray($id, $data);
+
+        return [
+            'status' => $success ? 'success' : 'error',
+            'text' => $success ? __('flash.event_updated') : __('flash.general_error')
+        ];
+    }
+
     public function delete(array $ids): array
     {
         if (isset($ids['ids']) && is_array($ids['ids'])) $ids = $ids['ids'];

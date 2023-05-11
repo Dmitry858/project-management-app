@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\EventService;
 use App\Services\PermissionService;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 
 class EventController extends Controller
 {
@@ -101,13 +102,19 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  UpdateEventRequest $request
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEventRequest $request, $id)
     {
-        //
+        $isAjax = boolval($request->query('ajax', '0'));
+
+        if ($isAjax)
+        {
+            $result = $this->eventService->update($id, $request->all());
+            return response()->json($result);
+        }
     }
 
     /**

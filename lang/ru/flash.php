@@ -32,6 +32,7 @@ return [
     'general_error' => 'Что-то пошло не так, попробуйте позже',
     'clear_cache_completed' => 'Очистка кэша завершена',
     'general_settings_updated' => 'Общие настройки обновлены',
+    'event_updated' => 'Событие успешно обновлено',
     'event_deleted' => 'Событие успешно удалено',
     'events_deleted' => 'События успешно удалены',
 ];
