@@ -20,6 +20,21 @@ button.prev, button.next {
     opacity: 1;
 }
 
+.toastui-calendar-dropdown-section.toastui-calendar-calendar-section {
+    width: 251px !important;
+}
+
+.toastui-calendar-content.toastui-calendar-event-calendar {
+    width: 200px !important;
+}
+
+.toastui-calendar-dropdown-menu-item .toastui-calendar-content {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .toastui-calendar-popup-section-allday.hidden {
     display: none !important;
 }

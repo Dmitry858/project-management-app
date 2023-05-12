@@ -101,8 +101,6 @@ export default class CalendarHandler {
         let that = this;
 
         this.calendar.on('clickEvent', (eventObj) => {
-            console.log('clickEvent');
-            console.log(eventObj.event);
             this.changePopupOpacity('.toastui-calendar-detail-container');
 
             setTimeout(() => {
@@ -123,8 +121,6 @@ export default class CalendarHandler {
         });
 
         this.calendar.on('selectDateTime', (eventObj) => {
-            console.log('selectDateTime');
-            console.log(eventObj);
             that.eventObj = eventObj;
             that.changePopupOpacity('.toastui-calendar-form-container');
 
@@ -151,11 +147,21 @@ export default class CalendarHandler {
             if (isEmpty) {
                 if (this.eventObj && this.eventObj.start != event.start.d.d) {
                     isEmpty = false;
-                    changes.start.d.d = this.eventObj.start;
+                    changes.start = {
+                        'd': {
+                            'd': this.eventObj.start
+                        },
+                        'modified': true
+                    };
                 }
                 if (this.eventObj && this.eventObj.end != event.end.d.d) {
                     isEmpty = false;
-                    changes.end.d.d = this.eventObj.end;
+                    changes.end = {
+                        'd': {
+                            'd': this.eventObj.end
+                        },
+                        'modified': true
+                    };
                 }
                 if (this.eventObj && this.eventObj.isAllday != event.isAllday) {
                     isEmpty = false;
@@ -172,6 +178,23 @@ export default class CalendarHandler {
                     data[key] = changes[key].d.d;
                 } else if (key === 'isAllday') {
                     data.is_allday = changes[key] ? 1 : 0;
+                    if (changes[key]) {
+                        if (!changes.start) {
+                            event.start.d.d.setHours(0, 0, 0);
+                            data.start = event.start.d.d;
+                        }
+                        if (!changes.end) {
+                            event.end.d.d.setHours(23, 59, 59);
+                            data.end = event.end.d.d;
+                        }
+                    } else {
+                        if (this.eventObj && changes.start && this.eventObj.start != changes.start.d.d) {
+                            changes.start.d.d = this.eventObj.start;
+                        }
+                        if (this.eventObj && changes.end && this.eventObj.end != changes.end.d.d) {
+                            changes.end.d.d = this.eventObj.end;
+                        }
+                    }
                 } else if (key === 'calendarId') {
                     data.is_private = changes[key] === 'private' ? 1 : 0;
                     if (changes[key].indexOf('project_') !== -1) {
@@ -201,7 +224,11 @@ export default class CalendarHandler {
                         if (changes.isAllday !== undefined) {
                             changes.category = changes.isAllday === true ? 'allday' : 'time';
                         }
-                        this.calendar.updateEvent(event.id, event.calendarId, changes);
+                        if ((changes.start && changes.start.modified) || (changes.end && changes.end.modified)) {
+                            this.recreateEvent(event, changes);
+                        } else {
+                            this.calendar.updateEvent(event.id, event.calendarId, changes);
+                        }
                     }
                 })
                 .catch((e) => {
@@ -243,6 +270,10 @@ export default class CalendarHandler {
             if (alldayPanel) {
                 alldayPanel.addEventListener('mousedown', this.fixAllDayEvents.bind(this));
                 alldayPanel.addEventListener('mouseup', this.fixAllDayEvents.bind(this));
+                let resizeObserver = new ResizeObserver(() => {
+                    this.fixAllDayEvents();
+                });
+                resizeObserver.observe(alldayPanel);
             }
         }, 100);
     }
@@ -262,7 +293,6 @@ export default class CalendarHandler {
     }
 
     onClickEditBtn(eventObj) {
-        console.log('onClickEditBtn');
         if (eventObj.start.d) {
             eventObj.start = eventObj.start.d.d;
             eventObj.end = eventObj.end.d.d;
@@ -442,8 +472,6 @@ export default class CalendarHandler {
         if (show) {
             for (let input of inputs) {
                 if (this.eventObj) {
-                    console.log(input.name);
-                    console.log(this.eventObj);
                     let value = this.getFormattedDateAndTime(this.eventObj[input.name]);
                     input.value = value;
                 }
@@ -473,8 +501,6 @@ export default class CalendarHandler {
             .then(response => response.json())
             .then(result => {
                 this.hidePreloader();
-
-                console.log(result);
                 if (result.status && result.status === 'error') {
                     document.querySelector('.error-message').innerText = result.text;
                 }
@@ -572,6 +598,27 @@ export default class CalendarHandler {
                 }
             }
         }, 30);
+    }
+
+    recreateEvent(event, changes) {
+        this.calendar.deleteEvent(event.id, event.calendarId);
+        let newEvent = {
+            id: event.id,
+            calendarId: changes.calendarId ? changes.calendarId : event.calendarId,
+            title: changes.title ? changes.title : event.title,
+            start: changes.start ? changes.start.d.d : event.start.d.d,
+            end: changes.end ? changes.end.d.d : event.end.d.d,
+            state: '',
+        };
+        if (changes.isAllday !== undefined) {
+            newEvent.category = changes.isAllday === true ? 'allday' : 'time';
+        } else {
+            if (event.isAllday === true) {
+                newEvent.category = 'allday';
+            }
+        }
+        this.calendar.createEvents([newEvent]);
+        this.fixAllDayEvents();
     }
 
 }
