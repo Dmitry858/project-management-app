@@ -28,5 +28,7 @@ return [
     'delete_admin_role_forbidden' => "You can't delete the admin role",
     'role_not_found' => 'Role not found',
     'event_not_found' => 'Event not found',
+    'no_permission_to_create_event' => 'User does not have permission to create event',
+    'no_permission_to_edit_event' => 'User does not have permission to edit event',
     'no_permission_to_delete_event' => 'User does not have permission to delete event',
 ];

@@ -158,6 +158,15 @@ class EventService
         {
             unset($data['ajax']);
         }
+        $hasPermission = PermissionService::hasUserPermission(auth()->id(), 'create-events-of-projects-and-public-events');
+        if (intval($data['is_private']) === 0 && !$hasPermission)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.no_permission_to_create_event')
+            ];
+        }
+
         $endDateFormat = $data['is_allday'] === 1 ? 'Y-m-d 23:59:59' : 'Y-m-d H:i:s';
         $data['start'] = Carbon::parse($data['start'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');
         $data['end'] = Carbon::parse($data['end'])->setTimezone(config('calendar.timezoneName'))->format($endDateFormat);
@@ -189,6 +198,15 @@ class EventService
             return [
                 'status' => 'error',
                 'text' => __('errors.event_not_found')
+            ];
+        }
+
+        $hasPermission = PermissionService::hasUserPermission(auth()->id(), 'edit-events-of-projects-and-public-events');
+        if ($event->is_private === 0 && !$hasPermission)
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.no_permission_to_edit_event')
             ];
         }
 
