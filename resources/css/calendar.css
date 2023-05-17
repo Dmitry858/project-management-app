@@ -2,6 +2,10 @@
     height: 600px;
 }
 
+.calendar-header select {
+    min-width: 105px;
+}
+
 button.prev, button.next {
     width: 42px;
     height: 42px;
@@ -147,5 +151,11 @@ button.toastui-calendar-popup-section-private {
     }
     100% {
         transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 600px) {
+    .calendar-header select {
+        display: none;
     }
 }

@@ -4,6 +4,7 @@ export default class CalendarHandler {
     dayNames = [];
     allDayTitle = 'All day';
     defaultWeekOptions = {};
+    defaultMonthOptions = {};
     calendar = null;
     eventObj = null;
 
@@ -33,6 +34,11 @@ export default class CalendarHandler {
             taskView: false,
             collapseDuplicateEvents: false,
         }
+
+        this.defaultMonthOptions = {
+            startDayOfWeek: 1,
+            dayNames: this.dayNames,
+        }
     }
 
     init(Calendar, DatePicker) {
@@ -44,6 +50,7 @@ export default class CalendarHandler {
             usageStatistics: false,
             defaultView: window.innerWidth <= 600 ? 'day' : 'week',
             week: this.defaultWeekOptions,
+            month: this.defaultMonthOptions,
             useFormPopup: true,
             useDetailPopup: true,
             calendars: this.calendars,
@@ -259,6 +266,8 @@ export default class CalendarHandler {
                 });
         });
 
+        document.querySelector('#calendar-view').addEventListener('change', this.onChangeViewSelect.bind(this));
+
         document.querySelector('button.today').addEventListener('click', this.onClickTodayBtn.bind(this));
 
         document.querySelector('button.prev').addEventListener('click', this.moveToNextOrPrevRange.bind(this, -1));
@@ -276,6 +285,11 @@ export default class CalendarHandler {
                 resizeObserver.observe(alldayPanel);
             }
         }, 100);
+    }
+
+    onChangeViewSelect(event) {
+        this.calendar.changeView(event.currentTarget.value);
+        this.fixAllDayEvents();
     }
 
     onClickTodayBtn() {

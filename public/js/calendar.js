@@ -19628,6 +19628,7 @@ var CalendarHandler = /*#__PURE__*/function () {
     _defineProperty(this, "dayNames", []);
     _defineProperty(this, "allDayTitle", 'All day');
     _defineProperty(this, "defaultWeekOptions", {});
+    _defineProperty(this, "defaultMonthOptions", {});
     _defineProperty(this, "calendar", null);
     _defineProperty(this, "eventObj", null);
     this.csrf = (_document$querySelect = document.querySelector('meta[name="csrf-token"]')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.getAttribute('content');
@@ -19653,6 +19654,10 @@ var CalendarHandler = /*#__PURE__*/function () {
       taskView: false,
       collapseDuplicateEvents: false
     };
+    this.defaultMonthOptions = {
+      startDayOfWeek: 1,
+      dayNames: this.dayNames
+    };
   }
   _createClass(CalendarHandler, [{
     key: "init",
@@ -19664,6 +19669,7 @@ var CalendarHandler = /*#__PURE__*/function () {
         usageStatistics: false,
         defaultView: window.innerWidth <= 600 ? 'day' : 'week',
         week: this.defaultWeekOptions,
+        month: this.defaultMonthOptions,
         useFormPopup: true,
         useDetailPopup: true,
         calendars: this.calendars,
@@ -19862,6 +19868,7 @@ var CalendarHandler = /*#__PURE__*/function () {
           document.querySelector('.error-message').innerText = e.message;
         });
       });
+      document.querySelector('#calendar-view').addEventListener('change', this.onChangeViewSelect.bind(this));
       document.querySelector('button.today').addEventListener('click', this.onClickTodayBtn.bind(this));
       document.querySelector('button.prev').addEventListener('click', this.moveToNextOrPrevRange.bind(this, -1));
       document.querySelector('button.next').addEventListener('click', this.moveToNextOrPrevRange.bind(this, 1));
@@ -19876,6 +19883,12 @@ var CalendarHandler = /*#__PURE__*/function () {
           resizeObserver.observe(alldayPanel);
         }
       }, 100);
+    }
+  }, {
+    key: "onChangeViewSelect",
+    value: function onChangeViewSelect(event) {
+      this.calendar.changeView(event.currentTarget.value);
+      this.fixAllDayEvents();
     }
   }, {
     key: "onClickTodayBtn",

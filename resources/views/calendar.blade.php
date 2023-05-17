@@ -5,6 +5,11 @@
     <div class="error-message text-red-500 text-sm mb-2"></div>
     <header class="calendar-header">
         <nav class="calendar-navbar flex mb-4">
+            <select class="appearance-none bg-gray-100 border border-gray-300 hover:bg-blue-100 hover:cursor-pointer rounded-full py-3 px-4 mr-2 transition focus:outline-none" id="calendar-view" name="calendar-view">
+                <option value="month">@lang('calendar.month')</option>
+                <option value="week" selected>@lang('calendar.week')</option>
+                <option value="day">@lang('calendar.day')</option>
+            </select>
             <button class="button rounded-full py-2 px-4 mr-2 border border-gray-300 hover:bg-blue-100 transition today">@lang('buttons.today')</button>
             <button class="button flex justify-center items-center rounded-full p-2 mr-2 border border-gray-300 hover:bg-blue-100 transition prev">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
