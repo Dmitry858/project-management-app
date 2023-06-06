@@ -285,10 +285,32 @@ export default class CalendarHandler {
                 resizeObserver.observe(alldayPanel);
             }
         }, 100);
+
+        let filterCheckboxes = document.querySelectorAll('.calendar-filter .form-check-input');
+        if (filterCheckboxes.length > 0) {
+            for (let checkbox of filterCheckboxes) {
+                checkbox.addEventListener('change', this.onChangeFilterSelect.bind(this));
+            }
+        }
     }
 
     onChangeViewSelect(event) {
         this.calendar.changeView(event.currentTarget.value);
+        this.fixAllDayEvents();
+    }
+
+    onChangeFilterSelect(event) {
+        let calendarId = event.currentTarget.value;
+        if (calendarId === 'project') {
+            let ids = [];
+            for (let cal of this.calendars) {
+                if (cal.id.indexOf('project') !== -1) {
+                    ids.push(cal.id);
+                }
+            }
+            calendarId = ids;
+        }
+        this.calendar.setCalendarVisibility(calendarId, event.currentTarget.checked);
         this.fixAllDayEvents();
     }
 

@@ -3,7 +3,7 @@
 @section('content')
     {{ Breadcrumbs::render('calendar') }}
     <div class="error-message text-red-500 text-sm mb-2"></div>
-    <header class="calendar-header">
+    <header class="calendar-header flex flex-wrap justify-between items-center">
         <nav class="calendar-navbar flex mb-4">
             <select class="appearance-none bg-gray-100 border border-gray-300 hover:bg-blue-100 hover:cursor-pointer rounded-full py-3 px-4 mr-2 transition focus:outline-none" id="calendar-view" name="calendar-view">
                 <option value="month">@lang('calendar.month')</option>
@@ -22,6 +22,27 @@
                 </svg>
             </button>
         </nav>
+
+        <div class="calendar-filter flex mb-4">
+            <div class="form-check flex items-center mr-3">
+                <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain float-left mr-1 cursor-pointer" type="checkbox" name="filter[]" value="private" id="private_events" checked>
+                <label class="form-check-label inline-block text-gray-800" for="private_events">
+                    @lang('calendar.private_events')
+                </label>
+            </div>
+            <div class="form-check flex items-center mr-3">
+                <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain float-left mr-1 cursor-pointer" type="checkbox" name="filter[]" value="public" id="public_events" checked>
+                <label class="form-check-label inline-block text-gray-800" for="public_events">
+                    @lang('calendar.public_events')
+                </label>
+            </div>
+            <div class="form-check flex items-center">
+                <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain float-left mr-1 cursor-pointer" type="checkbox" name="filter[]" value="project" id="project_events" checked>
+                <label class="form-check-label inline-block text-gray-800" for="project_events">
+                    @lang('calendar.project_events')
+                </label>
+            </div>
+        </div>
     </header>
     <div id="calendar"></div>
 @endsection

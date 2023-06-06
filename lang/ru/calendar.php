@@ -7,4 +7,7 @@ return [
     'month' => 'Месяц',
     'week' => 'Неделя',
     'day' => 'День',
+    'private_events' => 'Личные',
+    'public_events' => 'Общие',
+    'project_events' => 'Проекты',
 ];

@@ -19883,11 +19883,51 @@ var CalendarHandler = /*#__PURE__*/function () {
           resizeObserver.observe(alldayPanel);
         }
       }, 100);
+      var filterCheckboxes = document.querySelectorAll('.calendar-filter .form-check-input');
+      if (filterCheckboxes.length > 0) {
+        var _iterator = _createForOfIteratorHelper(filterCheckboxes),
+          _step;
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var checkbox = _step.value;
+            checkbox.addEventListener('change', this.onChangeFilterSelect.bind(this));
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
+        }
+      }
     }
   }, {
     key: "onChangeViewSelect",
     value: function onChangeViewSelect(event) {
       this.calendar.changeView(event.currentTarget.value);
+      this.fixAllDayEvents();
+    }
+  }, {
+    key: "onChangeFilterSelect",
+    value: function onChangeFilterSelect(event) {
+      var calendarId = event.currentTarget.value;
+      if (calendarId === 'project') {
+        var ids = [];
+        var _iterator2 = _createForOfIteratorHelper(this.calendars),
+          _step2;
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var cal = _step2.value;
+            if (cal.id.indexOf('project') !== -1) {
+              ids.push(cal.id);
+            }
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
+        }
+        calendarId = ids;
+      }
+      this.calendar.setCalendarVisibility(calendarId, event.currentTarget.checked);
       this.fixAllDayEvents();
     }
   }, {
@@ -19923,11 +19963,11 @@ var CalendarHandler = /*#__PURE__*/function () {
   }, {
     key: "changeDateFormat",
     value: function changeDateFormat(datePickers) {
-      var _iterator = _createForOfIteratorHelper(datePickers),
-        _step;
+      var _iterator3 = _createForOfIteratorHelper(datePickers),
+        _step3;
       try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var datePicker = _step.value;
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var datePicker = _step3.value;
           var input = datePicker.querySelector('input');
           if (input) {
             var dateObj = new Date(input.value);
@@ -19935,9 +19975,9 @@ var CalendarHandler = /*#__PURE__*/function () {
           }
         }
       } catch (err) {
-        _iterator.e(err);
+        _iterator3.e(err);
       } finally {
-        _iterator.f();
+        _iterator3.f();
       }
     }
   }, {
@@ -19967,11 +20007,11 @@ var CalendarHandler = /*#__PURE__*/function () {
         var datePickers = document.querySelectorAll('.toastui-calendar-popup-date-picker');
         if (datePickers.length > 0) {
           _this2.changeDateFormat(datePickers);
-          var _iterator2 = _createForOfIteratorHelper(datePickers),
-            _step2;
+          var _iterator4 = _createForOfIteratorHelper(datePickers),
+            _step4;
           try {
             var _loop = function _loop() {
-              var node = _step2.value;
+              var node = _step4.value;
               var container = node.querySelector('.toastui-calendar-datepicker-container'),
                 input = node.querySelector('input');
               _this2.DatePicker.localeTexts['ru'] = {
@@ -20019,13 +20059,13 @@ var CalendarHandler = /*#__PURE__*/function () {
                 }
               });
             };
-            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
               _loop();
             }
           } catch (err) {
-            _iterator2.e(err);
+            _iterator4.e(err);
           } finally {
-            _iterator2.f();
+            _iterator4.f();
           }
         }
         _this2.modifyAllDayCheckbox(eventObj.isAllday);
@@ -20049,20 +20089,20 @@ var CalendarHandler = /*#__PURE__*/function () {
         var menu = document.querySelector('.toastui-calendar-dropdown-menu');
         if (!menu) return;
         var items = menu.querySelectorAll('.toastui-calendar-dropdown-menu-item');
-        var _iterator3 = _createForOfIteratorHelper(items),
-          _step3;
+        var _iterator5 = _createForOfIteratorHelper(items),
+          _step5;
         try {
-          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-            var item = _step3.value;
+          for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+            var item = _step5.value;
             var content = item.querySelector('.toastui-calendar-content').innerText;
             if (content !== 'Личное' && content !== 'Private' && !_this4.permissions.includes('create-events-of-projects-and-public-events')) {
               item.classList.add('hidden');
             }
           }
         } catch (err) {
-          _iterator3.e(err);
+          _iterator5.e(err);
         } finally {
-          _iterator3.f();
+          _iterator5.f();
         }
         menu.classList.add('opacity-100');
       }, 50);
@@ -20112,34 +20152,34 @@ var CalendarHandler = /*#__PURE__*/function () {
     value: function toggleTimeDisplay(show, node) {
       var inputs = node.parentElement.querySelectorAll('input.toastui-calendar-content');
       if (show) {
-        var _iterator4 = _createForOfIteratorHelper(inputs),
-          _step4;
+        var _iterator6 = _createForOfIteratorHelper(inputs),
+          _step6;
         try {
-          for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-            var input = _step4.value;
+          for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+            var input = _step6.value;
             if (this.eventObj) {
               var value = this.getFormattedDateAndTime(this.eventObj[input.name]);
               input.value = value;
             }
           }
         } catch (err) {
-          _iterator4.e(err);
+          _iterator6.e(err);
         } finally {
-          _iterator4.f();
+          _iterator6.f();
         }
       } else {
-        var _iterator5 = _createForOfIteratorHelper(inputs),
-          _step5;
+        var _iterator7 = _createForOfIteratorHelper(inputs),
+          _step7;
         try {
-          for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-            var _input = _step5.value;
+          for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+            var _input = _step7.value;
             var arrValue = _input.value.split(' ');
             _input.value = arrValue[0];
           }
         } catch (err) {
-          _iterator5.e(err);
+          _iterator7.e(err);
         } finally {
-          _iterator5.f();
+          _iterator7.f();
         }
       }
     }
@@ -20234,17 +20274,17 @@ var CalendarHandler = /*#__PURE__*/function () {
       selector += '.toastui-calendar-grid-selection';
       var marks = document.querySelectorAll(selector);
       if (marks.length > 0) {
-        var _iterator6 = _createForOfIteratorHelper(marks),
-          _step6;
+        var _iterator8 = _createForOfIteratorHelper(marks),
+          _step8;
         try {
-          for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-            var mark = _step6.value;
+          for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
+            var mark = _step8.value;
             mark.classList.add('hidden');
           }
         } catch (err) {
-          _iterator6.e(err);
+          _iterator8.e(err);
         } finally {
-          _iterator6.f();
+          _iterator8.f();
         }
       }
     }
@@ -20257,11 +20297,11 @@ var CalendarHandler = /*#__PURE__*/function () {
       setTimeout(function () {
         var allDayEventsNodes = document.querySelectorAll('.toastui-calendar-allday-panel .toastui-calendar-weekday-event-block');
         if (allDayEventsNodes.length === 0) return;
-        var _iterator7 = _createForOfIteratorHelper(allDayEventsNodes),
-          _step7;
+        var _iterator9 = _createForOfIteratorHelper(allDayEventsNodes),
+          _step9;
         try {
-          for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-            var node = _step7.value;
+          for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
+            var node = _step9.value;
             var event = _this7.calendar.getEvent(node.dataset.eventId, node.dataset.calendarId);
             if (event) {
               var start = event.start.d.d,
@@ -20272,9 +20312,9 @@ var CalendarHandler = /*#__PURE__*/function () {
             }
           }
         } catch (err) {
-          _iterator7.e(err);
+          _iterator9.e(err);
         } finally {
-          _iterator7.f();
+          _iterator9.f();
         }
       }, 30);
     }
