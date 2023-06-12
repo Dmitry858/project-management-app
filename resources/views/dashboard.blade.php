@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap mb-6">
         <div class="w-full sm:w-1/2 sm:pr-5 mb-6">
             <h2 class="font-medium leading-tight text-xl mb-3">@lang('titles.new_tasks')</h2>
             @if(count($tasks) > 0)
@@ -31,6 +31,40 @@
             @endif
             <a class="inline-block bg-blue-600 hover:bg-blue-700 transition text-white font-bold mt-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ route('projects.index') }}">
                 @lang('buttons.all_projects')
+            </a>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap">
+        <div class="w-full sm:w-1/2 sm:pr-5 mb-6">
+            <h2 class="font-medium leading-tight text-xl mb-3">@lang('titles.today_tasks')</h2>
+            @if(count($todayTasks) > 0)
+                @foreach($todayTasks as $task)
+                    @include('include.dashboard-list-item', ['entity' => 'tasks', 'entityObj' => $task])
+                @endforeach
+            @else
+                <div>
+                    @lang('empty.today_tasks')
+                </div>
+            @endif
+            <a class="inline-block bg-blue-600 hover:bg-blue-700 transition text-white font-bold mt-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ route('tasks.index') }}">
+                @lang('buttons.all_tasks')
+            </a>
+        </div>
+
+        <div class="w-full sm:w-1/2">
+            <h2 class="font-medium leading-tight text-xl mb-3">@lang('titles.today_events')</h2>
+            @if(count($todayEvents) > 0)
+                @foreach($todayEvents as $event)
+                    @include('include.dashboard-list-item', ['entity' => 'events', 'entityObj' => $event])
+                @endforeach
+            @else
+                <div>
+                    @lang('empty.today_events')
+                </div>
+            @endif
+            <a class="inline-block bg-blue-600 hover:bg-blue-700 transition text-white font-bold mt-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline" href="{{ route('calendar') }}">
+                @lang('buttons.all_events')
             </a>
         </div>
     </div>

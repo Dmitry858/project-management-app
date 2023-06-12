@@ -15,6 +15,7 @@ return [
     'back_to_list' => 'К списку',
     'all_tasks' => 'Все задачи',
     'all_projects' => 'Все проекты',
+    'all_events' => 'Все события',
     'delete_selected' => 'Удалить выбранное',
     'today' => 'Сегодня',
 ];

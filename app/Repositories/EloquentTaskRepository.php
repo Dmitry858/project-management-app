@@ -20,7 +20,7 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         {
             foreach ($filter as $key => $value)
             {
-                if ($key === 'created_at' || $key === 'updated_at')
+                if ($key === 'created_at' || $key === 'updated_at' || $key === 'deadline')
                 {
                     if (is_array($value) && $value[0] && $value[1])
                     {

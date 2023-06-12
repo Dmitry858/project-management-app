@@ -3,10 +3,18 @@
         <div class="lg:flex md:flex items-center ml-2">
             <div class="flex flex-col">
                 <div class="text-sm leading-4 text-gray-700 font-bold w-full">
-                    {{ $entityObj->name }}
+                    @if($entity === 'events')
+                        {{ $entityObj->title }}
+                    @else
+                        {{ $entityObj->name }}
+                    @endif
                 </div>
                 <div class="text-xs text-gray-600 w-full">
-                    {{ $entityObj->description }}
+                    @if($entity === 'events')
+                        {{ $entityObj->start }} - {{ $entityObj->end }}
+                    @else
+                        {{ $entityObj->description }}
+                    @endif
                 </div>
             </div>
         </div>

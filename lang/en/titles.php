@@ -39,5 +39,7 @@ return [
     'users_with_role' => 'Users with this role',
     'active_projects' => 'Active projects',
     'new_tasks' => 'New tasks',
+    'today_tasks' => 'Tasks with deadline today',
+    'today_events' => 'Events today',
     'calendar' => 'Calendar',
 ];

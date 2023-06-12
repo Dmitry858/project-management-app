@@ -48,7 +48,7 @@ class EventService
         return $calendars;
     }
 
-    public function getUserEvents()
+    public function getUserEvents($additionalFilter = [], $forCalendar = true)
     {
         if (intval(auth()->id()) === 0)
         {
@@ -63,12 +63,13 @@ class EventService
             'user_id' => auth()->id(),
             'is_private' => 1,
         ];
+        $filter = array_merge($filter, $additionalFilter);
         $privateEvents = $this->eventRepository->search($filter, false);
         if (count($privateEvents) > 0)
         {
             foreach ($privateEvents as $event)
             {
-                $result[] = $this->formatEventForCalendar($event);
+                $result[] = $forCalendar ? $this->formatEventForCalendar($event) : $event;
             }
         }
 
@@ -76,12 +77,13 @@ class EventService
             'is_private' => 0,
             'project_id' => null,
         ];
+        $filter = array_merge($filter, $additionalFilter);
         $publicEvents = $this->eventRepository->search($filter, false);
         if (count($publicEvents) > 0)
         {
             foreach ($publicEvents as $event)
             {
-                $result[] = $this->formatEventForCalendar($event);
+                $result[] = $forCalendar ? $this->formatEventForCalendar($event) : $event;
             }
         }
 
@@ -102,21 +104,29 @@ class EventService
                     'is_private' => 0,
                     'project_id' => $userProjectsIds,
                 ];
+                $filter = array_merge($filter, $additionalFilter);
                 $projectEvents = $this->eventRepository->search($filter, false);
                 if (count($projectEvents) > 0)
                 {
                     foreach ($projectEvents as $event)
                     {
-                        $result[] = $this->formatEventForCalendar($event);
+                        $result[] = $forCalendar ? $this->formatEventForCalendar($event) : $event;
                     }
                 }
             }
         }
 
-        return [
-            'status' => 'success',
-            'result' => $result,
-        ];
+        if ($forCalendar)
+        {
+            return [
+                'status' => 'success',
+                'result' => $result,
+            ];
+        }
+        else
+        {
+            return $result;
+        }
     }
 
     private function formatEventForCalendar($event): array
