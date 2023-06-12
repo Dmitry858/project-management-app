@@ -7,6 +7,7 @@ return [
     'projects_edit' => 'Editing of the project «:name»',
     'projects_single' => 'The project «:name»',
     'projects_single_subtitle' => 'Tasks of the project',
+    'project_events' => 'Project events',
     'members_index' => 'List of members',
     'members_create' => 'Creating a new member',
     'members_edit' => 'Editing of the member «:name»',

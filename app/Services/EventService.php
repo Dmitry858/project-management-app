@@ -162,6 +162,11 @@ class EventService
         return $formattedEvent;
     }
 
+    public function getList(array $filter = [], bool $withPaginate = true, array $with = [])
+    {
+        return $this->eventRepository->search($filter, $withPaginate, $with);
+    }
+
     public function create($data): array
     {
         if (isset($data['ajax']))

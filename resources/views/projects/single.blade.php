@@ -11,6 +11,15 @@
             </h4>
 
             @include('include.tasks-list')
+
+            @if(count($events) > 0)
+                <h4 class="font-medium leading-tight text-3xl mt-6 mb-2">
+                    @lang('titles.project_events')
+                </h4>
+                @foreach($events as $event)
+                    @include('include.dashboard-list-item', ['entity' => 'events', 'entityObj' => $event])
+                @endforeach
+            @endif
         </div>
 
         <div class="w-full sm:w-1/3">

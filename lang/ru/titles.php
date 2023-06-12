@@ -7,6 +7,7 @@ return [
     'projects_edit' => 'Редактирование проекта «:name»',
     'projects_single' => 'Проект «:name»',
     'projects_single_subtitle' => 'Задачи проекта',
+    'project_events' => 'События проекта',
     'members_index' => 'Список участников',
     'members_create' => 'Создание участника',
     'members_edit' => 'Редактирование участника «:name»',

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\ProjectService;
 use App\Services\UserService;
 use App\Services\TaskService;
+use App\Services\EventService;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Filters\ProjectsFilter;
@@ -15,18 +16,21 @@ class ProjectController extends Controller
     protected $projectService;
     protected $userService;
     protected $taskService;
+    protected $eventService;
     protected $filter;
 
     public function __construct(
         ProjectService $projectService,
         UserService $userService,
         TaskService $taskService,
+        EventService $eventService,
         ProjectsFilter $filter
     )
     {
         $this->projectService = $projectService;
         $this->userService = $userService;
         $this->taskService = $taskService;
+        $this->eventService = $eventService;
         $this->filter = $filter;
         $this->middleware('permission:create-projects')->only(['create', 'store']);
         $this->middleware('permission:edit-projects')->only(['edit', 'update']);
@@ -97,8 +101,12 @@ class ProjectController extends Controller
                 true,
                 ['stage']
             );
+            $events = $this->eventService->getList(
+                ['project_id' => $id],
+                false
+            );
 
-            return view('projects.single', compact('title', 'project', 'members', 'tasks'));
+            return view('projects.single', compact('title', 'project', 'members', 'tasks', 'events'));
         }
         else
         {
