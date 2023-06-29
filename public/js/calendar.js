@@ -19716,6 +19716,7 @@ var CalendarHandler = /*#__PURE__*/function () {
       this.showPreloader();
       this.getUserEvents();
       this.bindJsEvents();
+      this.setDateRange();
       this.isInited = true;
     }
   }, {
@@ -19903,6 +19904,7 @@ var CalendarHandler = /*#__PURE__*/function () {
     key: "onChangeViewSelect",
     value: function onChangeViewSelect(event) {
       this.calendar.changeView(event.currentTarget.value);
+      this.setDateRange();
       this.fixAllDayEvents();
     }
   }, {
@@ -19934,6 +19936,7 @@ var CalendarHandler = /*#__PURE__*/function () {
     key: "onClickTodayBtn",
     value: function onClickTodayBtn() {
       this.calendar.today();
+      this.setDateRange();
       this.fixAllDayEvents();
     }
   }, {
@@ -19944,6 +19947,7 @@ var CalendarHandler = /*#__PURE__*/function () {
       } else if (offset === 1) {
         this.calendar.next();
       }
+      this.setDateRange();
       this.fixAllDayEvents();
     }
   }, {
@@ -20394,6 +20398,19 @@ var CalendarHandler = /*#__PURE__*/function () {
         node.parentElement.prepend(error);
       } else {
         error.innerText = text;
+      }
+    }
+  }, {
+    key: "setDateRange",
+    value: function setDateRange() {
+      var loc = this.locale === 'ru' ? 'ru-RU' : 'en-GB',
+        dateRangeStart = this.calendar.getDateRangeStart().d.d.toLocaleDateString(loc),
+        dateRangeEnd = this.calendar.getDateRangeEnd().d.d.toLocaleDateString(loc),
+        dateRange = document.getElementById('date-range');
+      if (dateRangeStart === dateRangeEnd) {
+        dateRange.innerText = dateRangeStart;
+      } else {
+        dateRange.innerText = dateRangeStart + ' - ' + dateRangeEnd;
       }
     }
   }]);

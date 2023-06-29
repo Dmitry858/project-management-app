@@ -23,6 +23,8 @@
             </button>
         </nav>
 
+        <div id="date-range" class="mb-4"></div>
+
         <div class="calendar-filter flex mb-4">
             <div class="form-check flex items-center mr-3">
                 <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 align-top bg-no-repeat bg-center bg-contain float-left mr-1 cursor-pointer" type="checkbox" name="filter[]" value="private" id="private_events" checked>

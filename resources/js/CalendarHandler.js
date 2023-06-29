@@ -100,6 +100,8 @@ export default class CalendarHandler {
 
         this.bindJsEvents();
 
+        this.setDateRange();
+
         this.isInited = true;
     }
 
@@ -296,6 +298,7 @@ export default class CalendarHandler {
 
     onChangeViewSelect(event) {
         this.calendar.changeView(event.currentTarget.value);
+        this.setDateRange();
         this.fixAllDayEvents();
     }
 
@@ -316,6 +319,7 @@ export default class CalendarHandler {
 
     onClickTodayBtn() {
         this.calendar.today();
+        this.setDateRange();
         this.fixAllDayEvents();
     }
 
@@ -325,6 +329,7 @@ export default class CalendarHandler {
         } else if (offset === 1) {
             this.calendar.next();
         }
+        this.setDateRange();
         this.fixAllDayEvents();
     }
 
@@ -717,6 +722,19 @@ export default class CalendarHandler {
             node.parentElement.prepend(error);
         } else {
             error.innerText = text;
+        }
+    }
+
+    setDateRange() {
+        let loc = this.locale === 'ru' ? 'ru-RU' : 'en-GB',
+            dateRangeStart = this.calendar.getDateRangeStart().d.d.toLocaleDateString(loc),
+            dateRangeEnd = this.calendar.getDateRangeEnd().d.d.toLocaleDateString(loc),
+            dateRange = document.getElementById('date-range');
+
+        if (dateRangeStart === dateRangeEnd) {
+            dateRange.innerText = dateRangeStart;
+        } else {
+            dateRange.innerText = dateRangeStart + ' - ' + dateRangeEnd;
         }
     }
 
