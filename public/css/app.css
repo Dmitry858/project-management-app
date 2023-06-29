@@ -1608,6 +1608,12 @@ header .user-photo img {
 .min-h-50 {
     min-height: 50px;
 }
+.error-message {
+    display: inline-block;
+    max-width: 315px;
+    font-size: 11px;
+    color: red;
+}
 @media (min-width: 768px) {
     .main-nav-wrap {
         height: calc(100vh - 96px);

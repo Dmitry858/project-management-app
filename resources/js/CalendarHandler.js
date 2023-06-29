@@ -371,7 +371,8 @@ export default class CalendarHandler {
 
     modifyPopupFields(eventObj) {
         setTimeout(() => {
-            const datePickers = document.querySelectorAll('.toastui-calendar-popup-date-picker');
+            const datePickers = document.querySelectorAll('.toastui-calendar-popup-date-picker'),
+                  saveBtn = document.querySelector('button.toastui-calendar-popup-confirm');
 
             if (datePickers.length > 0) {
                 this.changeDateFormat(datePickers);
@@ -432,6 +433,11 @@ export default class CalendarHandler {
                     });
                 }
             }
+
+            if (saveBtn) {
+                saveBtn.addEventListener('click', this.validateStartEndDates.bind(this));
+            }
+
             this.modifyAllDayCheckbox(eventObj.isAllday);
         }, 100);
     }
@@ -655,6 +661,63 @@ export default class CalendarHandler {
         }
         this.calendar.createEvents([newEvent]);
         this.fixAllDayEvents();
+    }
+
+    validateStartEndDates(event) {
+        const btnParent = event.currentTarget.parentElement.parentElement,
+              startInput = btnParent.querySelector('input[name="start"]'),
+              endInput = btnParent.querySelector('input[name="end"]'),
+              isAlldayInput = btnParent.querySelector('.clone input[name="isAllday"]');
+
+        if (!startInput && !endInput) return;
+
+        let startDate = startInput.value,
+            endDate = endInput.value,
+            isAllday = isAlldayInput.value === 'true',
+            arStartDate = startDate.split(' '),
+            arEndDate = endDate.split(' ');
+
+        let formattedStartDate = arStartDate[0].split('.');
+        formattedStartDate.reverse();
+        formattedStartDate = formattedStartDate.join('-');
+        if (arStartDate[1]) {
+            formattedStartDate += ' ' + arStartDate[1] + ':00';
+        }
+
+        let formattedEndDate = arEndDate[0].split('.');
+        formattedEndDate.reverse();
+        formattedEndDate = formattedEndDate.join('-');
+        if (arEndDate[1]) {
+            formattedEndDate += ' ' + arEndDate[1] + ':00';
+        }
+
+        let startDateTs = Date.parse(formattedStartDate),
+            endDateTs = Date.parse(formattedEndDate);
+
+        if ((endDateTs <= startDateTs && !isAllday) || (endDateTs < startDateTs && isAllday)) {
+            event.preventDefault();
+            this.showErrorMessage(event.currentTarget,'Дата окончания события должна быть больше даты начала');
+            return;
+        }
+
+        if (!isAllday) {
+            if (arStartDate[0] !== arEndDate[0]) {
+                event.preventDefault();
+                this.showErrorMessage(event.currentTarget,'Пожалуйста, выберите время в рамках одного дня');
+            }
+        }
+    }
+
+    showErrorMessage(node, text) {
+        let error = node.parentElement.querySelector('.error-message');
+        if (!error) {
+            error = document.createElement('span');
+            error.classList.add('error-message');
+            error.innerText = text;
+            node.parentElement.prepend(error);
+        } else {
+            error.innerText = text;
+        }
     }
 
 }
