@@ -7,6 +7,7 @@ use App\Services\EventService;
 use App\Services\PermissionService;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use Illuminate\Support\Carbon;
 
 class EventController extends Controller
 {
@@ -45,7 +46,20 @@ class EventController extends Controller
 
         if ($isAjax)
         {
-            $result = $this->eventService->getUserEvents();
+            $filter = [];
+
+            if ($request->query('from') && $request->query('to'))
+            {
+                $filter['start'] = [
+                    'between',
+                    [
+                        Carbon::parse($request->query('from')),
+                        Carbon::parse($request->query('to').' 23:59:59'),
+                    ]
+                ];
+            }
+
+            $result = $this->eventService->getUserEvents($filter);
             return response()->json($result);
         }
     }

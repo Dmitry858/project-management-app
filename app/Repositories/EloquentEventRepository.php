@@ -23,7 +23,14 @@ class EloquentEventRepository implements EventRepositoryInterface
                 {
                     if (is_array($value) && $value[0] && $value[1])
                     {
-                        $query = $query->whereDate($key, $value[0], $value[1]);
+                        if ($value[0] === 'between')
+                        {
+                            $query = $query->whereBetween($key, $value[1]);
+                        }
+                        else
+                        {
+                            $query = $query->whereDate($key, $value[0], $value[1]);
+                        }
                     }
                 }
                 else if (is_array($value))

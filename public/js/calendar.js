@@ -19631,6 +19631,10 @@ var CalendarHandler = /*#__PURE__*/function () {
     _defineProperty(this, "defaultMonthOptions", {});
     _defineProperty(this, "calendar", null);
     _defineProperty(this, "eventObj", null);
+    _defineProperty(this, "state", {
+      'loadedRangeStart': '',
+      'loadedRangeEnd': ''
+    });
     this.csrf = (_document$querySelect = document.querySelector('meta[name="csrf-token"]')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.getAttribute('content');
     this.locale = locale;
     this.timezoneName = timezoneName;
@@ -19713,8 +19717,13 @@ var CalendarHandler = /*#__PURE__*/function () {
           }
         }
       });
-      this.showPreloader();
-      this.getUserEvents();
+      var fromDate = this.calendar.getDateRangeStart().d.d;
+      fromDate.setDate(fromDate.getDate() - 7);
+      fromDate = fromDate.toLocaleDateString('ru-RU');
+      var toDate = this.calendar.getDateRangeEnd().d.d;
+      toDate.setDate(toDate.getDate() + 7);
+      toDate = toDate.toLocaleDateString('ru-RU');
+      this.getUserEvents(fromDate, toDate);
       this.bindJsEvents();
       this.setDateRange();
       this.isInited = true;
@@ -20207,9 +20216,11 @@ var CalendarHandler = /*#__PURE__*/function () {
     }
   }, {
     key: "getUserEvents",
-    value: function getUserEvents() {
+    value: function getUserEvents(from, to) {
       var _this5 = this;
-      fetch('/events?ajax=1').then(function (response) {
+      this.showPreloader();
+      var url = '/events?ajax=1&from=' + from + '&to=' + to;
+      fetch(url).then(function (response) {
         return response.json();
       }).then(function (result) {
         _this5.hidePreloader();
@@ -20217,8 +20228,10 @@ var CalendarHandler = /*#__PURE__*/function () {
           document.querySelector('.error-message').innerText = result.text;
         }
         if (result.status && result.status === 'success') {
-          _this5.calendar.createEvents(result.result);
+          var newEvents = _this5.controlOfDuplicates(result.result);
+          _this5.calendar.createEvents(newEvents);
           _this5.fixAllDayEvents();
+          _this5.updateStateOfLoadedRange(from, to);
         }
       })["catch"](function (e) {
         document.querySelector('.error-message').innerText = e.message;
@@ -20412,6 +20425,106 @@ var CalendarHandler = /*#__PURE__*/function () {
       } else {
         dateRange.innerText = dateRangeStart + ' - ' + dateRangeEnd;
       }
+      this.checkLoadedRange();
+    }
+  }, {
+    key: "checkLoadedRange",
+    value: function checkLoadedRange() {
+      if (!this.state.loadedRangeStart && !this.state.loadedRangeEnd) {
+        return;
+      }
+      var rangeStartDate = this.calendar.getDateRangeStart().d.d.toLocaleDateString('ru-RU'),
+        rangeEndDate = this.calendar.getDateRangeEnd().d.d.toLocaleDateString('ru-RU'),
+        rangeStartDateTs = this.getDateTimestamp(rangeStartDate),
+        rangeEndDateTs = this.getDateTimestamp(rangeEndDate),
+        loadedRangeStartTs = this.getDateTimestamp(this.state.loadedRangeStart),
+        loadedRangeEndTs = this.getDateTimestamp(this.state.loadedRangeEnd);
+      if (rangeStartDateTs < loadedRangeStartTs || rangeEndDateTs > loadedRangeEndTs) {
+        var fromDate, toDate;
+        if (rangeStartDateTs < loadedRangeStartTs) {
+          fromDate = this.calendar.getDateRangeStart().d.d;
+          fromDate.setDate(fromDate.getDate() - 7);
+          fromDate = fromDate.toLocaleDateString('ru-RU');
+          toDate = new Date(loadedRangeStartTs);
+          toDate.setDate(toDate.getDate() - 1);
+          toDate = toDate.toLocaleDateString('ru-RU');
+        }
+        if (rangeEndDateTs > loadedRangeEndTs) {
+          if (!fromDate) {
+            fromDate = new Date(loadedRangeEndTs);
+            fromDate.setDate(fromDate.getDate() + 1);
+            fromDate = fromDate.toLocaleDateString('ru-RU');
+          }
+          toDate = this.calendar.getDateRangeEnd().d.d;
+          toDate.setDate(toDate.getDate() + 7);
+          toDate = toDate.toLocaleDateString('ru-RU');
+        }
+        this.getUserEvents(fromDate, toDate);
+      }
+    }
+  }, {
+    key: "getDateTimestamp",
+    value: function getDateTimestamp(date) {
+      var arDate = date.split('.');
+      arDate.reverse();
+      var dateString = arDate.join('-');
+      return Date.parse(dateString);
+    }
+  }, {
+    key: "updateStateOfLoadedRange",
+    value: function updateStateOfLoadedRange(fromDate, toDate) {
+      if (!this.state.loadedRangeStart) {
+        this.state.loadedRangeStart = fromDate;
+      } else {
+        var fromDateTs = this.getDateTimestamp(fromDate),
+          loadedRangeStartTs = this.getDateTimestamp(this.state.loadedRangeStart);
+        if (fromDateTs < loadedRangeStartTs) {
+          this.state.loadedRangeStart = fromDate;
+        }
+      }
+      if (!this.state.loadedRangeEnd) {
+        this.state.loadedRangeEnd = toDate;
+      } else {
+        var toDateTs = this.getDateTimestamp(toDate),
+          loadedRangeEndTs = this.getDateTimestamp(this.state.loadedRangeEnd);
+        if (toDateTs > loadedRangeEndTs) {
+          this.state.loadedRangeEnd = toDate;
+        }
+      }
+    }
+  }, {
+    key: "controlOfDuplicates",
+    value: function controlOfDuplicates(newEvents) {
+      var filteredEvents = [],
+        currentEventsIds = [];
+      var iterator = this.calendar.store.getState().calendar.events.internalMap.entries();
+      var _iterator10 = _createForOfIteratorHelper(iterator),
+        _step10;
+      try {
+        for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
+          var item = _step10.value;
+          currentEventsIds.push(item[1].id);
+        }
+      } catch (err) {
+        _iterator10.e(err);
+      } finally {
+        _iterator10.f();
+      }
+      var _iterator11 = _createForOfIteratorHelper(newEvents),
+        _step11;
+      try {
+        for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
+          var _item = _step11.value;
+          if (!currentEventsIds.includes(_item.id)) {
+            filteredEvents.push(_item);
+          }
+        }
+      } catch (err) {
+        _iterator11.e(err);
+      } finally {
+        _iterator11.f();
+      }
+      return filteredEvents;
     }
   }]);
   return CalendarHandler;

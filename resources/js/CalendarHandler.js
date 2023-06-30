@@ -7,6 +7,10 @@ export default class CalendarHandler {
     defaultMonthOptions = {};
     calendar = null;
     eventObj = null;
+    state = {
+        'loadedRangeStart': '',
+        'loadedRangeEnd': '',
+    };
 
     constructor(locale, timezoneName, calendars, permissions) {
         this.csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -94,9 +98,13 @@ export default class CalendarHandler {
             },
         });
 
-        this.showPreloader();
-
-        this.getUserEvents();
+        let fromDate = this.calendar.getDateRangeStart().d.d;
+        fromDate.setDate(fromDate.getDate() - 7);
+        fromDate = fromDate.toLocaleDateString('ru-RU');
+        let toDate = this.calendar.getDateRangeEnd().d.d;
+        toDate.setDate(toDate.getDate() + 7);
+        toDate = toDate.toLocaleDateString('ru-RU');
+        this.getUserEvents(fromDate, toDate);
 
         this.bindJsEvents();
 
@@ -543,8 +551,10 @@ export default class CalendarHandler {
         document.querySelector('.preloader-wrap').remove();
     }
 
-    getUserEvents() {
-        fetch('/events?ajax=1')
+    getUserEvents(from, to) {
+        this.showPreloader();
+        let url = '/events?ajax=1&from=' + from + '&to=' + to;
+        fetch(url)
             .then(response => response.json())
             .then(result => {
                 this.hidePreloader();
@@ -553,8 +563,10 @@ export default class CalendarHandler {
                 }
 
                 if (result.status && result.status === 'success') {
-                    this.calendar.createEvents(result.result);
+                    let newEvents = this.controlOfDuplicates(result.result);
+                    this.calendar.createEvents(newEvents);
                     this.fixAllDayEvents();
+                    this.updateStateOfLoadedRange(from, to);
                 }
             })
             .catch((e) => {
@@ -736,6 +748,89 @@ export default class CalendarHandler {
         } else {
             dateRange.innerText = dateRangeStart + ' - ' + dateRangeEnd;
         }
+
+        this.checkLoadedRange();
+    }
+
+    checkLoadedRange() {
+        if (!this.state.loadedRangeStart && !this.state.loadedRangeEnd) {
+            return;
+        }
+        let rangeStartDate = this.calendar.getDateRangeStart().d.d.toLocaleDateString('ru-RU'),
+            rangeEndDate = this.calendar.getDateRangeEnd().d.d.toLocaleDateString('ru-RU'),
+            rangeStartDateTs = this.getDateTimestamp(rangeStartDate),
+            rangeEndDateTs = this.getDateTimestamp(rangeEndDate),
+            loadedRangeStartTs = this.getDateTimestamp(this.state.loadedRangeStart),
+            loadedRangeEndTs = this.getDateTimestamp(this.state.loadedRangeEnd);
+
+        if (rangeStartDateTs < loadedRangeStartTs || rangeEndDateTs > loadedRangeEndTs) {
+            let fromDate, toDate;
+            if (rangeStartDateTs < loadedRangeStartTs) {
+                fromDate = this.calendar.getDateRangeStart().d.d;
+                fromDate.setDate(fromDate.getDate() - 7);
+                fromDate = fromDate.toLocaleDateString('ru-RU');
+                toDate = new Date(loadedRangeStartTs);
+                toDate.setDate(toDate.getDate() - 1);
+                toDate = toDate.toLocaleDateString('ru-RU');
+            }
+
+            if (rangeEndDateTs > loadedRangeEndTs) {
+                if (!fromDate) {
+                    fromDate = new Date(loadedRangeEndTs);
+                    fromDate.setDate(fromDate.getDate() + 1);
+                    fromDate = fromDate.toLocaleDateString('ru-RU');
+                }
+                toDate = this.calendar.getDateRangeEnd().d.d;
+                toDate.setDate(toDate.getDate() + 7);
+                toDate = toDate.toLocaleDateString('ru-RU');
+            }
+
+            this.getUserEvents(fromDate, toDate);
+        }
+    }
+
+    getDateTimestamp(date) {
+        let arDate = date.split('.');
+        arDate.reverse();
+        let dateString = arDate.join('-');
+        return Date.parse(dateString);
+    }
+
+    updateStateOfLoadedRange(fromDate, toDate) {
+        if (!this.state.loadedRangeStart) {
+            this.state.loadedRangeStart = fromDate;
+        } else {
+            let fromDateTs = this.getDateTimestamp(fromDate),
+                loadedRangeStartTs = this.getDateTimestamp(this.state.loadedRangeStart);
+            if (fromDateTs < loadedRangeStartTs) {
+                this.state.loadedRangeStart = fromDate;
+            }
+        }
+
+        if (!this.state.loadedRangeEnd) {
+            this.state.loadedRangeEnd = toDate;
+        } else {
+            let toDateTs = this.getDateTimestamp(toDate),
+                loadedRangeEndTs = this.getDateTimestamp(this.state.loadedRangeEnd);
+            if (toDateTs > loadedRangeEndTs) {
+                this.state.loadedRangeEnd = toDate;
+            }
+        }
+    }
+
+    controlOfDuplicates(newEvents) {
+        const filteredEvents = [],
+              currentEventsIds = [];
+        let iterator = this.calendar.store.getState().calendar.events.internalMap.entries();
+        for (let item of iterator) {
+            currentEventsIds.push(item[1].id);
+        }
+        for (let item of newEvents) {
+            if (!currentEventsIds.includes(item.id)) {
+                filteredEvents.push(item);
+            }
+        }
+        return filteredEvents;
     }
 
 }
