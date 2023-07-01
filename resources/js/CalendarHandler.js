@@ -11,6 +11,8 @@ export default class CalendarHandler {
         'loadedRangeStart': '',
         'loadedRangeEnd': '',
     };
+    dateRangeStart = null;
+    dateRangeEnd = null;
 
     constructor(locale, timezoneName, calendars, permissions) {
         this.csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -639,8 +641,8 @@ export default class CalendarHandler {
     }
 
     fixAllDayEvents() {
-        let dateRangeStart = this.calendar.getDateRangeStart(),
-            dateRangeEnd = this.calendar.getDateRangeEnd();
+        let dateRangeStart = this.dateRangeStart ? new Date(this.dateRangeStart) : this.calendar.getDateRangeStart().d.d,
+            dateRangeEnd = this.dateRangeEnd ? new Date(this.dateRangeEnd) : this.calendar.getDateRangeEnd().d.d;
 
         setTimeout(() => {
             let allDayEventsNodes = document.querySelectorAll('.toastui-calendar-allday-panel .toastui-calendar-weekday-event-block');
@@ -749,6 +751,8 @@ export default class CalendarHandler {
             dateRange.innerText = dateRangeStart + ' - ' + dateRangeEnd;
         }
 
+        this.dateRangeStart = this.calendar.getDateRangeStart().d.d.getTime();
+        this.dateRangeEnd = this.calendar.getDateRangeEnd().d.d.getTime();
         this.checkLoadedRange();
     }
 

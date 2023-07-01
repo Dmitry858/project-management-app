@@ -19635,6 +19635,8 @@ var CalendarHandler = /*#__PURE__*/function () {
       'loadedRangeStart': '',
       'loadedRangeEnd': ''
     });
+    _defineProperty(this, "dateRangeStart", null);
+    _defineProperty(this, "dateRangeEnd", null);
     this.csrf = (_document$querySelect = document.querySelector('meta[name="csrf-token"]')) === null || _document$querySelect === void 0 ? void 0 : _document$querySelect.getAttribute('content');
     this.locale = locale;
     this.timezoneName = timezoneName;
@@ -20313,8 +20315,8 @@ var CalendarHandler = /*#__PURE__*/function () {
     key: "fixAllDayEvents",
     value: function fixAllDayEvents() {
       var _this7 = this;
-      var dateRangeStart = this.calendar.getDateRangeStart(),
-        dateRangeEnd = this.calendar.getDateRangeEnd();
+      var dateRangeStart = this.dateRangeStart ? new Date(this.dateRangeStart) : this.calendar.getDateRangeStart().d.d,
+        dateRangeEnd = this.dateRangeEnd ? new Date(this.dateRangeEnd) : this.calendar.getDateRangeEnd().d.d;
       setTimeout(function () {
         var allDayEventsNodes = document.querySelectorAll('.toastui-calendar-allday-panel .toastui-calendar-weekday-event-block');
         if (allDayEventsNodes.length === 0) return;
@@ -20425,6 +20427,8 @@ var CalendarHandler = /*#__PURE__*/function () {
       } else {
         dateRange.innerText = dateRangeStart + ' - ' + dateRangeEnd;
       }
+      this.dateRangeStart = this.calendar.getDateRangeStart().d.d.getTime();
+      this.dateRangeEnd = this.calendar.getDateRangeEnd().d.d.getTime();
       this.checkLoadedRange();
     }
   }, {
