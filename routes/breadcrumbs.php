@@ -17,6 +17,11 @@ Breadcrumbs::for('calendar', function (BreadcrumbTrail $trail) {
     $trail->push(__('titles.calendar'), route('calendar'));
 });
 
+Breadcrumbs::for('events', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push(__('titles.events_index'), route('events.index'));
+});
+
 Breadcrumbs::for('projects', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push(__('titles.projects_index'), route('projects.index'));

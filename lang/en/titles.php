@@ -43,4 +43,5 @@ return [
     'today_tasks' => 'Tasks with deadline today',
     'today_events' => 'Events today',
     'calendar' => 'Calendar',
+    'events_index' => 'List of events',
 ];

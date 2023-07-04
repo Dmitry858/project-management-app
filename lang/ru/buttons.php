@@ -18,4 +18,6 @@ return [
     'all_events' => 'Все события',
     'delete_selected' => 'Удалить выбранное',
     'today' => 'Сегодня',
+    'list_view' => 'В виде списка',
+    'calendar_view' => 'В виде календаря',
 ];

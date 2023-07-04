@@ -18,4 +18,6 @@ return [
     'all_events' => 'All events',
     'delete_selected' => 'Delete selected',
     'today' => 'Today',
+    'list_view' => 'List view',
+    'calendar_view' => 'Calendar view',
 ];

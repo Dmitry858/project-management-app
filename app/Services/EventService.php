@@ -87,31 +87,20 @@ class EventService
             }
         }
 
-        $member = auth()->user()->member;
-        if ($member)
+        $userProjectsIds = $this->getUserProjectsIds();
+        if (count($userProjectsIds) > 0)
         {
-            $userProjects = auth()->user()->member->projects;
-
-            if (count($userProjects) > 0)
+            $filter = [
+                'is_private' => 0,
+                'project_id' => $userProjectsIds,
+            ];
+            $filter = array_merge($filter, $additionalFilter);
+            $projectEvents = $this->eventRepository->search($filter, false);
+            if (count($projectEvents) > 0)
             {
-                $userProjectsIds = [];
-                foreach ($userProjects as $project)
+                foreach ($projectEvents as $event)
                 {
-                    $userProjectsIds[] = $project->id;
-                }
-
-                $filter = [
-                    'is_private' => 0,
-                    'project_id' => $userProjectsIds,
-                ];
-                $filter = array_merge($filter, $additionalFilter);
-                $projectEvents = $this->eventRepository->search($filter, false);
-                if (count($projectEvents) > 0)
-                {
-                    foreach ($projectEvents as $event)
-                    {
-                        $result[] = $forCalendar ? $this->formatEventForCalendar($event) : $event;
-                    }
+                    $result[] = $forCalendar ? $this->formatEventForCalendar($event) : $event;
                 }
             }
         }
@@ -127,6 +116,24 @@ class EventService
         {
             return $result;
         }
+    }
+
+    public function getUserProjectsIds(): array
+    {
+        $ids = [];
+        $member = auth()->user()->member;
+        if ($member)
+        {
+            $userProjects = auth()->user()->member->projects;
+            if (count($userProjects) > 0)
+            {
+                foreach ($userProjects as $project)
+                {
+                    $ids[] = $project->id;
+                }
+            }
+        }
+        return $ids;
     }
 
     private function formatEventForCalendar($event): array
@@ -162,9 +169,9 @@ class EventService
         return $formattedEvent;
     }
 
-    public function getList(array $filter = [], bool $withPaginate = true, array $with = [])
+    public function getList(array $filter = [], bool $withPaginate = true, array $with = [], array $sort = [])
     {
-        return $this->eventRepository->search($filter, $withPaginate, $with);
+        return $this->eventRepository->search($filter, $withPaginate, $with, $sort);
     }
 
     public function create($data): array

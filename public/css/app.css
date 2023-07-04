@@ -1614,6 +1614,14 @@ header .user-photo img {
     font-size: 11px;
     color: red;
 }
+.breadcrumbs-wrap nav.container {
+    width: auto;
+    margin-left: 0;
+    margin-right: 15px;
+}
+.view-selector {
+    margin-right: 1px;
+}
 @media (min-width: 768px) {
     .main-nav-wrap {
         height: calc(100vh - 96px);

@@ -62,6 +62,38 @@ class EventController extends Controller
             $result = $this->eventService->getUserEvents($filter);
             return response()->json($result);
         }
+        else
+        {
+            $title = __('titles.events_index');
+            $filter = [
+                'or' => [
+                    [
+                        'user_id' => auth()->id(),
+                        'is_private' => 1,
+                    ],
+                    [
+                        'is_private' => 0,
+                        'project_id' => null,
+                    ],
+                ],
+            ];
+
+            $userProjectsIds = $this->eventService->getUserProjectsIds();
+            if (count($userProjectsIds) > 0)
+            {
+                $filter['or'][] = [
+                    'is_private' => 0,
+                    'project_id' => $userProjectsIds,
+                ];
+            }
+            $sort = [
+                'column' => 'start',
+                'direction' => 'desc',
+            ];
+            $events = $this->eventService->getList($filter, true, [], $sort);
+
+            return view('events.index', compact('title', 'events'));
+        }
     }
 
     /**

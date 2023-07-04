@@ -19719,6 +19719,7 @@ var CalendarHandler = /*#__PURE__*/function () {
           }
         }
       });
+      this.setDateRange();
       var fromDate = this.calendar.getDateRangeStart().d.d;
       fromDate.setDate(fromDate.getDate() - 7);
       fromDate = fromDate.toLocaleDateString('ru-RU');
@@ -19727,7 +19728,6 @@ var CalendarHandler = /*#__PURE__*/function () {
       toDate = toDate.toLocaleDateString('ru-RU');
       this.getUserEvents(fromDate, toDate);
       this.bindJsEvents();
-      this.setDateRange();
       this.isInited = true;
     }
   }, {

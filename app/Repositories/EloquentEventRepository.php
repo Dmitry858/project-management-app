@@ -12,7 +12,7 @@ class EloquentEventRepository implements EventRepositoryInterface
         return Event::find($id);
     }
 
-    public function search(array $filter = [], bool $withPaginate = true, array $with = [])
+    public function search(array $filter = [], bool $withPaginate = true, array $with = [], array $sort = [])
     {
         $query = Event::query();
         if (count($filter) > 0)
@@ -33,6 +33,28 @@ class EloquentEventRepository implements EventRepositoryInterface
                         }
                     }
                 }
+                else if ($key === 'or')
+                {
+                    foreach ($value as $i => $conditions)
+                    {
+                        if ($i === 0)
+                        {
+                            foreach ($conditions as $condKey => $condValue)
+                            {
+                                $query = is_array($condValue) ? $query->whereIn($condKey, $condValue) : $query->where($condKey, $condValue);
+                            }
+                        }
+                        else
+                        {
+                            $query->orWhere(function($query) use ($conditions) {
+                                foreach ($conditions as $condKey => $condValue)
+                                {
+                                    $query = is_array($condValue) ? $query->whereIn($condKey, $condValue) : $query->where($condKey, $condValue);
+                                }
+                            });
+                        }
+                    }
+                }
                 else if (is_array($value))
                 {
                     $query = $query->whereIn($key, $value);
@@ -45,6 +67,8 @@ class EloquentEventRepository implements EventRepositoryInterface
         }
 
         if (!empty($with)) $query = $query->with($with);
+
+        if (!empty($sort)) $query = $query->orderBy($sort['column'], $sort['direction']);
 
         if ($withPaginate)
         {

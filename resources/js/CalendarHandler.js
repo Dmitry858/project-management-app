@@ -100,6 +100,8 @@ export default class CalendarHandler {
             },
         });
 
+        this.setDateRange();
+
         let fromDate = this.calendar.getDateRangeStart().d.d;
         fromDate.setDate(fromDate.getDate() - 7);
         fromDate = fromDate.toLocaleDateString('ru-RU');
@@ -109,8 +111,6 @@ export default class CalendarHandler {
         this.getUserEvents(fromDate, toDate);
 
         this.bindJsEvents();
-
-        this.setDateRange();
 
         this.isInited = true;
     }
