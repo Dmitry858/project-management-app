@@ -31,6 +31,15 @@ class EventService
             ]
         ];
 
+        $projectsCalendars = $this->getUserProjectsCalendars();
+
+        return array_merge($calendars, $projectsCalendars);
+    }
+
+    public function getUserProjectsCalendars(): array
+    {
+        $calendars = [];
+
         $userProjects = $this->projectService->getList([], false);
 
         if (count($userProjects) > 0)

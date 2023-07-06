@@ -5963,6 +5963,28 @@ window.addEventListener('load', function (e) {
     }
   }
 
+  // Toggle isAllday select
+  var isAlldaySelect = document.getElementById('is_allday');
+  if (isAlldaySelect) {
+    isAlldaySelect.addEventListener('change', function (e) {
+      var dateInputs = document.getElementsByClassName('date-input');
+      if (dateInputs.length === 0) return;
+      var type = e.currentTarget.value === '1' ? 'date' : 'datetime-local';
+      var _iterator2 = _createForOfIteratorHelper(dateInputs),
+        _step2;
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var input = _step2.value;
+          input.setAttribute('type', type);
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+    });
+  }
+
   // Init Comments class
   var comments = new _Comments__WEBPACK_IMPORTED_MODULE_1__["default"]();
   comments.init();

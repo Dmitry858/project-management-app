@@ -99,11 +99,14 @@ class EventController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
-        //
+        $title = __('titles.events_create');
+        $projects = $this->eventService->getUserProjectsCalendars();
+
+        return view('events.create', compact('title', 'projects'));
     }
 
     /**

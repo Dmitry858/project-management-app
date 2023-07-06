@@ -44,4 +44,5 @@ return [
     'today_events' => 'События сегодня',
     'calendar' => 'Календарь',
     'events_index' => 'Список событий',
+    'events_create' => 'Создание события',
 ];

@@ -50,6 +50,20 @@ window.addEventListener('load', function (e) {
         }
     }
 
+    // Toggle isAllday select
+    const isAlldaySelect = document.getElementById('is_allday');
+    if (isAlldaySelect) {
+        isAlldaySelect.addEventListener('change', function (e) {
+            const dateInputs = document.getElementsByClassName('date-input');
+            if (dateInputs.length === 0) return;
+
+            let type = e.currentTarget.value === '1' ? 'date' : 'datetime-local';
+            for (let input of dateInputs) {
+                input.setAttribute('type', type);
+            }
+        });
+    }
+
     // Init Comments class
     let comments = new Comments();
     comments.init();
