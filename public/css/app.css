@@ -2066,6 +2066,14 @@ header .user-photo img {
     padding-bottom: 1.25rem;
   }
 
+  .md\:pl-3 {
+    padding-left: 0.75rem;
+  }
+
+  .md\:pr-3 {
+    padding-right: 0.75rem;
+  }
+
   .md\:pt-1 {
     padding-top: 0.25rem;
   }

@@ -136,11 +136,17 @@ class EventController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function show($id)
     {
-        //
+        $event = $this->eventService->get($id);
+
+        if (!$event) abort(404);
+
+        $title = __('titles.events_single', ['title' => $event->title]);
+
+        return view('events.single', compact('title', 'event'));
     }
 
     /**

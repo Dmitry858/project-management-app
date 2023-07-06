@@ -178,6 +178,23 @@ class EventService
         return $formattedEvent;
     }
 
+    public function get(int $id)
+    {
+        $event = $this->eventRepository->find($id);
+        if (!$event) return null;
+        if ($event->user_id !== auth()->id()) return null;
+
+        if ($event->project_id)
+        {
+            $project = $this->projectService->get($event->project_id);
+            if ($project) return $event;
+        }
+        else
+        {
+            return $event;
+        }
+    }
+
     public function getList(array $filter = [], bool $withPaginate = true, array $with = [], array $sort = [])
     {
         return $this->eventRepository->search($filter, $withPaginate, $with, $sort);

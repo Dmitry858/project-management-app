@@ -45,4 +45,5 @@ return [
     'calendar' => 'Календарь',
     'events_index' => 'Список событий',
     'events_create' => 'Создание события',
+    'events_single' => 'Событие «:title»',
 ];
