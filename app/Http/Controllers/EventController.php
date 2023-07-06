@@ -113,7 +113,7 @@ class EventController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreEventRequest $request
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function store(StoreEventRequest $request)
     {
@@ -123,6 +123,12 @@ class EventController extends Controller
         {
             $result = $this->eventService->create($request->all());
             return response()->json($result);
+        }
+        else
+        {
+            $result = $this->eventService->create($request->all());
+            $route = $result['status'] === 'error' ? 'events.create' : 'events.index';
+            return redirect()->route($route)->with($result['status'], $result['text']);
         }
     }
 

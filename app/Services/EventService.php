@@ -185,9 +185,14 @@ class EventService
 
     public function create($data): array
     {
-        if (isset($data['ajax']))
+        if (!isset($data['ajax']) && isset($data['event_type']))
         {
-            unset($data['ajax']);
+            $data['is_private'] = $data['event_type'] === 'private' ? 1 : 0;
+            if (strpos($data['event_type'], 'project_') !== false)
+            {
+                $data['project_id'] = intval(str_replace('project_', '', $data['event_type']));
+            }
+            unset($data['event_type']);
         }
         $hasPermission = PermissionService::hasUserPermission(auth()->id(), 'create-events-of-projects-and-public-events');
         if (intval($data['is_private']) === 0 && !$hasPermission)
@@ -198,9 +203,44 @@ class EventService
             ];
         }
 
-        $endDateFormat = $data['is_allday'] === 1 ? 'Y-m-d 23:59:59' : 'Y-m-d H:i:s';
-        $data['start'] = Carbon::parse($data['start'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');
-        $data['end'] = Carbon::parse($data['end'])->setTimezone(config('calendar.timezoneName'))->format($endDateFormat);
+        $isAllday = intval($data['is_allday']) === 1;
+        $startDateTs = strtotime($data['start']);
+        $endDateTs = strtotime($data['end']);
+
+        if (($endDateTs <= $startDateTs && !$isAllday) || ($endDateTs < $startDateTs && $isAllday))
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.end_date_greater_than_start')
+            ];
+        }
+
+        if (!$isAllday)
+        {
+            $arStartDate = explode('T', $data['start']);
+            $arEndDate = explode('T', $data['end']);
+            if ($arStartDate[0] !== $arEndDate[0])
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.one_day_time')
+                ];
+            }
+        }
+
+        $endDateFormat = intval($data['is_allday']) === 1 ? 'Y-m-d 23:59:59' : 'Y-m-d H:i:s';
+        if (isset($data['ajax']))
+        {
+            $data['start'] = Carbon::parse($data['start'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');
+            $data['end'] = Carbon::parse($data['end'])->setTimezone(config('calendar.timezoneName'))->format($endDateFormat);
+            unset($data['ajax']);
+        }
+        else
+        {
+            $data['start'] = Carbon::parse($data['start'])->format('Y-m-d H:i:s');
+            $data['end'] = Carbon::parse($data['end'])->format($endDateFormat);
+        }
+
         $data['user_id'] = auth()->id();
 
         $event = $this->eventRepository->createFromArray($data);
@@ -209,7 +249,8 @@ class EventService
         {
             return [
                 'status' => 'success',
-                'id' => strval($event->id)
+                'text' => __('success_messages.event_created'),
+                'id' => strval($event->id),
             ];
         }
         else

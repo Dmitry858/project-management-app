@@ -31,4 +31,6 @@ return [
     'no_permission_to_create_event' => 'User does not have permission to create event',
     'no_permission_to_edit_event' => 'User does not have permission to edit event',
     'no_permission_to_delete_event' => 'User does not have permission to delete event',
+    'one_day_time' => 'Please select a time within one day',
+    'end_date_greater_than_start' => 'The end date of the event must be greater than the start date',
 ];
