@@ -182,7 +182,7 @@ class EventService
     {
         $event = $this->eventRepository->find($id);
         if (!$event) return null;
-        if ($event->user_id !== auth()->id()) return null;
+        if ($event->is_private === 1 && $event->user_id !== auth()->id()) return null;
 
         if ($event->project_id)
         {
