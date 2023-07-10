@@ -52,7 +52,13 @@
                                     @endif
                                 </td>
                                 <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    @include('include.buttons.edit', ['link' => route('events.edit', ['event' => $event->id])])
+                                    @if(!$event->is_private)
+                                        @permission('edit-events-of-projects-and-public-events')
+                                            @include('include.buttons.edit', ['link' => route('events.edit', ['event' => $event->id])])
+                                        @endpermission
+                                    @else
+                                        @include('include.buttons.edit', ['link' => route('events.edit', ['event' => $event->id])])
+                                    @endif
                                     @include('include.buttons.delete', ['link' => route('events.destroy', ['event' => $event->id])])
                                 </td>
                             </tr>

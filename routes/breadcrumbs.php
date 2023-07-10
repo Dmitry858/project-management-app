@@ -32,6 +32,11 @@ Breadcrumbs::for('single-event', function (BreadcrumbTrail $trail, $event) {
     $trail->push(__('titles.events_single', ['title' => $event->title]), route('events.show', ['event' => $event->id]));
 });
 
+Breadcrumbs::for('edit-event', function (BreadcrumbTrail $trail, $event) {
+    $trail->parent('events');
+    $trail->push(__('titles.events_edit', ['title' => $event->title]), route('events.edit', ['event' => $event->id]));
+});
+
 Breadcrumbs::for('projects', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push(__('titles.projects_index'), route('projects.index'));

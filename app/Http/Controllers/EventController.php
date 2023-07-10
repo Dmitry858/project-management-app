@@ -153,11 +153,18 @@ class EventController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function edit($id)
     {
-        //
+        $event = $this->eventService->get($id, true);
+
+        if (!$event) abort(404);
+
+        $title = __('titles.events_edit', ['title' => $event->title]);
+        $projects = $this->eventService->getUserProjectsCalendars();
+
+        return view('events.edit', compact('title', 'event', 'projects'));
     }
 
     /**

@@ -178,11 +178,16 @@ class EventService
         return $formattedEvent;
     }
 
-    public function get(int $id)
+    public function get(int $id, bool $forEditing = false)
     {
         $event = $this->eventRepository->find($id);
         if (!$event) return null;
         if ($event->is_private === 1 && $event->user_id !== auth()->id()) return null;
+        if ($event->is_private === 0 && $forEditing)
+        {
+            $hasPermission = PermissionService::hasUserPermission(auth()->id(), 'edit-events-of-projects-and-public-events');
+            if (!$hasPermission) return null;
+        }
 
         if ($event->project_id)
         {
