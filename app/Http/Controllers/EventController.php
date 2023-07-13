@@ -208,11 +208,15 @@ class EventController extends Controller
     public function destroy(Request $request, $id)
     {
         $isAjax = boolval($request->query('ajax', '0'));
+        $result = $this->eventService->delete([$id]);
 
         if ($isAjax)
         {
-            $result = $this->eventService->delete([$id]);
             return response()->json($result);
+        }
+        else
+        {
+            return redirect()->route('events.index')->with($result['status'], $result['text']);
         }
     }
 

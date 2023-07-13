@@ -56,10 +56,13 @@
                                         @permission('edit-events-of-projects-and-public-events')
                                             @include('include.buttons.edit', ['link' => route('events.edit', ['event' => $event->id])])
                                         @endpermission
+                                        @permission('delete-events-of-projects-and-public-events')
+                                            @include('include.buttons.delete', ['link' => route('events.destroy', ['event' => $event->id])])
+                                        @endpermission
                                     @else
                                         @include('include.buttons.edit', ['link' => route('events.edit', ['event' => $event->id])])
+                                        @include('include.buttons.delete', ['link' => route('events.destroy', ['event' => $event->id])])
                                     @endif
-                                    @include('include.buttons.delete', ['link' => route('events.destroy', ['event' => $event->id])])
                                 </td>
                             </tr>
                         @endforeach
