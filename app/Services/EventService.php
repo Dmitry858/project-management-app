@@ -209,12 +209,7 @@ class EventService
     {
         if (!isset($data['ajax']) && isset($data['event_type']))
         {
-            $data['is_private'] = $data['event_type'] === 'private' ? 1 : 0;
-            if (strpos($data['event_type'], 'project_') !== false)
-            {
-                $data['project_id'] = intval(str_replace('project_', '', $data['event_type']));
-            }
-            unset($data['event_type']);
+            $data = $this->handleEventTypeField($data);
         }
         $hasPermission = PermissionService::hasUserPermission(auth()->id(), 'create-events-of-projects-and-public-events');
         if (intval($data['is_private']) === 0 && !$hasPermission)
@@ -225,29 +220,10 @@ class EventService
             ];
         }
 
-        $isAllday = intval($data['is_allday']) === 1;
-        $startDateTs = strtotime($data['start']);
-        $endDateTs = strtotime($data['end']);
-
-        if (($endDateTs <= $startDateTs && !$isAllday) || ($endDateTs < $startDateTs && $isAllday))
+        $result = $this->validateDateFields($data);
+        if ($result['status'] === 'error')
         {
-            return [
-                'status' => 'error',
-                'text' => __('errors.end_date_greater_than_start')
-            ];
-        }
-
-        if (!$isAllday)
-        {
-            $arStartDate = explode('T', $data['start']);
-            $arEndDate = explode('T', $data['end']);
-            if ($arStartDate[0] !== $arEndDate[0])
-            {
-                return [
-                    'status' => 'error',
-                    'text' => __('errors.one_day_time')
-                ];
-            }
+            return $result;
         }
 
         $endDateFormat = intval($data['is_allday']) === 1 ? 'Y-m-d 23:59:59' : 'Y-m-d H:i:s';
@@ -304,6 +280,17 @@ class EventService
             ];
         }
 
+        $result = $this->validateDateFields($data, $event);
+        if ($result['status'] === 'error')
+        {
+            return $result;
+        }
+
+        if (isset($data['event_type']))
+        {
+            $data = $this->handleEventTypeField($data);
+        }
+
         if (isset($data['is_private']))
         {
             if (intval($data['is_private']) === 1 && intval($event->project_id) > 0)
@@ -315,19 +302,34 @@ class EventService
                 $data['project_id'] = null;
             }
         }
+
         if (isset($data['start']))
         {
-            $data['start'] = Carbon::parse($data['start'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');
+            if (isset($data['ajax']))
+            {
+                $data['start'] = Carbon::parse($data['start'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');
+            }
+            else
+            {
+                $data['start'] = Carbon::parse($data['start'])->format('Y-m-d H:i:s');
+            }
         }
         if (isset($data['end']))
         {
             $endDateFormat = 'Y-m-d H:i:s';
-            if ((isset($data['is_allday']) && $data['is_allday'] === 1)
+            if ((isset($data['is_allday']) && intval($data['is_allday']) === 1)
                 || (!isset($data['is_allday']) && $event->is_allday === 1))
             {
                 $endDateFormat = 'Y-m-d 23:59:59';
             }
-            $data['end'] = Carbon::parse($data['end'])->setTimezone(config('calendar.timezoneName'))->format($endDateFormat);
+            if (isset($data['ajax']))
+            {
+                $data['end'] = Carbon::parse($data['end'])->setTimezone(config('calendar.timezoneName'))->format($endDateFormat);
+            }
+            else
+            {
+                $data['end'] = Carbon::parse($data['end'])->format($endDateFormat);
+            }
         }
 
         $success = $this->eventRepository->updateFromArray($id, $data);
@@ -335,6 +337,76 @@ class EventService
         return [
             'status' => $success ? 'success' : 'error',
             'text' => $success ? __('flash.event_updated') : __('flash.general_error')
+        ];
+    }
+
+    private function handleEventTypeField(array $data): array
+    {
+        $data['is_private'] = $data['event_type'] === 'private' ? 1 : 0;
+        if (strpos($data['event_type'], 'project_') !== false)
+        {
+            $data['project_id'] = intval(str_replace('project_', '', $data['event_type']));
+        }
+        unset($data['event_type']);
+
+        return $data;
+    }
+
+    private function validateDateFields(array $data, $event = null): array
+    {
+        if (isset($data['ajax']) && intval($data['ajax']) === 1)
+        {
+            if (!isset($data['is_allday']) && $event)
+            {
+                $data['is_allday'] = $event->is_allday;
+            }
+
+            if (!isset($data['start']) && $event)
+            {
+                $data['start'] = $event->start;
+            }
+            else if (isset($data['start']))
+            {
+                $data['start'] = Carbon::parse($data['start'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');
+            }
+            if (!isset($data['end']) && $event)
+            {
+                $data['end'] = $event->end;
+            }
+            else if (isset($data['end']))
+            {
+                $data['end'] = Carbon::parse($data['end'])->setTimezone(config('calendar.timezoneName'))->format('Y-m-d H:i:s');;
+            }
+        }
+
+        $isAllday = intval($data['is_allday']) === 1;
+        $startDateTs = strtotime($data['start']);
+        $endDateTs = strtotime($data['end']);
+
+        if (($endDateTs <= $startDateTs && !$isAllday) || ($endDateTs < $startDateTs && $isAllday))
+        {
+            return [
+                'status' => 'error',
+                'text' => __('errors.end_date_greater_than_start')
+            ];
+        }
+
+        if (!$isAllday)
+        {
+            $separator = strpos($data['start'], 'T') !== false ? 'T' : ' ';
+            $arStartDate = explode($separator, $data['start']);
+            $arEndDate = explode($separator, $data['end']);
+            if ($arStartDate[0] !== $arEndDate[0])
+            {
+                return [
+                    'status' => 'error',
+                    'text' => __('errors.one_day_time')
+                ];
+            }
+        }
+
+        return [
+            'status' => 'success',
         ];
     }
 

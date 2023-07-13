@@ -23,12 +23,16 @@ class UpdateEventRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title' => ['max:255'],
-            'start' => ['date'],
-            'end' => ['date'],
+        $data = $this->validationData();
+
+        $rules = [
+            'title' => isset($data['ajax']) ? ['max:255'] : ['required', 'max:255'],
+            'start' => isset($data['ajax']) ? ['date'] : ['required', 'date'],
+            'end' => isset($data['ajax']) ? ['date'] : ['required', 'date'],
             'is_allday' => ['integer'],
             'is_private' => ['integer'],
         ];
+
+        return $rules;
     }
 }

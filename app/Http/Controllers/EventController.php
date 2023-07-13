@@ -183,6 +183,19 @@ class EventController extends Controller
             $result = $this->eventService->update($id, $request->all());
             return response()->json($result);
         }
+        else
+        {
+            $result = $this->eventService->update($id, $request->all());
+
+            if ($result['status'] === 'error')
+            {
+                return redirect()->route('events.edit', ['event' => $id])->with($result['status'], $result['text']);
+            }
+            else
+            {
+                return redirect()->route('events.index')->with($result['status'], $result['text']);
+            }
+        }
     }
 
     /**
