@@ -228,6 +228,10 @@ class EventController extends Controller
      */
     public function destroyGroup(Request $request)
     {
-        //
+        $data = json_decode($request->getContent(), true);
+        $result = $this->eventService->delete($data);
+        $request->session()->flash($result['status'], $result['text']);
+
+        return response()->json($result);
     }
 }

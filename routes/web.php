@@ -50,4 +50,5 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/attachments/{attachment}', [AttachmentController::class, 'show'])->name('attachment');
     Route::get('/calendar', [EventController::class, 'calendar'])->name('calendar');
     Route::resource('/events', EventController::class);
+    Route::post('/events/delete', [EventController::class, 'destroyGroup'])->name('events.destroy-group');
 });

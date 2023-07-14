@@ -31,7 +31,14 @@
                     <tbody>
                         @foreach ($events as $event)
                             <tr class="bg-white border-b hover:bg-blue-100 transition" data-id="{{ $event->id }}" data-entity="events">
-                                @include('include.table-td', ['type' => 'checkbox'])
+                                @php
+                                    $disabled = false;
+                                    if (!$event->is_private && !\App\Services\PermissionService::hasUserPermission(auth()->id(), 'delete-events-of-projects-and-public-events'))
+                                    {
+                                        $disabled = true;
+                                    }
+                                @endphp
+                                @include('include.table-td', ['type' => 'checkbox', 'disabled' => $disabled])
                                 <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     <a href="{{ route('events.show', ['event' => $event->id]) }}" title="{{ $event->title }}">{{ Str::limit($event->title, 40) }}</a>
                                 </td>
