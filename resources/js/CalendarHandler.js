@@ -163,6 +163,27 @@ export default class CalendarHandler {
         this.calendar.on('beforeUpdateEvent', ({ event, changes }) => {
             let isEmpty = Object.entries(changes).length === 0;
 
+            if (!isEmpty && event.isAllday && changes.start && changes.end) {
+                let changesStartDate = changes.start.d.d.getFullYear() + '-' + changes.start.d.d.getMonth() + '-' + changes.start.d.d.getDate(),
+                    eventStartDate = event.start.d.d.getFullYear() + '-' + event.start.d.d.getMonth() + '-' + event.start.d.d.getDate(),
+                    changesEndDate = changes.end.d.d.getFullYear() + '-' + changes.end.d.d.getMonth() + '-' + changes.end.d.d.getDate(),
+                    eventEndDate = event.end.d.d.getFullYear() + '-' + event.end.d.d.getMonth() + '-' + event.end.d.d.getDate();
+                if (changesStartDate === eventStartDate && changesEndDate === eventEndDate) {
+                    changes.start = {
+                        'd': {
+                            'd': this.eventObj.start
+                        },
+                        'modified': true
+                    };
+                    changes.end = {
+                        'd': {
+                            'd': this.eventObj.end
+                        },
+                        'modified': true
+                    };
+                }
+            }
+
             if (isEmpty) {
                 if (this.eventObj && this.eventObj.start != event.start.d.d) {
                     isEmpty = false;
@@ -247,6 +268,7 @@ export default class CalendarHandler {
                             this.recreateEvent(event, changes);
                         } else {
                             this.calendar.updateEvent(event.id, event.calendarId, changes);
+                            this.fixAllDayEvents();
                         }
                     }
                 })

@@ -19773,6 +19773,26 @@ var CalendarHandler = /*#__PURE__*/function () {
         var event = _ref3.event,
           changes = _ref3.changes;
         var isEmpty = Object.entries(changes).length === 0;
+        if (!isEmpty && event.isAllday && changes.start && changes.end) {
+          var changesStartDate = changes.start.d.d.getFullYear() + '-' + changes.start.d.d.getMonth() + '-' + changes.start.d.d.getDate(),
+            eventStartDate = event.start.d.d.getFullYear() + '-' + event.start.d.d.getMonth() + '-' + event.start.d.d.getDate(),
+            changesEndDate = changes.end.d.d.getFullYear() + '-' + changes.end.d.d.getMonth() + '-' + changes.end.d.d.getDate(),
+            eventEndDate = event.end.d.d.getFullYear() + '-' + event.end.d.d.getMonth() + '-' + event.end.d.d.getDate();
+          if (changesStartDate === eventStartDate && changesEndDate === eventEndDate) {
+            changes.start = {
+              'd': {
+                'd': _this.eventObj.start
+              },
+              'modified': true
+            };
+            changes.end = {
+              'd': {
+                'd': _this.eventObj.end
+              },
+              'modified': true
+            };
+          }
+        }
         if (isEmpty) {
           if (_this.eventObj && _this.eventObj.start != event.start.d.d) {
             isEmpty = false;
@@ -19854,6 +19874,7 @@ var CalendarHandler = /*#__PURE__*/function () {
               _this.recreateEvent(event, changes);
             } else {
               _this.calendar.updateEvent(event.id, event.calendarId, changes);
+              _this.fixAllDayEvents();
             }
           }
         })["catch"](function (e) {
