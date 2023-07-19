@@ -8,16 +8,19 @@ use App\Services\PermissionService;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Support\Carbon;
+use App\Filters\EventsFilter;
 
 class EventController extends Controller
 {
     protected $eventService;
     protected $permissionService;
+    protected $filter;
 
-    public function __construct(EventService $eventService, PermissionService $permissionService)
+    public function __construct(EventService $eventService, PermissionService $permissionService, EventsFilter $filter)
     {
         $this->eventService = $eventService;
         $this->permissionService = $permissionService;
+        $this->filter = $filter;
     }
 
     /**
@@ -65,27 +68,7 @@ class EventController extends Controller
         else
         {
             $title = __('titles.events_index');
-            $filter = [
-                'or' => [
-                    [
-                        'user_id' => auth()->id(),
-                        'is_private' => 1,
-                    ],
-                    [
-                        'is_private' => 0,
-                        'project_id' => null,
-                    ],
-                ],
-            ];
-
-            $userProjectsIds = $this->eventService->getUserProjectsIds();
-            if (count($userProjectsIds) > 0)
-            {
-                $filter['or'][] = [
-                    'is_private' => 0,
-                    'project_id' => $userProjectsIds,
-                ];
-            }
+            $filter = $this->eventService->getFilterForEventsList($this->filter->params());
             $sort = [
                 'column' => 'start',
                 'direction' => 'desc',

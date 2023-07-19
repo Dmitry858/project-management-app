@@ -31,6 +31,7 @@ return [
     'change_link' => 'Change',
     'save_button' => 'Save',
     'empty_select_value' => 'Not selected',
+    'empty_value' => 'Not selected',
     'clear_cache_button' => 'Clear cache',
     'status_active' => 'Active',
     'status_archived' => 'Archived',
@@ -38,5 +39,9 @@ return [
     'forgot_password' => 'Forgot your password?',
     'already_registered' => 'Already registered?',
     'option_all' => 'All',
+    'option_today' => 'Today',
+    'option_tomorrow' => 'Tomorrow',
+    'option_week' => 'Current week',
+    'option_month' => 'Current month',
     'add_new_files' => 'Add new files',
 ];

@@ -1297,6 +1297,9 @@ select {
 .pl-3 {
   padding-left: 0.75rem;
 }
+.pl-4 {
+  padding-left: 1rem;
+}
 .pr-0 {
   padding-right: 0px;
 }
@@ -1305,6 +1308,9 @@ select {
 }
 .pr-4 {
   padding-right: 1rem;
+}
+.pr-8 {
+  padding-right: 2rem;
 }
 .pt-1 {
   padding-top: 0.25rem;

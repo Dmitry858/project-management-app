@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Models\Event;
+use Illuminate\Database\Eloquent\Builder;
 
 class EloquentEventRepository implements EventRepositoryInterface
 {
@@ -19,21 +20,7 @@ class EloquentEventRepository implements EventRepositoryInterface
         {
             foreach ($filter as $key => $value)
             {
-                if ($key === 'start' || $key === 'end')
-                {
-                    if (is_array($value) && $value[0] && $value[1])
-                    {
-                        if ($value[0] === 'between')
-                        {
-                            $query = $query->whereBetween($key, $value[1]);
-                        }
-                        else
-                        {
-                            $query = $query->whereDate($key, $value[0], $value[1]);
-                        }
-                    }
-                }
-                else if ($key === 'or')
+                if ($key === 'or')
                 {
                     foreach ($value as $i => $conditions)
                     {
@@ -41,7 +28,7 @@ class EloquentEventRepository implements EventRepositoryInterface
                         {
                             foreach ($conditions as $condKey => $condValue)
                             {
-                                $query = is_array($condValue) ? $query->whereIn($condKey, $condValue) : $query->where($condKey, $condValue);
+                                $query = $this->buildQuery($query, $condKey, $condValue);
                             }
                         }
                         else
@@ -49,19 +36,15 @@ class EloquentEventRepository implements EventRepositoryInterface
                             $query->orWhere(function($query) use ($conditions) {
                                 foreach ($conditions as $condKey => $condValue)
                                 {
-                                    $query = is_array($condValue) ? $query->whereIn($condKey, $condValue) : $query->where($condKey, $condValue);
+                                    $query = $this->buildQuery($query, $condKey, $condValue);
                                 }
                             });
                         }
                     }
                 }
-                else if (is_array($value))
-                {
-                    $query = $query->whereIn($key, $value);
-                }
                 else
                 {
-                    $query = $query->where($key, $value);
+                    $query = $this->buildQuery($query, $key, $value);
                 }
             }
         }
@@ -106,5 +89,30 @@ class EloquentEventRepository implements EventRepositoryInterface
         }
 
         return $result;
+    }
+
+    private function buildQuery(Builder $query, string $key, array|string|int|null $value): Builder
+    {
+        if (($key === 'start' || $key === 'end') && (is_array($value) && $value[0] && $value[1]))
+        {
+            if ($value[0] === 'between')
+            {
+                $query = $query->whereBetween($key, $value[1]);
+            }
+            else
+            {
+                $query = $query->whereDate($key, $value[0], $value[1]);
+            }
+        }
+        else if (is_array($value))
+        {
+            $query = $query->whereIn($key, $value);
+        }
+        else
+        {
+            $query = $query->where($key, $value);
+        }
+
+        return $query;
     }
 }

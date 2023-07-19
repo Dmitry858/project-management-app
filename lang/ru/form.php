@@ -31,6 +31,7 @@ return [
     'change_link' => 'Изменить',
     'save_button' => 'Сохранить',
     'empty_select_value' => 'Не выбран',
+    'empty_value' => 'Не выбрано',
     'clear_cache_button' => 'Очистить кэш',
     'status_active' => 'Активный',
     'status_archived' => 'В архиве',
@@ -38,5 +39,9 @@ return [
     'forgot_password' => 'Забыли пароль?',
     'already_registered' => 'Уже зарегистрированы?',
     'option_all' => 'Все',
+    'option_today' => 'Сегодня',
+    'option_tomorrow' => 'Завтра',
+    'option_week' => 'Текущая неделя',
+    'option_month' => 'Текущий месяц',
     'add_new_files' => 'Добавить новые файлы',
 ];

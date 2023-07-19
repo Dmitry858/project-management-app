@@ -7,6 +7,7 @@ export default class Filters {
     init() {
         if (this.isInited) return;
         this.bindEvents();
+        this.correctPaginationLinks();
         this.isInited = true;
     }
 
@@ -36,5 +37,26 @@ export default class Filters {
             href += queryString;
         }
         window.location.href = href;
+    }
+
+    correctPaginationLinks() {
+        const links = document.querySelectorAll('.pagination a');
+        let query = window.location.search.substring(1);
+        if (links.length === 0 || query === '') return;
+        if (query.indexOf('page') >= 0) {
+            let arQueryParams = query.split('&');
+
+            arQueryParams.forEach(function(item, index, object) {
+                if (item.indexOf('page') >= 0) {
+                    object.splice(index, 1);
+                }
+            });
+            query = arQueryParams.join('&');
+        }
+        if (query === '') return;
+
+        for (let link of links) {
+            link.href += '&' + query;
+        }
     }
 }

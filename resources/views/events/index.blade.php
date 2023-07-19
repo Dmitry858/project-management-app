@@ -12,6 +12,7 @@
     </div>
     @include('include.flash-success')
     @include('include.flash-error')
+    @include('include.filter', ['entity' => 'events'])
 
     @if (count($events) > 0)
         <div class="flex flex-col overflow-x-auto">

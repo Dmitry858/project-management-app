@@ -5630,6 +5630,7 @@ var Filters = /*#__PURE__*/function () {
     value: function init() {
       if (this.isInited) return;
       this.bindEvents();
+      this.correctPaginationLinks();
       this.isInited = true;
     }
   }, {
@@ -5665,6 +5666,35 @@ var Filters = /*#__PURE__*/function () {
         href += queryString;
       }
       window.location.href = href;
+    }
+  }, {
+    key: "correctPaginationLinks",
+    value: function correctPaginationLinks() {
+      var links = document.querySelectorAll('.pagination a');
+      var query = window.location.search.substring(1);
+      if (links.length === 0 || query === '') return;
+      if (query.indexOf('page') >= 0) {
+        var arQueryParams = query.split('&');
+        arQueryParams.forEach(function (item, index, object) {
+          if (item.indexOf('page') >= 0) {
+            object.splice(index, 1);
+          }
+        });
+        query = arQueryParams.join('&');
+      }
+      if (query === '') return;
+      var _iterator2 = _createForOfIteratorHelper(links),
+        _step2;
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var link = _step2.value;
+          link.href += '&' + query;
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
     }
   }]);
   return Filters;

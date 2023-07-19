@@ -44,6 +44,10 @@
             @permission('view-all-tasks')
                 @include('include.filter-activity-select')
             @endpermission
+        @elseif($entity === 'events')
+            @include('include.filter-event-type-select')
+            @include('include.filter-event-start-select')
+            @include('include.filter-allday-select')
         @else
             @include('include.filter-activity-select')
         @endif

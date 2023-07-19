@@ -445,4 +445,84 @@ class EventService
             'text' => $success ? $successMsg : __('flash.general_error')
         ];
     }
+
+    public function getFilterForEventsList(array $filterParams): array
+    {
+        $filter = [
+            'or' => []
+        ];
+        $allParams = [
+            'private' => [
+                'user_id' => auth()->id(),
+                'is_private' => 1,
+            ],
+            'public' => [
+                'is_private' => 0,
+                'project_id' => null,
+            ],
+            'project' => [
+                'is_private' => 0,
+                'project_id' => [],
+            ],
+        ];
+
+        foreach ($allParams as $key => $params)
+        {
+            if (isset($filterParams['event_type']) && $filterParams['event_type'] !== $key)
+            {
+                continue;
+            }
+            if ($key === 'project')
+            {
+                $userProjectsIds = $this->getUserProjectsIds();
+                if (count($userProjectsIds) > 0)
+                {
+                    $params['project_id'] = $userProjectsIds;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            if (isset($filterParams['is_allday']))
+            {
+                $params['is_allday'] = intval($filterParams['is_allday']);
+            }
+            if (isset($filterParams['event_start']))
+            {
+                if ($filterParams['event_start'] === 'today')
+                {
+                    $params['start'] = ['=', Carbon::today()];
+                }
+                else if ($filterParams['event_start'] === 'tomorrow')
+                {
+                    $params['start'] = ['=', Carbon::tomorrow()];
+                }
+                else if ($filterParams['event_start'] === 'week')
+                {
+                    $params['start'] = [
+                        'between',
+                        [
+                            Carbon::parse('last Monday'),
+                            Carbon::parse('last Monday')->modify('+7 day'),
+                        ]
+                    ];
+                }
+                else if ($filterParams['event_start'] === 'month')
+                {
+                    $params['start'] = [
+                        'between',
+                        [
+                            Carbon::parse(date('Y-m-01')),
+                            Carbon::parse(date('Y-m-t 23:59:59')),
+                        ]
+                    ];
+                }
+            }
+
+            $filter['or'][] = $params;
+        }
+
+        return $filter;
+    }
 }
