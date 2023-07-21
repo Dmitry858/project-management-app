@@ -1,5 +1,4 @@
 # Project Management App
-<img src="screen.jpg" alt="Project Management App">
 
 Project Management App - это приложение для управления проектами, которое позволяет вести проекты компании, ставить задачи, назначать исполнителей, управлять ролями пользователей, следить за выполнением задач участниками.
 Регистрация новых пользователей происходит через приглашения от администратора.
@@ -65,3 +64,8 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
+____
+
+<img src="screen1.jpg" alt="Project Management App">
+<img src="screen2.jpg" alt="Project Management App">
+<img src="screen3.jpg" alt="Project Management App">
