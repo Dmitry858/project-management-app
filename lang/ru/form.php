@@ -44,4 +44,5 @@ return [
     'option_week' => 'Текущая неделя',
     'option_month' => 'Текущий месяц',
     'add_new_files' => 'Добавить новые файлы',
+    'projects_member' => 'Участник проектов',
 ];

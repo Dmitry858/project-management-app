@@ -14,6 +14,7 @@ return [
     'users_index' => 'List of users',
     'users_create' => 'Creating a new user',
     'users_edit' => 'Editing of the user «:name»',
+    'users_single' => 'The user «:name»',
     'tasks_index' => 'List of tasks',
     'tasks_create' => 'Creating a new task',
     'tasks_edit' => 'Editing of the task «:name»',

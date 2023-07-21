@@ -14,6 +14,7 @@ return [
     'users_index' => 'Список пользователей',
     'users_create' => 'Создание пользователя',
     'users_edit' => 'Редактирование пользователя «:name»',
+    'users_single' => 'Пользователь «:name»',
     'tasks_index' => 'Список задач',
     'tasks_create' => 'Создание задачи',
     'tasks_edit' => 'Редактирование задачи «:name»',

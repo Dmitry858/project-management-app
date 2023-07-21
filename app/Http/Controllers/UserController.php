@@ -20,7 +20,7 @@ class UserController extends Controller
         $this->userService = $userService;
         $this->roleService = $roleService;
         $this->filter = $filter;
-        $this->middleware('permission:view-users')->only(['index']);
+        $this->middleware('permission:view-users')->only(['index', 'show']);
         $this->middleware('permission:create-users')->only(['create', 'store']);
         $this->middleware('permission:edit-users')->only(['edit', 'update']);
         $this->middleware('permission:delete-users')->only(['destroy', 'destroyGroup']);
@@ -71,11 +71,21 @@ class UserController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function show($id)
     {
-        //
+        $user = $this->userService->get($id);
+        if ($user)
+        {
+            $title = __('titles.users_single', ['name' => $user->getFullNameAttribute()]);
+
+            return view('users.single', compact('title', 'user'));
+        }
+        else
+        {
+            abort(404);
+        }
     }
 
     /**

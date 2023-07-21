@@ -109,6 +109,11 @@ Breadcrumbs::for('edit-user', function (BreadcrumbTrail $trail, $user) {
     $trail->push(__('titles.users_edit', ['name' => $userName]), route('users.edit', ['user' => $user->id]));
 });
 
+Breadcrumbs::for('single-user', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('users');
+    $trail->push(__('titles.users_single', ['name' => $user->getFullNameAttribute()]), route('users.show', ['user' => $user->id]));
+});
+
 Breadcrumbs::for('settings', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push(__('titles.settings'), route('settings'));

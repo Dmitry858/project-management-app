@@ -33,13 +33,19 @@
                                             @include('include.table-td', ['type' => 'checkbox'])
                                         @endpermission
                                         <td class="px-6 py-4">
-                                            <img class="w-24" src="{{ $user->photoSrc() }}" alt="{{ $user->name }}">
+                                            <a href="{{ route('users.show', ['user' => $user->id]) }}" title="{{ $user->name }}">
+                                                <img class="w-24" src="{{ $user->photoSrc() }}" alt="{{ $user->name }}">
+                                            </a>
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            {{ $user->name }}
+                                            <a href="{{ route('users.show', ['user' => $user->id]) }}" title="{{ $user->name }}">
+                                                {{ $user->name }}
+                                            </a>
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            {{ $user->last_name }}
+                                            <a href="{{ route('users.show', ['user' => $user->id]) }}" title="{{ $user->name }}">
+                                                {{ $user->last_name }}
+                                            </a>
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             {{ $user->email }}

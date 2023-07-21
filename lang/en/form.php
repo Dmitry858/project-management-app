@@ -44,4 +44,5 @@ return [
     'option_week' => 'Current week',
     'option_month' => 'Current month',
     'add_new_files' => 'Add new files',
+    'projects_member' => 'The member of the projects',
 ];

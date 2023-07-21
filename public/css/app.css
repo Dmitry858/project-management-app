@@ -2026,6 +2026,10 @@ header .user-photo img {
     width: 33.333333%;
   }
 
+  .md\:w-2\/3 {
+    width: 66.666667%;
+  }
+
   .md\:w-48 {
     width: 12rem;
   }
@@ -2110,6 +2114,10 @@ header .user-photo img {
 
   .lg\:flex {
     display: flex;
+  }
+
+  .lg\:w-1\/2 {
+    width: 50%;
   }
 
   .lg\:px-8 {
