@@ -9,47 +9,20 @@
         </div>
 
         @if($entity === 'tasks')
-            <div class="max-w-xs px-3 mb-6">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="project_id">
-                    @lang('form.label_project')
-                </label>
-                <select class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="project_id" name="project_id">
-                    <option value="">@lang('form.option_all')</option>
-                    @if(isset($projects) && count($projects) > 0)
-                        @foreach($projects as $project)
-                            <option value="{{ $project->id }}" @if($project->id == request()->get('project_id')) selected @endif>{{ $project->name }}</option>
-                        @endforeach
-                    @endif
-                </select>
-            </div>
-
-            <div class="max-w-xs px-3 mb-6">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="stage_id">
-                    @lang('form.label_stage')
-                </label>
-                <select class="appearance-none block w-full text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="stage_id" name="stage_id">
-                    <option value="">@lang('form.option_all')</option>
-                    @if(isset($stages) && count($stages) > 0)
-                        @foreach($stages as $stage)
-                            <option value="{{ $stage->id }}" @if($stage->id == request()->get('stage_id')) selected @endif>
-                                {{ $stage->name }}
-                            </option>
-                        @endforeach
-                    @endif
-                </select>
-            </div>
+            @include('include.filter-fields.project-select')
+            @include('include.filter-fields.stage-select')
         @endif
 
         @if($entity === 'tasks')
             @permission('view-all-tasks')
-                @include('include.filter-activity-select')
+                @include('include.filter-fields.activity-select')
             @endpermission
         @elseif($entity === 'events')
-            @include('include.filter-event-type-select')
-            @include('include.filter-event-start-select')
-            @include('include.filter-allday-select')
+            @include('include.filter-fields.event-type-select')
+            @include('include.filter-fields.event-start-select')
+            @include('include.filter-fields.allday-select')
         @else
-            @include('include.filter-activity-select')
+            @include('include.filter-fields.activity-select')
         @endif
 
         <button class="filter-apply-btn bg-blue-600 hover:bg-blue-700 text-white font-bold mx-3 py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">

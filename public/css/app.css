@@ -773,9 +773,6 @@ select {
 .-ml-px {
   margin-left: -1px;
 }
-.-mr-2 {
-  margin-right: -0.5rem;
-}
 .-mr-4 {
   margin-right: -1rem;
 }
@@ -872,9 +869,6 @@ select {
 .hidden {
   display: none;
 }
-.h-10 {
-  height: 2.5rem;
-}
 .h-16 {
   height: 4rem;
 }
@@ -941,9 +935,6 @@ select {
 .max-w-6xl {
   max-width: 72rem;
 }
-.max-w-7xl {
-  max-width: 80rem;
-}
 .max-w-lg {
   max-width: 32rem;
 }
@@ -960,9 +951,6 @@ select {
   flex-shrink: 1;
 }
 .flex-shrink-0 {
-  flex-shrink: 0;
-}
-.shrink-0 {
   flex-shrink: 0;
 }
 .origin-top {
@@ -1034,16 +1022,6 @@ select {
 .justify-items-center {
   justify-items: center;
 }
-.space-x-8 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(2rem * var(--tw-space-x-reverse));
-  margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse)));
-}
-.space-y-1 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
-}
 .overflow-auto {
   overflow: auto;
 }
@@ -1110,10 +1088,6 @@ select {
 .border-blue-600 {
   --tw-border-opacity: 1;
   border-color: rgb(37 99 235 / var(--tw-border-opacity));
-}
-.border-gray-100 {
-  --tw-border-opacity: 1;
-  border-color: rgb(243 244 246 / var(--tw-border-opacity));
 }
 .border-gray-200 {
   --tw-border-opacity: 1;
@@ -1279,9 +1253,6 @@ select {
 .pb-24 {
   padding-bottom: 6rem;
 }
-.pb-3 {
-  padding-bottom: 0.75rem;
-}
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -1320,9 +1291,6 @@ select {
 }
 .pt-3 {
   padding-top: 0.75rem;
-}
-.pt-4 {
-  padding-top: 1rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
@@ -1759,10 +1727,6 @@ header .user-photo img {
   --tw-text-opacity: 1;
   color: rgb(30 58 138 / var(--tw-text-opacity));
 }
-.focus\:text-gray-500:focus {
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity));
-}
 .focus\:text-gray-700:focus {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
@@ -1873,25 +1837,12 @@ header .user-photo img {
 }
 @media (min-width: 640px) {
 
-  .sm\:-my-px {
-    margin-top: -1px;
-    margin-bottom: -1px;
-  }
-
   .sm\:mb-0 {
     margin-bottom: 0px;
   }
 
-  .sm\:ml-10 {
-    margin-left: 2.5rem;
-  }
-
   .sm\:ml-4 {
     margin-left: 1rem;
-  }
-
-  .sm\:ml-6 {
-    margin-left: 1.5rem;
   }
 
   .sm\:mr-0 {

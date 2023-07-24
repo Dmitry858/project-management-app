@@ -1,15 +1,8 @@
-require('./bootstrap');
-
-import Alpine from 'alpinejs';
 import Comments from './Comments';
 import Stages from './Stages';
 import Invitations from './Invitations';
 import Filters from './Filters';
 import DeleteItemsGroupHandler from './DeleteItemsGroupHandler';
-
-window.Alpine = Alpine;
-
-Alpine.start();
 
 window.addEventListener('load', function (e) {
     // Toggle dropdown list
