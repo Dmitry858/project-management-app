@@ -503,8 +503,8 @@ class EventService
                     $params['start'] = [
                         'between',
                         [
-                            Carbon::parse('last Monday'),
-                            Carbon::parse('last Monday')->modify('+7 day'),
+                            Carbon::parse('Monday this week'),
+                            Carbon::parse('Monday this week')->modify('+7 day'),
                         ]
                     ];
                 }
