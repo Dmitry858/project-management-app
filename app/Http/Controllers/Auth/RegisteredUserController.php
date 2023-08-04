@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use App\Services\InvitationService;
+use App\Services\UserService;
 
 class RegisteredUserController extends Controller
 {
     protected $invitationService;
+    protected $userService;
 
-    public function __construct(InvitationService $invitationService)
+    public function __construct(InvitationService $invitationService, UserService $userService)
     {
         $this->invitationService = $invitationService;
+        $this->userService = $userService;
     }
 
     /**
@@ -43,28 +43,18 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreUserRequest $request
      * @param string $key
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request, string $key)
+    public function store(StoreUserRequest $request, string $key)
     {
         $invitation = $this->invitationService->getValidInvitationByKey($key);
         if (!$invitation) abort(404);
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = $this->userService->create($request);
 
         if ($user && $invitation)
         {
