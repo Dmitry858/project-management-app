@@ -14,8 +14,9 @@ class PermissionService
         $this->permissionRepository = $permissionRepository;
     }
 
-    public static function hasUserPermission(int $userId, string $permSlug): bool
+    public static function hasUserPermission(int|null $userId, string $permSlug): bool
     {
+        if (!$userId) return false;
         $repo = new EloquentPermissionRepository;
         $permissions = $repo->getUserPermissions($userId);
 
