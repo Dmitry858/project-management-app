@@ -61,14 +61,47 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Event
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $start
+ * @property string $end
+ * @property int $is_allday
+ * @property int $is_private
+ * @property int|null $project_id
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereIsAllday($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereIsPrivate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereStart($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereUserId($value)
+ */
+	class Event extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Invitation
  *
  * @property int $id
  * @property string $secret_key
  * @property string $email
  * @property int $is_sent
+ * @property int|null $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation query()
@@ -78,6 +111,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereIsSent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereSecretKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Invitation whereUserId($value)
  */
 	class Invitation extends \Eloquent {}
 }
@@ -258,6 +292,7 @@ namespace App\Models{
  * @property int $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $full_name
  * @property-read \App\Models\Member|null $member
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
