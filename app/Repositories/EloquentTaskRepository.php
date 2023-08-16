@@ -27,6 +27,10 @@ class EloquentTaskRepository implements TaskRepositoryInterface
                         $query = $query->whereDate($key, $value[0], $value[1]);
                     }
                 }
+                else if ($key === 'name')
+                {
+                    $query = $query->where($key, 'like', '%'.$value.'%');
+                }
                 else if (is_array($value))
                 {
                     $query = $query->whereIn($key, $value);
@@ -67,6 +71,11 @@ class EloquentTaskRepository implements TaskRepositoryInterface
                 ];
                 unset($filter[$key]);
             }
+            else if ($key === 'name')
+            {
+                $filterName = [$key, 'like', '%'.$value.'%'];
+                unset($filter[$key]);
+            }
         }
 
         $query = $query->whereHas('owner', function($query) use ($id) {
@@ -77,6 +86,10 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         {
             $query = $query->whereDate($filterDate['key'], $filterDate['operator'], $filterDate['value']);
         }
+        if (!empty($filterName))
+        {
+            $query = $query->where($filterName[0], $filterName[1], $filterName[2]);
+        }
 
         $query = $query->orWhereHas('responsible', function($query) use ($id) {
             $query->where('responsible_id', $id);
@@ -85,6 +98,10 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         if (!empty($filterDate))
         {
             $query = $query->whereDate($filterDate['key'], $filterDate['operator'], $filterDate['value']);
+        }
+        if (!empty($filterName))
+        {
+            $query = $query->where($filterName[0], $filterName[1], $filterName[2]);
         }
 
         return $withPaginate ? $query->paginate() : $query->get();

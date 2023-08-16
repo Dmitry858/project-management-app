@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/projects/delete', [ProjectController::class, 'destroyGroup'])->name('projects.destroy-group');
     Route::resource('/tasks', TaskController::class);
     Route::post('/tasks/delete', [TaskController::class, 'destroyGroup'])->name('tasks.destroy-group');
+    Route::get('/tasks/search', [TaskController::class, 'search'])->name('tasks.search');
     Route::resource('/members', MemberController::class);
     Route::post('/members/delete', [MemberController::class, 'destroyGroup'])->name('members.destroy-group');
     Route::resource('/users', UserController::class);

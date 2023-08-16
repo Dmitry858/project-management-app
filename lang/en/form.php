@@ -45,4 +45,5 @@ return [
     'option_month' => 'Current month',
     'add_new_files' => 'Add new files',
     'projects_member' => 'The member of the projects',
+    'placeholder_tasks_search' => 'Tasks search',
 ];

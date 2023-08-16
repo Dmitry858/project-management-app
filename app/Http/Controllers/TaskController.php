@@ -187,4 +187,28 @@ class TaskController extends Controller
 
         return response()->json($result);
     }
+
+    /**
+     * Display a listing of found resources.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function search(Request $request)
+    {
+        $phrase = strip_tags($request->query('phrase', ''));
+
+        if (!$phrase) abort(404);
+
+        $title = __('titles.tasks_search');
+        $tasks = $this->taskService->getList(
+            ['name' => $phrase],
+            true,
+            ['project', 'stage', 'owner', 'responsible']
+        );
+        $projects = $this->projectService->getList([], false);
+        $stages = $this->stageService->getList();
+
+        return view('tasks.search', compact('title', 'tasks', 'projects', 'stages', 'phrase'));
+    }
 }

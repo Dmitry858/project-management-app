@@ -77,6 +77,11 @@ Breadcrumbs::for('edit-task', function (BreadcrumbTrail $trail, $task) {
     $trail->push(__('titles.tasks_edit', ['name' => $task->name]), route('tasks.edit', ['task' => $task->id]));
 });
 
+Breadcrumbs::for('tasks-search', function (BreadcrumbTrail $trail) {
+    $trail->parent('tasks');
+    $trail->push(__('titles.tasks_search'), route('tasks.search'));
+});
+
 Breadcrumbs::for('members', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push(__('titles.members_index'), route('members.index'));

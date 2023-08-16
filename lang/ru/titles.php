@@ -19,6 +19,8 @@ return [
     'tasks_create' => 'Создание задачи',
     'tasks_edit' => 'Редактирование задачи «:name»',
     'tasks_single' => 'Задача «:name»',
+    'tasks_search' => 'Результаты поиска',
+    'tasks_search_subtitle' => 'По запросу «:phrase» найдены следующие задачи:',
     'comments' => 'Комментарии',
     'attachments' => 'Прикреплённые файлы',
     'settings' => 'Настройки',

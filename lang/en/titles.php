@@ -19,6 +19,8 @@ return [
     'tasks_create' => 'Creating a new task',
     'tasks_edit' => 'Editing of the task «:name»',
     'tasks_single' => 'The task «:name»',
+    'tasks_search' => 'Search result',
+    'tasks_search_subtitle' => 'List of tasks by request «:phrase»:',
     'comments' => 'Comments',
     'attachments' => 'Attachments',
     'settings' => 'Settings',

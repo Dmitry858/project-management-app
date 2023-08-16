@@ -1,4 +1,8 @@
 @if (isset($tasks) && count($tasks) > 0)
+    @if(isset($page) && $page === 'search')
+        <h2 class="font-medium text-lg mb-2">@lang('titles.tasks_search_subtitle', ['phrase' => $phrase])</h2>
+    @endif
+
     <div class="flex flex-col">
         <div class="overflow-x-auto">
             <div class="py-2 inline-block min-w-full">
@@ -70,7 +74,11 @@
     </div>
     {{ $tasks->links() }}
 @else
-    <p>@lang('empty.tasks')</p>
+    @if(isset($page) && $page === 'search')
+        <p>@lang('empty.tasks_search', ['phrase' => $phrase])</p>
+    @else
+        <p>@lang('empty.tasks')</p>
+    @endif
 @endif
 
 <div class="flex items-center py-4 mt-2">
