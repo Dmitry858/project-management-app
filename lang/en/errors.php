@@ -33,4 +33,6 @@ return [
     'no_permission_to_delete_event' => 'User does not have permission to delete event',
     'one_day_time' => 'Please select a time within one day',
     'end_date_greater_than_start' => 'The end date of the event must be greater than the start date',
+    '404_error' => '404 error',
+    'page_not_found' => 'Page not found',
 ];

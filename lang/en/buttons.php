@@ -24,4 +24,5 @@ return [
     'today' => 'Today',
     'list_view' => 'List view',
     'calendar_view' => 'Calendar view',
+    'home' => 'Home',
 ];
