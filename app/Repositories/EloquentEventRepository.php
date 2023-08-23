@@ -4,10 +4,12 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\EventRepositoryInterface;
 use App\Models\Event;
-use Illuminate\Database\Eloquent\Builder;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentEventRepository implements EventRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function find(int $id)
     {
         return Event::find($id);
@@ -18,35 +20,7 @@ class EloquentEventRepository implements EventRepositoryInterface
         $query = Event::query();
         if (count($filter) > 0)
         {
-            foreach ($filter as $key => $value)
-            {
-                if ($key === 'or')
-                {
-                    foreach ($value as $i => $conditions)
-                    {
-                        if ($i === 0)
-                        {
-                            foreach ($conditions as $condKey => $condValue)
-                            {
-                                $query = $this->buildQuery($query, $condKey, $condValue);
-                            }
-                        }
-                        else
-                        {
-                            $query->orWhere(function($query) use ($conditions) {
-                                foreach ($conditions as $condKey => $condValue)
-                                {
-                                    $query = $this->buildQuery($query, $condKey, $condValue);
-                                }
-                            });
-                        }
-                    }
-                }
-                else
-                {
-                    $query = $this->buildQuery($query, $key, $value);
-                }
-            }
+            $query = $this->handleFilter($query, $filter);
         }
 
         if (!empty($with)) $query = $query->with($with);
@@ -89,30 +63,5 @@ class EloquentEventRepository implements EventRepositoryInterface
         }
 
         return $result;
-    }
-
-    private function buildQuery(Builder $query, string $key, array|string|int|null $value): Builder
-    {
-        if (($key === 'start' || $key === 'end') && (is_array($value) && $value[0] && $value[1]))
-        {
-            if ($value[0] === 'between')
-            {
-                $query = $query->whereBetween($key, $value[1]);
-            }
-            else
-            {
-                $query = $query->whereDate($key, $value[0], $value[1]);
-            }
-        }
-        else if (is_array($value))
-        {
-            $query = $query->whereIn($key, $value);
-        }
-        else
-        {
-            $query = $query->where($key, $value);
-        }
-
-        return $query;
     }
 }
