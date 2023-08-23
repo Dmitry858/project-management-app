@@ -13,6 +13,7 @@ return [
     'col_owner' => 'Owner',
     'col_responsible' => 'Responsible',
     'col_stage' => 'Stage',
+    'col_deadline' => 'Deadline',
     'col_members' => 'Members',
     'col_secret_key' => 'Secret key',
     'col_created_at' => 'Created at',

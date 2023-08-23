@@ -46,4 +46,5 @@ return [
     'add_new_files' => 'Add new files',
     'projects_member' => 'The member of the projects',
     'placeholder_tasks_search' => 'Tasks search',
+    'max_length_text' => ':length symbols max',
 ];

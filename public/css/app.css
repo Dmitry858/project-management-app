@@ -881,6 +881,9 @@ select {
 .h-4 {
   height: 1rem;
 }
+.h-48 {
+  height: 12rem;
+}
 .h-5 {
   height: 1.25rem;
 }
@@ -1365,6 +1368,9 @@ select {
 .uppercase {
   text-transform: uppercase;
 }
+.normal-case {
+  text-transform: none;
+}
 .leading-4 {
   line-height: 1rem;
 }
@@ -1566,6 +1572,11 @@ header .user-photo img {
     max-height: 76px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+.tooltip.tooltip-info {
+    top: -8px;
+    left: 18px;
+    min-width: 172px;
 }
 .tooltip-bottom {
     bottom: 0;

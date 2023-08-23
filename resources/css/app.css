@@ -30,6 +30,12 @@ header .user-photo img {
     overflow-x: hidden;
 }
 
+.tooltip.tooltip-info {
+    top: -8px;
+    left: 18px;
+    min-width: 172px;
+}
+
 .tooltip-bottom {
     bottom: 0;
     top: auto;

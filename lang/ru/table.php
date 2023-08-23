@@ -13,6 +13,7 @@ return [
     'col_owner' => 'Постановщик',
     'col_responsible' => 'Ответственный',
     'col_stage' => 'Стадия',
+    'col_deadline' => 'Крайний срок',
     'col_members' => 'Участники',
     'col_secret_key' => 'Секретный ключ',
     'col_created_at' => 'Создано',

@@ -46,4 +46,5 @@ return [
     'add_new_files' => 'Добавить новые файлы',
     'projects_member' => 'Участник проектов',
     'placeholder_tasks_search' => 'Поиск по задачам',
+    'max_length_text' => 'максимум :length символов',
 ];

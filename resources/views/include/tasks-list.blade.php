@@ -15,7 +15,7 @@
                                 @endpermission
                                 @include('include.table-th', ['text' => __('table.col_title')])
                                 @if(isset($mode) && $mode === 'full')
-                                    @include('include.table-th', ['text' => __('table.col_project')])
+                                    @include('include.table-th', ['text' => __('table.col_deadline')])
                                     @include('include.table-th', ['text' => __('table.col_owner')])
                                 @endif
                                 @include('include.table-th', ['text' => __('table.col_responsible')])
@@ -34,10 +34,18 @@
                                         <a href="{{ route('tasks.show', ['task' => $task->id]) }}" title="{{ $task->name }}">
                                             {{ Str::limit($task->name, 40) }}
                                         </a>
+                                        <br>
+                                        <span class="text-xs text-gray-600">
+                                            @lang('table.col_project') {{ Str::limit($task->project->name, 25) }}
+                                        </span>
                                     </td>
                                     @if(isset($mode) && $mode === 'full')
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            {{ Str::limit($task->project->name, 25) }}
+                                            @if($task->deadline)
+                                                {{ $task->deadline }}
+                                            @else
+                                                --
+                                            @endif
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             {{ $task->getMemberFullName($task->owner_id) }}
@@ -56,13 +64,15 @@
                                             @lang('form.status_archived')
                                         @endif
                                     </td>
-                                    <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        @permission('edit-tasks')
+                                    <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                        <div class="flex">
+                                            @permission('edit-tasks')
                                             @include('include.buttons.edit', ['link' => route('tasks.edit', ['task' => $task->id])])
-                                        @endpermission
-                                        @permission('delete-tasks')
+                                            @endpermission
+                                            @permission('delete-tasks')
                                             @include('include.buttons.delete', ['link' => route('tasks.destroy', ['task' => $task->id])])
-                                        @endpermission
+                                            @endpermission
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

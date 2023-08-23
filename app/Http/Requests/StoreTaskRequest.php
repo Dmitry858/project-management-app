@@ -24,8 +24,8 @@ class StoreTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:200'],
-            'description' => ['max:255'],
+            'name' => ['required', 'string', 'max:180'],
+            'description' => ['max:2000'],
             'owner_id' => ['required'],
             'responsible_id' => ['required'],
             'stage_id' => ['required'],
