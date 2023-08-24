@@ -5,9 +5,12 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentUserRepository implements UserRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function find(int $id)
     {
         return User::find($id);
@@ -32,21 +35,7 @@ class EloquentUserRepository implements UserRepositoryInterface
         $query = User::query();
         if (count($filter) > 0)
         {
-            foreach ($filter as $key => $value)
-            {
-                if (is_array($value))
-                {
-                    $query = $query->whereIn($key, $value);
-                }
-                elseif ($key === 'member' && $value === false)
-                {
-                    $query = $query->doesntHave($key);
-                }
-                else
-                {
-                    $query = $query->where($key, $value);
-                }
-            }
+            $query = $this->handleFilter($query, $filter);
         }
 
         if ($withPaginate)

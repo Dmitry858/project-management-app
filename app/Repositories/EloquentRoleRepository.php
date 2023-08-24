@@ -6,9 +6,12 @@ use App\Repositories\Interfaces\RoleRepositoryInterface;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
 use App\Models\Role;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentRoleRepository implements RoleRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function getUserRoles(int $userId): array
     {
         if (Cache::has('user_'.$userId.'_roles'))
@@ -41,17 +44,7 @@ class EloquentRoleRepository implements RoleRepositoryInterface
             $query = Role::query();
             if (count($filter) > 0)
             {
-                foreach ($filter as $key => $value)
-                {
-                    if (is_array($value))
-                    {
-                        $query = $query->whereIn($key, $value);
-                    }
-                    else
-                    {
-                        $query = $query->where($key, $value);
-                    }
-                }
+                $query = $this->handleFilter($query, $filter);
             }
             $roles = $query->get();
             if (empty($filter))

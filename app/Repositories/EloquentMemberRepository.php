@@ -4,9 +4,12 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\MemberRepositoryInterface;
 use App\Models\Member;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentMemberRepository implements MemberRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function find(int $id)
     {
         return Member::find($id);
@@ -17,17 +20,7 @@ class EloquentMemberRepository implements MemberRepositoryInterface
         $query = Member::query();
         if (count($filter) > 0)
         {
-            foreach ($filter as $key => $value)
-            {
-                if (is_array($value))
-                {
-                    $query = $query->whereIn($key, $value);
-                }
-                else
-                {
-                    $query = $query->where($key, $value);
-                }
-            }
+            $query = $this->handleFilter($query, $filter);
         }
 
         if (!empty($with)) $query = $query->with($with);

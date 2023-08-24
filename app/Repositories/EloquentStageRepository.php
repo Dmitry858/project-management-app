@@ -5,9 +5,12 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\StageRepositoryInterface;
 use App\Models\Stage;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentStageRepository implements StageRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function find(int $id)
     {
         return Stage::find($id);
@@ -24,17 +27,7 @@ class EloquentStageRepository implements StageRepositoryInterface
             $query = Stage::query();
             if (count($filter) > 0)
             {
-                foreach ($filter as $key => $value)
-                {
-                    if (is_array($value))
-                    {
-                        $query = $query->whereIn($key, $value);
-                    }
-                    else
-                    {
-                        $query = $query->where($key, $value);
-                    }
-                }
+                $query = $this->handleFilter($query, $filter);
             }
             $stages = $query->get();
             if (empty($filter))

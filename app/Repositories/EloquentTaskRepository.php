@@ -5,9 +5,12 @@ namespace App\Repositories;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use App\Models\Task;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentTaskRepository implements TaskRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function find(int $id)
     {
         return Task::find($id);
@@ -18,28 +21,7 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         $query = Task::query();
         if (count($filter) > 0)
         {
-            foreach ($filter as $key => $value)
-            {
-                if ($key === 'created_at' || $key === 'updated_at' || $key === 'deadline')
-                {
-                    if (is_array($value) && $value[0] && $value[1])
-                    {
-                        $query = $query->whereDate($key, $value[0], $value[1]);
-                    }
-                }
-                else if ($key === 'name')
-                {
-                    $query = $query->where($key, 'like', '%'.$value.'%');
-                }
-                else if (is_array($value))
-                {
-                    $query = $query->whereIn($key, $value);
-                }
-                else
-                {
-                    $query = $query->where($key, $value);
-                }
-            }
+            $query = $this->handleFilter($query, $filter);
         }
 
         if (!empty($with)) $query = $query->with($with);

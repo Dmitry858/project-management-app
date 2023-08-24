@@ -4,9 +4,12 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\AttachmentRepositoryInterface;
 use App\Models\Attachment;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentAttachmentRepository implements AttachmentRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function find(int $id)
     {
         return Attachment::find($id);
@@ -17,17 +20,7 @@ class EloquentAttachmentRepository implements AttachmentRepositoryInterface
         $query = Attachment::query();
         if (count($filter) > 0)
         {
-            foreach ($filter as $key => $value)
-            {
-                if (is_array($value))
-                {
-                    $query = $query->whereIn($key, $value);
-                }
-                else
-                {
-                    $query = $query->where($key, $value);
-                }
-            }
+            $query = $this->handleFilter($query, $filter);
         }
         return $query->get();
     }

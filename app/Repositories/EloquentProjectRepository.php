@@ -4,9 +4,12 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\ProjectRepositoryInterface;
 use App\Models\Project;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentProjectRepository implements ProjectRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function find(int $id)
     {
         return Project::find($id);
@@ -17,17 +20,7 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
         $query = Project::query();
         if (count($filter) > 0)
         {
-            foreach ($filter as $key => $value)
-            {
-                if (is_array($value))
-                {
-                    $query = $query->whereIn($key, $value);
-                }
-                else
-                {
-                    $query = $query->where($key, $value);
-                }
-            }
+            $query = $this->handleFilter($query, $filter);
         }
 
         if (!empty($with)) $query = $query->with($with);
