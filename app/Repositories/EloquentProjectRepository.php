@@ -39,7 +39,11 @@ class EloquentProjectRepository implements ProjectRepositoryInterface
     {
         $query = Project::whereHas('members', function($query) use ($id) {
             $query->where('member_id', $id);
-        })->where($filter);
+        });
+        if (count($filter) > 0)
+        {
+            $query = $this->handleFilter($query, $filter);
+        }
 
         if (!empty($with)) $query = $query->with($with);
 

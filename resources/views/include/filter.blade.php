@@ -10,6 +10,7 @@
 
         @if($entity === 'tasks')
             @include('include.filter-fields.project-select')
+            @include('include.filter-fields.deadline-select')
             @include('include.filter-fields.stage-select')
         @endif
 

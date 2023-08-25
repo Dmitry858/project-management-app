@@ -47,6 +47,17 @@ class TaskService
      */
     public function getList(array $filter = [], bool $withPaginate = true, array $with = [])
     {
+        if (array_key_exists('deadline', $filter))
+        {
+            if ($filter['deadline'] === 'today')
+            {
+                $filter['deadline'] = ['=', Carbon::today()];
+            }
+            else if ($filter['deadline'] === 'tomorrow')
+            {
+                $filter['deadline'] = ['=', Carbon::tomorrow()];
+            }
+        }
         if (PermissionService::hasUserPermission(Auth::id(), 'view-all-tasks'))
         {
             return $this->taskRepository->search($filter, $withPaginate, $with);

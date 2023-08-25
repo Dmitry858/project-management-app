@@ -39,52 +39,18 @@ class EloquentTaskRepository implements TaskRepositoryInterface
     public function searchByMember(int $id, array $filter = [], bool $withPaginate = true, array $with = [])
     {
         $query = Task::query();
-        if (!empty($with)) $query = $query->with($with);
-
-        $filterDate = [];
-        foreach ($filter as $key => $value)
-        {
-            if ($key === 'created_at' || $key === 'updated_at')
-            {
-                $filterDate = [
-                    'key' => $key,
-                    'operator' => $value[0],
-                    'value' => $value[1],
-                ];
-                unset($filter[$key]);
-            }
-            else if ($key === 'name')
-            {
-                $filterName = [$key, 'like', '%'.$value.'%'];
-                unset($filter[$key]);
-            }
-        }
 
         $query = $query->whereHas('owner', function($query) use ($id) {
             $query->where('owner_id', $id);
-        })->where($filter);
-
-        if (!empty($filterDate))
-        {
-            $query = $query->whereDate($filterDate['key'], $filterDate['operator'], $filterDate['value']);
-        }
-        if (!empty($filterName))
-        {
-            $query = $query->where($filterName[0], $filterName[1], $filterName[2]);
-        }
+        });
+        $query = $this->handleFilter($query, $filter);
 
         $query = $query->orWhereHas('responsible', function($query) use ($id) {
             $query->where('responsible_id', $id);
-        })->where($filter);
+        });
+        $query = $this->handleFilter($query, $filter);
 
-        if (!empty($filterDate))
-        {
-            $query = $query->whereDate($filterDate['key'], $filterDate['operator'], $filterDate['value']);
-        }
-        if (!empty($filterName))
-        {
-            $query = $query->where($filterName[0], $filterName[1], $filterName[2]);
-        }
+        if (!empty($with)) $query = $query->with($with);
 
         return $withPaginate ? $query->paginate() : $query->get();
     }
