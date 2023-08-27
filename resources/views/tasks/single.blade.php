@@ -91,7 +91,7 @@
                     </p>
                     <p class="text-gray-700 border border-gray-300 rounded py-3 px-4 leading-tight">
                         @if($task->deadline)
-                            {{ $task->deadline }}
+                            {{ $task->formattedDeadline() }}
                         @else
                             --
                         @endif

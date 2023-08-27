@@ -55,4 +55,15 @@ class Task extends Model
     {
         return MemberService::getMemberFullName($memberId);
     }
+
+    public function formattedDeadline(): string|null
+    {
+        $value = $this->deadline;
+        if ($value)
+        {
+            $value = date('d.m.Y H:i', strtotime($value));
+        }
+
+        return $value;
+    }
 }
