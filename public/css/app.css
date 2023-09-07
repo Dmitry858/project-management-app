@@ -1573,6 +1573,11 @@ header .user-photo img {
     overflow-y: auto;
     overflow-x: hidden;
 }
+.tooltip.show {
+    visibility: visible;
+    z-index: 100;
+    left: -20px;
+}
 .tooltip.tooltip-info {
     top: -8px;
     left: 18px;
@@ -1581,10 +1586,6 @@ header .user-photo img {
 .tooltip-bottom {
     bottom: 0;
     top: auto;
-}
-.has-tooltip:hover .tooltip {
-  visibility: visible;
-  z-index: 50;
 }
 .send-invitation-btn.disabled,
 .is-admin a,
@@ -1614,6 +1615,11 @@ header .user-photo img {
     .main-nav-wrap {
         height: calc(100vh - 96px);
     }
+
+    .has-tooltip:hover .tooltip {
+    visibility: visible;
+    z-index: 50;
+  }
 }
 .checked\:border-blue-600:checked {
   --tw-border-opacity: 1;

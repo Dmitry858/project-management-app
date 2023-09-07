@@ -30,6 +30,12 @@ header .user-photo img {
     overflow-x: hidden;
 }
 
+.tooltip.show {
+    visibility: visible;
+    z-index: 100;
+    left: -20px;
+}
+
 .tooltip.tooltip-info {
     top: -8px;
     left: 18px;
@@ -39,10 +45,6 @@ header .user-photo img {
 .tooltip-bottom {
     bottom: 0;
     top: auto;
-}
-
-.has-tooltip:hover .tooltip {
-    @apply visible z-50;
 }
 
 .send-invitation-btn.disabled,
@@ -77,5 +79,9 @@ header .user-photo img {
 @media (min-width: 768px) {
     .main-nav-wrap {
         height: calc(100vh - 96px);
+    }
+
+    .has-tooltip:hover .tooltip {
+        @apply visible z-50;
     }
 }

@@ -76,6 +76,32 @@ window.addEventListener('load', function (e) {
     // Init DeleteItemsGroupHandler class
     let handler = new DeleteItemsGroupHandler();
     handler.init();
+
+    // Tooltip handler
+    const tooltipsWrap = document.getElementsByClassName('has-tooltip'),
+          tooltips = document.getElementsByClassName('tooltip');
+    if (tooltipsWrap.length > 0 && tooltips.length > 0 && window.innerWidth < 768) {
+        for (let item of tooltipsWrap) {
+            item.addEventListener('click', () => {
+                for (let tooltip of tooltips) {
+                    tooltip.classList.remove('show');
+                }
+                let tooltipChild = item.querySelector('.tooltip');
+                if (tooltipChild && !tooltipChild.classList.contains('show')) {
+                    tooltipChild.classList.add('show');
+                }
+            });
+        }
+
+        for (let tooltip of tooltips) {
+            tooltip.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (event.currentTarget.classList.contains('show')) {
+                    event.currentTarget.classList.remove('show');
+                }
+            });
+        }
+    }
 });
 
 // Close the dropdown menu if the user clicks outside of it

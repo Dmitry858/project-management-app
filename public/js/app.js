@@ -872,6 +872,61 @@ window.addEventListener('load', function (e) {
   // Init DeleteItemsGroupHandler class
   var handler = new _DeleteItemsGroupHandler__WEBPACK_IMPORTED_MODULE_4__["default"]();
   handler.init();
+
+  // Tooltip handler
+  var tooltipsWrap = document.getElementsByClassName('has-tooltip'),
+    tooltips = document.getElementsByClassName('tooltip');
+  if (tooltipsWrap.length > 0 && tooltips.length > 0 && window.innerWidth < 768) {
+    var _iterator3 = _createForOfIteratorHelper(tooltipsWrap),
+      _step3;
+    try {
+      var _loop = function _loop() {
+        var item = _step3.value;
+        item.addEventListener('click', function () {
+          var _iterator5 = _createForOfIteratorHelper(tooltips),
+            _step5;
+          try {
+            for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+              var tooltip = _step5.value;
+              tooltip.classList.remove('show');
+            }
+          } catch (err) {
+            _iterator5.e(err);
+          } finally {
+            _iterator5.f();
+          }
+          var tooltipChild = item.querySelector('.tooltip');
+          if (tooltipChild && !tooltipChild.classList.contains('show')) {
+            tooltipChild.classList.add('show');
+          }
+        });
+      };
+      for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+        _loop();
+      }
+    } catch (err) {
+      _iterator3.e(err);
+    } finally {
+      _iterator3.f();
+    }
+    var _iterator4 = _createForOfIteratorHelper(tooltips),
+      _step4;
+    try {
+      for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+        var tooltip = _step4.value;
+        tooltip.addEventListener('click', function (event) {
+          event.stopPropagation();
+          if (event.currentTarget.classList.contains('show')) {
+            event.currentTarget.classList.remove('show');
+          }
+        });
+      }
+    } catch (err) {
+      _iterator4.e(err);
+    } finally {
+      _iterator4.f();
+    }
+  }
 });
 
 // Close the dropdown menu if the user clicks outside of it

@@ -35,7 +35,24 @@
                                             {{ $member->user->last_name }}
                                         </td>
                                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                            {{ count($member->projects) }}
+                                            <div class="has-tooltip inline-block relative cursor-default">
+                                                <span>{{ count($member->projects) }}</span>
+                                                @if(count($member->projects) > 0)
+                                                    <div @class([
+                                                        'tooltip',
+                                                        'rounded',
+                                                        'shadow-lg',
+                                                        'py-2',
+                                                        'px-4',
+                                                        'bg-gray-100',
+                                                        'tooltip-bottom' => $loop->last
+                                                    ])>
+                                                        @foreach($member->projects as $project)
+                                                            <p>{{ Str::limit($project->name, 25) }}</p>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </td>
                                         <td class="flex text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                             @permission('edit-members')
