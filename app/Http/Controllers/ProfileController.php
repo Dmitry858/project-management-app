@@ -15,6 +15,11 @@ class ProfileController extends Controller
         $this->userService = $userService;
     }
 
+    /**
+     * Display the user's profile page.
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index()
     {
         $user = Auth::user();
@@ -23,7 +28,14 @@ class ProfileController extends Controller
         return view('profile', compact('title', 'user'));
     }
 
-    public function update(UpdateUserRequest $request, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UpdateUserRequest $request
+     * @param  int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(UpdateUserRequest $request, int $id)
     {
         if (intval($id) !== Auth::id())
         {

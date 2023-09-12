@@ -7,31 +7,11 @@ use App\Services\CommentService;
 
 class CommentController extends Controller
 {
-    protected $commentService;
+    protected CommentService $commentService;
 
     public function __construct(CommentService $commentService)
     {
         $this->commentService = $commentService;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -46,28 +26,6 @@ class CommentController extends Controller
         $result = $this->commentService->create($data);
 
         return response()->json($result);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

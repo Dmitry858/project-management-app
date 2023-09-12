@@ -13,11 +13,11 @@ use App\Filters\ProjectsFilter;
 
 class ProjectController extends Controller
 {
-    protected $projectService;
-    protected $userService;
-    protected $taskService;
-    protected $eventService;
-    protected $filter;
+    protected ProjectService $projectService;
+    protected UserService $userService;
+    protected TaskService $taskService;
+    protected EventService $eventService;
+    protected ProjectsFilter $filter;
 
     public function __construct(
         ProjectService $projectService,

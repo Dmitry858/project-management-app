@@ -12,8 +12,8 @@ use App\Services\UserService;
 
 class RegisteredUserController extends Controller
 {
-    protected $invitationService;
-    protected $userService;
+    protected InvitationService $invitationService;
+    protected UserService $userService;
 
     public function __construct(InvitationService $invitationService, UserService $userService)
     {
@@ -56,7 +56,7 @@ class RegisteredUserController extends Controller
 
         $user = $this->userService->create($request);
 
-        if ($user && $invitation)
+        if ($user)
         {
             $invitation->update(['user_id' => $user->id]);
         }

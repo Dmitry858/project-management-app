@@ -13,11 +13,11 @@ use App\Filters\TasksFilter;
 
 class TaskController extends Controller
 {
-    protected $taskService;
-    protected $projectService;
-    protected $memberService;
-    protected $stageService;
-    protected $filter;
+    protected TaskService $taskService;
+    protected ProjectService $projectService;
+    protected MemberService $memberService;
+    protected StageService $stageService;
+    protected TasksFilter $filter;
 
     public function __construct(
         TaskService $taskService,

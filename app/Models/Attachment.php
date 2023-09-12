@@ -23,6 +23,6 @@ class Attachment extends Model
 
     public function mimeType(): string
     {
-        return Storage::mimeType($this->file) ?? '';
+        return (string) Storage::mimeType($this->file);
     }
 }

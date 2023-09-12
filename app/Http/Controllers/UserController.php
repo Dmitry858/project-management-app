@@ -11,9 +11,9 @@ use App\Filters\UsersFilter;
 
 class UserController extends Controller
 {
-    protected $userService;
-    protected $roleService;
-    protected $filter;
+    protected UserService $userService;
+    protected RoleService $roleService;
+    protected UsersFilter $filter;
 
     public function __construct(UserService $userService, RoleService $roleService, UsersFilter $filter)
     {

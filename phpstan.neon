@@ -5,3 +5,5 @@ parameters:
 	paths:
 		- app/Http/Controllers
 		- app/Models
+	ignoreErrors:
+	    - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$slug#'

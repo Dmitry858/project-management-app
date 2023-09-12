@@ -12,9 +12,9 @@ use App\Filters\EventsFilter;
 
 class EventController extends Controller
 {
-    protected $eventService;
-    protected $permissionService;
-    protected $filter;
+    protected EventService $eventService;
+    protected PermissionService $permissionService;
+    protected EventsFilter $filter;
 
     public function __construct(EventService $eventService, PermissionService $permissionService, EventsFilter $filter)
     {

@@ -9,7 +9,7 @@ use App\Http\Requests\UpdateStageRequest;
 
 class StageController extends Controller
 {
-    protected $stageService;
+    protected StageService $stageService;
 
     public function __construct(StageService $stageService)
     {
@@ -52,17 +52,6 @@ class StageController extends Controller
         $result = $this->stageService->create($request->all());
 
         return redirect()->route('stages.index')->with($result['status'], $result['text']);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

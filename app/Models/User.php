@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property \Illuminate\Database\Eloquent\Collection $roles
+ * @property \Illuminate\Database\Eloquent\Collection $permissions
+ */
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class InvitationController extends Controller
 {
-    protected $invitationService;
+    protected InvitationService $invitationService;
 
     public function __construct(InvitationService $invitationService)
     {

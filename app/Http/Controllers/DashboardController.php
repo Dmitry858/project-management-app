@@ -9,9 +9,9 @@ use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
-    protected $projectService;
-    protected $taskService;
-    protected $eventService;
+    protected ProjectService $projectService;
+    protected TaskService $taskService;
+    protected EventService $eventService;
 
     public function __construct(
         ProjectService $projectService,
@@ -24,6 +24,11 @@ class DashboardController extends Controller
         $this->eventService = $eventService;
     }
 
+    /**
+     * Display the dashboard page.
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index()
     {
         $projects = $this->projectService->getList(
