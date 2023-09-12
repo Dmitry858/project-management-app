@@ -10,9 +10,9 @@ use App\Http\Requests\StoreMemberRequest;
 
 class MemberController extends Controller
 {
-    protected $memberService;
-    protected $userService;
-    protected $projectService;
+    protected MemberService $memberService;
+    protected UserService $userService;
+    protected ProjectService $projectService;
 
     public function __construct(MemberService $memberService, UserService $userService, ProjectService $projectService)
     {
@@ -65,17 +65,6 @@ class MemberController extends Controller
         $flashValue = $success ? __('flash.member_created') : __('flash.general_error');
 
         return redirect()->route('members.index')->with($flashKey, $flashValue);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
