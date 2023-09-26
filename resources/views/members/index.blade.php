@@ -4,6 +4,7 @@
     {{ Breadcrumbs::render('members') }}
     @include('include.flash-success')
     @include('include.flash-error')
+    @include('include.filter', ['entity' => 'members'])
 
     @if (count($members) > 0)
         <div class="flex flex-col">

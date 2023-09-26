@@ -22,6 +22,8 @@
             @include('include.filter-fields.event-type-select')
             @include('include.filter-fields.event-start-select')
             @include('include.filter-fields.allday-select')
+        @elseif($entity === 'members')
+            @include('include.filter-fields.project-select')
         @else
             @include('include.filter-fields.activity-select')
         @endif

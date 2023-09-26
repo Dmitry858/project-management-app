@@ -40,6 +40,12 @@ trait EloquentQueryBuilderHelper
                     }
                 }
             }
+            else if ($key === 'has')
+            {
+                $query->whereHas($value[0], function($query) use ($value) {
+                    $query = $this->buildQuery($query, $value[1], $value[2]);
+                });
+            }
             else
             {
                 $query = $this->buildQuery($query, $key, $value);

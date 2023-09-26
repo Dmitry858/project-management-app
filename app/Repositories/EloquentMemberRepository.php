@@ -20,6 +20,15 @@ class EloquentMemberRepository implements MemberRepositoryInterface
         $query = Member::query();
         if (count($filter) > 0)
         {
+            if (array_key_exists('project_id', $filter))
+            {
+                $filter['has'] = [
+                    'projects',
+                    'project_id',
+                    $filter['project_id'],
+                ];
+                unset($filter['project_id']);
+            }
             $query = $this->handleFilter($query, $filter);
         }
 

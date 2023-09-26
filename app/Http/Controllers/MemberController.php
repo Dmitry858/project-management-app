@@ -7,18 +7,26 @@ use App\Services\MemberService;
 use App\Services\UserService;
 use App\Services\ProjectService;
 use App\Http\Requests\StoreMemberRequest;
+use App\Filters\MembersFilter;
 
 class MemberController extends Controller
 {
     protected MemberService $memberService;
     protected UserService $userService;
     protected ProjectService $projectService;
+    protected MembersFilter $filter;
 
-    public function __construct(MemberService $memberService, UserService $userService, ProjectService $projectService)
+    public function __construct(
+        MemberService $memberService,
+        UserService $userService,
+        ProjectService $projectService,
+        MembersFilter $filter
+    )
     {
         $this->memberService = $memberService;
         $this->userService = $userService;
         $this->projectService = $projectService;
+        $this->filter = $filter;
         $this->middleware('permission:view-members')->only('index');
         $this->middleware('permission:create-members')->only(['create', 'store']);
         $this->middleware('permission:edit-members')->only(['edit', 'update']);
@@ -33,9 +41,14 @@ class MemberController extends Controller
     public function index(): object
     {
         $title = __('titles.members_index');
-        $members = $this->memberService->getList([], true, ['projects', 'user']);
+        $members = $this->memberService->getList(
+            $this->filter->params(),
+            true,
+            ['projects', 'user']
+        );
+        $projects = $this->projectService->getList([], false);
 
-        return view('members.index', compact('title', 'members'));
+        return view('members.index', compact('title', 'members', 'projects'));
     }
 
     /**
