@@ -43,6 +43,12 @@ class UserService
 
         if ($request->hasFile('photo'))
         {
+            $user = $this->userRepository->find($id);
+            if (!$user) return false;
+            if ($user->photo)
+            {
+                unlink(storage_path('app/'.$user->photo));
+            }
             $data['photo'] = $this->resizeAndSavePhoto($request);
         }
 
@@ -117,6 +123,10 @@ class UserService
             $constraint->aspectRatio();
             $constraint->upsize();
         });
+        if (!file_exists(storage_path('app/users-photo')))
+        {
+            mkdir(storage_path('app/users-photo'), 0755);
+        }
         $resizedPhoto->save(storage_path('app/users-photo/'.$fileName));
 
         return 'users-photo/'.$fileName;
