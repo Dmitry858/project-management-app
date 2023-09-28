@@ -802,6 +802,14 @@ window.addEventListener('load', function (e) {
     });
   }
 
+  // Delete user photo
+  var deletePhotoBtn = document.getElementById('delete-photo-btn');
+  if (deletePhotoBtn) {
+    deletePhotoBtn.addEventListener('click', function (e) {
+      e.currentTarget.parentElement.remove();
+    });
+  }
+
   // Delete current attachments
   var deleteFileBtns = document.getElementsByClassName('delete-file-btn'),
     deletedFilesInput = document.getElementById('deleted_attachments');

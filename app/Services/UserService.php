@@ -41,16 +41,26 @@ class UserService
             $data['password'] = Hash::make($data['password']);
         }
 
+        $user = $this->userRepository->find($id);
+        if (!$user) return false;
+
         if ($request->hasFile('photo'))
         {
-            $user = $this->userRepository->find($id);
-            if (!$user) return false;
             if ($user->photo)
             {
                 unlink(storage_path('app/'.$user->photo));
             }
             $data['photo'] = $this->resizeAndSavePhoto($request);
         }
+        else
+        {
+            if ($user->photo && !isset($data['photo_exists']))
+            {
+                unlink(storage_path('app/'.$user->photo));
+                $data['photo'] = null;
+            }
+        }
+        if (isset($data['photo_exists'])) unset($data['photo_exists']);
 
         if (Cache::has('user_'.$id.'_roles'))
         {

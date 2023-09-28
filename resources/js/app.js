@@ -21,6 +21,14 @@ window.addEventListener('load', function (e) {
         });
     }
 
+    // Delete user photo
+    const deletePhotoBtn = document.getElementById('delete-photo-btn');
+    if (deletePhotoBtn) {
+        deletePhotoBtn.addEventListener('click', function (e) {
+            e.currentTarget.parentElement.remove();
+        });
+    }
+
     // Delete current attachments
     const deleteFileBtns = document.getElementsByClassName('delete-file-btn'),
           deletedFilesInput = document.getElementById('deleted_attachments');
