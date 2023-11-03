@@ -31,6 +31,10 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
+
+### Лицензия
+Project Management App - это программное обеспечение с открытым исходным кодом, лицензированное по [лицензии MIT](https://github.com/Dmitry858/project-management-app/blob/master/LICENSE.md).
+
 ____
 
 Project Management App is an application for a project management that allows you to manage company projects, set tasks, assign executors, manage user roles, monitor the completion of tasks by members.
@@ -64,6 +68,10 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
+
+### License
+Project Management App is open-sourced software licensed under the [MIT license](https://github.com/Dmitry858/project-management-app/blob/master/LICENSE.md).
+
 ____
 
 <img src="screen1.jpg" alt="Project Management App">
