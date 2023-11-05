@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Repositories\Interfaces\TaskRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-use App\Services\PermissionService;
 use Carbon\Carbon;
 
 class CommentService
@@ -99,7 +98,7 @@ class CommentService
         }
     }
 
-    public function delete($id)
+    public function delete(array $ids): array
     {
         if (!PermissionService::hasUserPermission(Auth::id(), 'delete-comments'))
         {
@@ -109,8 +108,9 @@ class CommentService
             ];
         }
 
-        $comment = $this->commentRepository->find(intval($id));
-        if (!$comment)
+        $comments = $this->commentRepository->search(['id' => $ids]);
+
+        if (count($comments) === 0)
         {
             return [
                 'status' => 'error',
@@ -118,7 +118,7 @@ class CommentService
             ];
         }
 
-        $success = $this->commentRepository->delete($comment->id);
+        $success = $this->commentRepository->delete($ids);
 
         if ($success)
         {

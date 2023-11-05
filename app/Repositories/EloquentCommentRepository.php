@@ -4,9 +4,12 @@ namespace App\Repositories;
 
 use App\Repositories\Interfaces\CommentRepositoryInterface;
 use App\Models\Comment;
+use App\Traits\EloquentQueryBuilderHelper;
 
 class EloquentCommentRepository implements CommentRepositoryInterface
 {
+    use EloquentQueryBuilderHelper;
+
     public function find(int $id)
     {
         return Comment::find($id);
@@ -14,13 +17,20 @@ class EloquentCommentRepository implements CommentRepositoryInterface
 
     public function search(array $filter = [], bool $withPaginate = true)
     {
+        $query = Comment::query();
+
+        if (count($filter) > 0)
+        {
+            $query = $this->handleFilter($query, $filter);
+        }
+
         if ($withPaginate)
         {
-            return Comment::where($filter)->paginate();
+            return $query->paginate();
         }
         else
         {
-            return Comment::where($filter)->get();
+            return $query->get();
         }
     }
 
@@ -36,10 +46,10 @@ class EloquentCommentRepository implements CommentRepositoryInterface
         return $comment ? $comment->update($data) : false;
     }
 
-    public function delete(int $id): bool
+    public function delete(array $ids): bool
     {
-        $comment = $this->find($id);
+        $result = Comment::destroy($ids);
 
-        return $comment ? $comment->delete() : false;
+        return boolval($result);
     }
 }

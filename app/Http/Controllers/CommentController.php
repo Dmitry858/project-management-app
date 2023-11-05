@@ -51,7 +51,7 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->commentService->delete($id);
+        $result = $this->commentService->delete([$id]);
 
         return response()->json($result);
     }
