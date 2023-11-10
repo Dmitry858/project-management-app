@@ -2,15 +2,6 @@
 
 namespace App\Repositories\Interfaces;
 
-interface UserRepositoryInterface
+interface UserRepositoryInterface extends RepositoryInterface
 {
-    public function find(int $id);
-
-    public function search(array $filter = []);
-
-    public function createFromArray(array $data);
-
-    public function updateFromArray(int $id, array $data): bool;
-
-    public function delete(array $ids): bool;
 }
