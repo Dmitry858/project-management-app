@@ -34,11 +34,11 @@ class EloquentInvitationRepository implements InvitationRepositoryInterface
         return Invitation::create($data);
     }
 
-    public function updateSendingStatus(int $id, int $status): bool
+    public function updateFromArray(int $id, array $data): bool
     {
         $invitation = $this->find($id);
 
-        return $invitation ? $invitation->update(['is_sent' => $status]) : false;
+        return $invitation ? $invitation->update($data) : false;
     }
 
     public function delete(array $ids): bool

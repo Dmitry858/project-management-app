@@ -101,7 +101,7 @@ class InvitationService
         $link = config('app.url').'/register/'.$invitation->secret_key;
         Mail::to($invitation->email)->send(new InvitationSent($link));
 
-        $this->invitationRepository->updateSendingStatus($id, 1);
+        $this->invitationRepository->updateFromArray($id, ['is_sent' => 1]);
 
         return [
             'status' => 'success',
